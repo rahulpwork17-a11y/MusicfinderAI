@@ -254,51 +254,45 @@
 </section>
 
 <script>
-  // Dynamic Song Recognition Engine & WebAudio Acoustic Spectrum Analyzer
-  
-  // Curated acoustic library for audio fingerprint fallback matches
-  const DYNAMIC_MATCH_CATALOG = [
-    { title: "Bohemian Rhapsody", artist: "Queen", album: "A Night at the Opera (1975)", genre: "Classic Rock", bpm: 144, key: "Bb Major", artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80" },
-    { title: "Get Lucky", artist: "Daft Punk ft. Pharrell Williams", album: "Random Access Memories (2013)", genre: "Disco / Funk", bpm: 116, key: "F# Minor", artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=80" },
-    { title: "Shape of You", artist: "Ed Sheeran", album: "÷ Divide (2017)", genre: "Pop / Tropical", bpm: 96, key: "C# Minor", artwork: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80" },
-    { title: "Hotel California", artist: "Eagles", album: "Hotel California (1976)", genre: "Soft Rock", bpm: 147, key: "B Minor", artwork: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&auto=format&fit=crop&q=80" },
-    { title: "Bad Guy", artist: "Billie Eilish", album: "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO? (2019)", genre: "Electropop", bpm: 135, key: "G Minor", artwork: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80" },
-    { title: "Levitating", artist: "Dua Lipa", album: "Future Nostalgia (2020)", genre: "Nu-Disco / Pop", bpm: 103, key: "B Minor", artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=80" },
-    { title: "Dreams", artist: "Fleetwood Mac", album: "Rumours (1977)", genre: "Pop Rock", bpm: 120, key: "F Major", artwork: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&auto=format&fit=crop&q=80" },
-    { title: "Rolling in the Deep", artist: "Adele", album: "21 (2011)", genre: "Soul / Pop", bpm: 105, key: "C Minor", artwork: "https://images.unsplash.com/photo-1445985543468-39088c485a3a?w=500&auto=format&fit=crop&q=80" },
-    { title: "Uptown Funk", artist: "Mark Ronson ft. Bruno Mars", album: "Uptown Special (2015)", genre: "Funk Pop", bpm: 115, key: "D Minor", artwork: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500&auto=format&fit=crop&q=80" },
-    { title: "HUMBLE.", artist: "Kendrick Lamar", album: "DAMN. (2017)", genre: "Hip-Hop", bpm: 150, key: "C# Minor", artwork: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=500&auto=format&fit=crop&q=80" }
-  ];
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Music Finder AI — Real Acoustic Fingerprinting Engine
+  // Uses AudD API (api.audd.io) for genuine audio fingerprinting.
+  // iTunes API is used only as a secondary enrichment step after AudD returns a match.
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  // AudD API token — replace with your token from https://dashboard.audd.io/
+  // The 'test' token works for a small number of demo requests per day.
+  const AUDD_API_TOKEN = 'test';
+  const AUDD_ENDPOINT  = 'https://api.audd.io/';
 
   function initHub() {
     const tabUpload = document.getElementById('tab-upload-btn');
-    const tabUrl = document.getElementById('tab-url-btn');
+    const tabUrl    = document.getElementById('tab-url-btn');
     const tabRecord = document.getElementById('tab-record-btn');
 
     const panelUpload = document.getElementById('panel-upload');
-    const panelUrl = document.getElementById('panel-url');
+    const panelUrl    = document.getElementById('panel-url');
     const panelRecord = document.getElementById('panel-record');
 
-    const dropzone = document.getElementById('dropzone');
+    const dropzone  = document.getElementById('dropzone');
     const fileInput = document.getElementById('audio-file-input') as HTMLInputElement;
     const browseBtn = document.getElementById('browse-btn');
-    
-    const urlInput = document.getElementById('url-input') as HTMLInputElement;
+
+    const urlInput  = document.getElementById('url-input') as HTMLInputElement;
     const loadUrlBtn = document.getElementById('load-url-btn');
 
-    const workbench = document.getElementById('audio-workbench');
-    const loadedFilename = document.getElementById('loaded-filename');
-    const loadedFilesize = document.getElementById('loaded-filesize');
-    const removeAudioBtn = document.getElementById('remove-audio-btn');
-    const runRecBtn = document.getElementById('run-recognition-btn');
-
-    const matchCard = document.getElementById('match-result-card');
+    const workbench       = document.getElementById('audio-workbench');
+    const loadedFilename  = document.getElementById('loaded-filename');
+    const loadedFilesize  = document.getElementById('loaded-filesize');
+    const removeAudioBtn  = document.getElementById('remove-audio-btn');
+    const runRecBtn       = document.getElementById('run-recognition-btn');
+    const matchCard       = document.getElementById('match-result-card');
 
     let currentLoadedFile: File | null = null;
     let currentPastedUrl: string | null = null;
-    let recognizedLyrics: string = "";
+    let currentMicBlob: Blob | null = null;   // captured audio from MediaRecorder
 
-    // Tab switching
+    // ── Tab switching ──────────────────────────────────────────────────────────
     function switchTab(activeTab: HTMLElement, activePanel: HTMLElement) {
       [tabUpload, tabUrl, tabRecord].forEach(t => {
         if (!t) return;
@@ -306,397 +300,448 @@
         t.classList.add('text-ink', 'hover:bg-parchment');
       });
       [panelUpload, panelUrl, panelRecord].forEach(p => p?.classList.add('hidden'));
-
       activeTab.classList.add('bg-[#0066cc]', 'text-white');
       activeTab.classList.remove('text-ink', 'hover:bg-parchment');
       activePanel.classList.remove('hidden');
     }
 
-    tabUpload?.addEventListener('click', () => switchTab(tabUpload, panelUpload!));
-    tabUrl?.addEventListener('click', () => switchTab(tabUrl, panelUrl!));
-    tabRecord?.addEventListener('click', () => switchTab(tabRecord, panelRecord!));
+    tabUpload?.addEventListener('click', () => switchTab(tabUpload!, panelUpload!));
+    tabUrl?.addEventListener('click',    () => switchTab(tabUrl!,    panelUrl!));
+    tabRecord?.addEventListener('click', () => switchTab(tabRecord!, panelRecord!));
 
-    // File Selection
+    // ── File selection ─────────────────────────────────────────────────────────
     browseBtn?.addEventListener('click', () => fileInput?.click());
     dropzone?.addEventListener('click', (e) => {
       if (e.target !== browseBtn) fileInput?.click();
     });
 
     fileInput?.addEventListener('change', (e: any) => {
-      const file = e.target.files[0];
-      if (file) {
-        currentLoadedFile = file;
-        currentPastedUrl = null;
-        handleAudioLoaded(file.name, `${(file.size / (1024 * 1024)).toFixed(2)} MB • Audio Loaded`);
-      }
+      const file: File = e.target.files[0];
+      if (!file) return;
+      currentLoadedFile = file;
+      currentPastedUrl  = null;
+      currentMicBlob    = null;
+      handleAudioLoaded(file.name, `${(file.size / (1024 * 1024)).toFixed(2)} MB • Ready`);
     });
 
-    // Paste URL Handler
+    // ── Drag-and-drop ──────────────────────────────────────────────────────────
+    dropzone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('border-[#0066cc]', 'bg-[#0066cc]/5');
+    });
+    dropzone?.addEventListener('dragleave', () => {
+      dropzone.classList.remove('border-[#0066cc]', 'bg-[#0066cc]/5');
+    });
+    dropzone?.addEventListener('drop', (e: any) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-[#0066cc]', 'bg-[#0066cc]/5');
+      const file: File = e.dataTransfer?.files?.[0];
+      if (!file) return;
+      currentLoadedFile = file;
+      currentPastedUrl  = null;
+      currentMicBlob    = null;
+      handleAudioLoaded(file.name, `${(file.size / (1024 * 1024)).toFixed(2)} MB • Ready`);
+    });
+
+    // ── URL handler ────────────────────────────────────────────────────────────
     loadUrlBtn?.addEventListener('click', () => {
       const val = urlInput?.value.trim();
       if (!val) return;
-      currentPastedUrl = val;
+      currentPastedUrl  = val;
       currentLoadedFile = null;
-      const urlFileName = val.split('/').pop()?.split('?')[0] || 'Media Link Stream';
-      handleAudioLoaded(decodeURIComponent(urlFileName), 'Remote Stream URL • Ready');
+      currentMicBlob    = null;
+      const urlFileName = decodeURIComponent(val.split('/').pop()?.split('?')[0] || 'Media Link');
+      handleAudioLoaded(urlFileName, 'Remote URL • Ready');
     });
 
     function handleAudioLoaded(title: string, sizeLabel: string) {
       if (loadedFilename) loadedFilename.textContent = title;
       if (loadedFilesize) loadedFilesize.textContent = sizeLabel;
-      if (workbench) workbench.classList.remove('hidden');
-      drawMockWaveform();
+      workbench?.classList.remove('hidden');
+      drawWaveformPlaceholder();
     }
 
-    function drawMockWaveform() {
+    function drawWaveformPlaceholder() {
       const canvas = document.getElementById('waveform-canvas') as HTMLCanvasElement;
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-
-      canvas.width = canvas.parentElement?.clientWidth || 600;
+      canvas.width  = canvas.parentElement?.clientWidth || 600;
       canvas.height = 96;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#2997ff';
-
       const bars = 80;
-      const barWidth = canvas.width / bars;
+      const bw = canvas.width / bars;
       for (let i = 0; i < bars; i++) {
-        const height = Math.random() * (canvas.height - 20) + 10;
-        const x = i * barWidth;
-        const y = (canvas.height - height) / 2;
-        ctx.fillRect(x + 1, y, barWidth - 2, height);
+        const h = Math.random() * (canvas.height - 20) + 10;
+        ctx.fillRect(i * bw + 1, (canvas.height - h) / 2, bw - 2, h);
       }
     }
 
     removeAudioBtn?.addEventListener('click', () => {
-      if (workbench) workbench.classList.add('hidden');
-      if (matchCard) matchCard.classList.add('hidden');
+      workbench?.classList.add('hidden');
+      matchCard?.classList.add('hidden');
       if (fileInput) fileInput.value = '';
       currentLoadedFile = null;
-      currentPastedUrl = null;
-      recognizedLyrics = "";
+      currentPastedUrl  = null;
+      currentMicBlob    = null;
     });
 
-    // ID3 Binary Tag Reader
-    async function readID3Metadata(file: File): Promise<{ title?: string; artist?: string; album?: string } | null> {
+    // ── WebAudio feature estimation (BPM / Key / Energy) ─────────────────────
+    // NOTE: these are *client-side estimates*, not ground-truth detections.
+    // They are clearly labelled "Est." in the UI so users aren't misled.
+    async function estimateAudioFeatures(source: File | Blob) {
       try {
-        const buffer = await file.slice(0, 64 * 1024).arrayBuffer();
-        const view = new DataView(buffer);
-        if (view.getUint8(0) === 0x49 && view.getUint8(1) === 0x44 && view.getUint8(2) === 0x33) {
-          const decoder = new TextDecoder('utf-8');
-          const str = decoder.decode(buffer);
-          let title, artist, album;
-          
-          const tit2Match = str.match(/TIT2[^\0]*?\0+([^\0]{2,80})/);
-          if (tit2Match) title = tit2Match[1].replace(/[\x00-\x1F\x7F-\x9F]/g, '').trim();
+        const arrayBuffer = await source.arrayBuffer();
+        const audioCtx    = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const audioBuffer  = await audioCtx.decodeAudioData(arrayBuffer);
+        const pcm          = audioBuffer.getChannelData(0);
 
-          const tpe1Match = str.match(/TPE1[^\0]*?\0+([^\0]{2,80})/);
-          if (tpe1Match) artist = tpe1Match[1].replace(/[\x00-\x1F\x7F-\x9F]/g, '').trim();
-
-          const talbMatch = str.match(/TALB[^\0]*?\0+([^\0]{2,80})/);
-          if (talbMatch) album = talbMatch[1].replace(/[\x00-\x1F\x7F-\x9F]/g, '').trim();
-
-          if (title || artist) return { title, artist, album };
-        }
-      } catch (e) {
-        console.warn('ID3 tag parse skipped:', e);
-      }
-      return null;
-    }
-
-    // Clean query text from filenames or URLs
-    function extractQueryFromFilename(name: string): string {
-      let clean = name
-        .replace(/\.[a-zA-Z0-9]+$/i, '') // remove extension
-        .replace(/^(\d+[\s\._\-]+)+/, '') // remove leading track numbers
-        .replace(/[_\.\-]/g, ' ') // replace punctuation with spaces
-        .replace(/\b(official|video|audio|lyrics|hd|4k|mp3|wav|flac|m4a|remix|version)\b/gi, '') // remove common keywords
-        .trim();
-      return clean;
-    }
-
-    // WebAudio Feature Extraction (BPM, Key, Energy)
-    async function extractWebAudioFeatures(file: File) {
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-        const pcm = audioBuffer.getChannelData(0);
-
-        // 1. RMS Energy
-        let sumSquare = 0;
+        // RMS Energy
+        let sumSq = 0;
         const step = Math.max(1, Math.floor(pcm.length / 5000));
-        for (let i = 0; i < pcm.length; i += step) {
-          sumSquare += pcm[i] * pcm[i];
-        }
-        const rms = Math.sqrt(sumSquare / (pcm.length / step));
+        for (let i = 0; i < pcm.length; i += step) sumSq += pcm[i] * pcm[i];
+        const rms       = Math.sqrt(sumSq / (pcm.length / step));
         const energyPct = Math.min(98, Math.max(45, Math.round(rms * 350 + 40)));
 
-        // 2. Tempo / BPM Estimation
-        let peakCount = 0;
-        const threshold = rms * 1.5;
+        // Onset-based BPM estimate
+        let peaks = 0;
+        const thr = rms * 1.5;
         for (let i = step; i < pcm.length - step; i += step * 4) {
-          if (Math.abs(pcm[i]) > threshold && Math.abs(pcm[i]) > Math.abs(pcm[i - step])) {
-            peakCount++;
-          }
+          if (Math.abs(pcm[i]) > thr && Math.abs(pcm[i]) > Math.abs(pcm[i - step])) peaks++;
         }
-        const durationMin = audioBuffer.duration / 60;
-        let bpm = Math.round((peakCount / durationMin) * 0.15);
-        if (bpm < 70) bpm = Math.round(bpm * 1.8) + 30;
+        let bpm = Math.round((peaks / (audioBuffer.duration / 60)) * 0.15);
+        if (bpm < 70)  bpm = Math.round(bpm * 1.8) + 30;
         if (bpm > 180) bpm = Math.round(bpm / 1.6);
         bpm = Math.min(185, Math.max(72, bpm));
 
-        // 3. Pitch / Key Mapping
-        const keys = ['C Major', 'C# Minor', 'D Major', 'Eb Major', 'E Minor', 'F Major', 'F# Minor', 'G Major', 'Ab Major', 'A Minor', 'Bb Major', 'B Minor'];
-        let sampleHash = 0;
-        for (let i = 0; i < pcm.length; i += step * 10) {
-          sampleHash += Math.abs(Math.round(pcm[i] * 1000));
-        }
-        const key = keys[sampleHash % keys.length];
+        // Key estimate (hash-based, approximate)
+        const keys = ['C Major','C# Minor','D Major','Eb Major','E Minor','F Major',
+                       'F# Minor','G Major','Ab Major','A Minor','Bb Major','B Minor'];
+        let sh = 0;
+        for (let i = 0; i < pcm.length; i += step * 10) sh += Math.abs(Math.round(pcm[i] * 1000));
+        const key = keys[sh % keys.length];
 
         audioCtx.close();
         return { bpm, key, energyPct, duration: Math.round(audioBuffer.duration) };
-      } catch (e) {
-        return { bpm: 124, key: "A Minor", energyPct: 84, duration: 180 };
+      } catch {
+        return { bpm: 0, key: '', energyPct: 0, duration: 0 };
       }
     }
 
-    // Query iTunes API for real metadata & artwork
-    async function queryiTunesAPI(searchTerm: string) {
+    // ── AudD Acoustic Fingerprinting ──────────────────────────────────────────
+    // Sends actual audio bytes (or a URL) to api.audd.io for real fingerprinting.
+    async function callAuddFingerprint(source: File | Blob | string): Promise<any | null> {
       try {
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&entity=song&limit=5`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data.results && data.results.length > 0) {
-          const track = data.results[0];
-          return {
-            title: track.trackName,
-            artist: track.artistName,
-            album: track.collectionName || "Single",
-            artwork: track.artworkUrl100 ? track.artworkUrl100.replace("100x100bb", "600x600bb") : null,
-            genre: track.primaryGenreName || "Music",
-            year: track.releaseDate ? track.releaseDate.substring(0, 4) : "2023",
-            appleUrl: track.trackViewUrl,
-            previewUrl: track.previewUrl,
-            spotifyUrl: `https://open.spotify.com/search/${encodeURIComponent(track.trackName + " " + track.artistName)}`,
-            youtubeUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(track.trackName + " " + track.artistName)}`
-          };
-        }
-      } catch (e) {
-        console.warn('iTunes search error:', e);
-      }
-      return null;
-    }
+        const fd = new FormData();
+        fd.append('api_token', AUDD_API_TOKEN);
+        fd.append('return', 'apple_music,spotify');
 
-    // Primary Recognition Handler
-    runRecBtn?.addEventListener('click', async () => {
-      if (runRecBtn) runRecBtn.textContent = '⏳ Fingerprinting Audio Spectrum...';
-
-      let matchData: any = null;
-      // FIX #1: track whether we actually computed features (don't use defaults blindly)
-      let featuresComputed = false;
-      let computedFeatures = { bpm: 0, key: "", energyPct: 0, duration: 0 };
-
-      // Step 1: Check File Metadata / ID3 / Filename or URL
-      if (currentLoadedFile) {
-        computedFeatures = await extractWebAudioFeatures(currentLoadedFile);
-        featuresComputed = true;
-
-        // Try reading ID3
-        const id3 = await readID3Metadata(currentLoadedFile);
-        let searchQuery = "";
-        if (id3 && (id3.title || id3.artist)) {
-          searchQuery = `${id3.artist || ''} ${id3.title || ''}`.trim();
+        if (typeof source === 'string') {
+          // URL path — AudD fetches and fingerprints the remote file
+          fd.append('url', source);
         } else {
-          searchQuery = extractQueryFromFilename(currentLoadedFile.name);
+          // File / Blob — send actual audio bytes
+          const fileName = source instanceof File ? source.name : 'recording.wav';
+          fd.append('file', source, fileName);
         }
 
-        // Ignore generic default filenames like "recording.wav", "audio.mp3"
-        const isGenericName = /^(audio|recording|record|sound|track|sample|mic|music|\d+|blob)$/i.test(searchQuery);
-        if (searchQuery.length > 2 && !isGenericName) {
-          matchData = await queryiTunesAPI(searchQuery);
-        }
-      } else if (currentPastedUrl) {
-        // FIX #7: decode URI-encoded path segments before regex parsing
-        const rawSegment = currentPastedUrl.split('/').pop() || '';
-        const urlQuery = extractQueryFromFilename(decodeURIComponent(rawSegment));
-        if (urlQuery.length > 2) {
-          matchData = await queryiTunesAPI(urlQuery);
-        }
-      } else if (recognizedLyrics.length > 3) {
-        matchData = await queryiTunesAPI(recognizedLyrics);
-      }
+        const res  = await fetch(AUDD_ENDPOINT, { method: 'POST', body: fd });
+        const json = await res.json();
 
-      // Step 2: Fallback to Acoustic Fingerprint Catalog match based on audio features hash
-      if (!matchData) {
-        let hashIndex = 0;
-        if (currentLoadedFile) {
-          // Use file name hash + computed BPM if available
-          const nameHash = currentLoadedFile.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-          hashIndex = Math.abs(nameHash + (computedFeatures.bpm || 0));
-        } else {
-          hashIndex = Math.floor(Math.random() * DYNAMIC_MATCH_CATALOG.length);
-        }
-        const catalogItem = DYNAMIC_MATCH_CATALOG[hashIndex % DYNAMIC_MATCH_CATALOG.length];
+        if (json.status !== 'success' || !json.result) return null;
 
-        // FIX #1: use catalog's real BPM/key values — don't default to hardcoded 120/C Major
-        matchData = {
-          title: catalogItem.title,
-          artist: catalogItem.artist,
-          album: catalogItem.album,
-          artwork: catalogItem.artwork,
-          genre: catalogItem.genre,
-          bpm: catalogItem.bpm,
-          key: catalogItem.key,
-          year: catalogItem.album.match(/(\d{4})/)?.[1] || "2020",
-          previewUrl: null,
-          isFallback: true,
-          appleUrl: `https://music.apple.com/us/search?term=${encodeURIComponent(catalogItem.title + " " + catalogItem.artist)}`,
-          spotifyUrl: `https://open.spotify.com/search/${encodeURIComponent(catalogItem.title + " " + catalogItem.artist)}`,
-          youtubeUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(catalogItem.title + " " + catalogItem.artist)}`
-        };
-      }
+        const r = json.result;
 
-      // FIX #1: only override BPM/key with computed values if we actually ran the extractor
-      if (featuresComputed && computedFeatures.bpm > 0) {
-        matchData.bpm = computedFeatures.bpm;
-      }
-      if (featuresComputed && computedFeatures.key) {
-        matchData.key = computedFeatures.key;
-      }
-      if (featuresComputed && computedFeatures.energyPct > 0) {
-        matchData.energy = `${computedFeatures.energyPct}%`;
-      } else {
-        matchData.energy = matchData.energy || 'N/A';
-      }
+        // Extract artwork & preview from apple_music sub-object if present
+        let artwork    = null;
+        let previewUrl = null;
+        let appleUrl   = r.song_link || null;
 
-      // Step 3: Render Result to UI
-      setTimeout(() => {
-        if (runRecBtn) runRecBtn.textContent = '🔍 Run Song Recognition';
-
-        const resArtwork = document.getElementById('res-artwork') as HTMLImageElement;
-        const resTitle = document.getElementById('res-title');
-        const resArtist = document.getElementById('res-artist');
-        const resAlbum = document.getElementById('res-album');
-        const resBpm = document.getElementById('res-bpm');
-        const resKey = document.getElementById('res-key');
-        const resConfidence = document.getElementById('res-confidence');
-        
-        const resSpotify = document.getElementById('res-spotify') as HTMLAnchorElement;
-        const resYoutube = document.getElementById('res-youtube') as HTMLAnchorElement;
-        const resApple = document.getElementById('res-apple') as HTMLAnchorElement;
-
-        const previewContainer = document.getElementById('preview-player-container');
-        const previewAudio = document.getElementById('match-audio-preview') as HTMLAudioElement;
-        const previewBtn = document.getElementById('preview-play-btn');
-
-        if (resArtwork && matchData.artwork) resArtwork.src = matchData.artwork;
-        if (resTitle) resTitle.textContent = matchData.title;
-        if (resArtist) resArtist.textContent = matchData.artist;
-        if (resAlbum) resAlbum.textContent = `Album: ${matchData.album} • ${matchData.genre || 'Music'}`;
-        if (resBpm) resBpm.textContent = matchData.bpm.toString();
-        if (resKey) resKey.textContent = matchData.key;
-        // FIX #4: honest match source label — never display fake random confidence
-        if (resConfidence) {
-          resConfidence.textContent = matchData.isFallback
-            ? 'Estimated Match'
-            : `iTunes Match · ${(97.2 + Math.random() * 2.5).toFixed(1)}%`;
-        }
-
-        if (resSpotify) resSpotify.href = matchData.spotifyUrl;
-        if (resYoutube) resYoutube.href = matchData.youtubeUrl;
-        if (resApple) resApple.href = matchData.appleUrl;
-
-        // Preview Audio Player binding
-        if (matchData.previewUrl && previewContainer && previewAudio) {
-          previewAudio.src = matchData.previewUrl;
-          // FIX #5: explicitly set display:flex — avoids hidden+flex Tailwind class conflict
-          previewContainer.classList.remove('hidden');
-          previewContainer.style.display = 'flex';
-          let isPreviewPlaying = false;
-          
-          previewBtn?.addEventListener('click', () => {
-            isPreviewPlaying = !isPreviewPlaying;
-            if (isPreviewPlaying) {
-              previewAudio.play();
-              if (previewBtn) previewBtn.textContent = '⏸';
-            } else {
-              previewAudio.pause();
-              if (previewBtn) previewBtn.textContent = '▶';
-            }
-          });
-
-          previewAudio.addEventListener('ended', () => {
-            isPreviewPlaying = false;
-            if (previewBtn) previewBtn.textContent = '▶';
-          });
-        } else if (previewContainer) {
-          previewContainer.classList.add('hidden');
-        }
-
-        if (matchCard) matchCard.classList.remove('hidden');
-        matchCard?.scrollIntoView({ behavior: 'smooth' });
-
-        // Save into local storage recognition history
-        const historyItem = {
-          title: matchData.title,
-          artist: matchData.artist,
-          artwork: matchData.artwork,
-          bpm: matchData.bpm,
-          key: matchData.key,
-          spotify: matchData.spotifyUrl,
-          date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        
-        const historyStr = localStorage.getItem('musicfinder_history');
-        const history = historyStr ? JSON.parse(historyStr) : [];
-        history.unshift(historyItem);
-        localStorage.setItem('musicfinder_history', JSON.stringify(history.slice(0, 20)));
-      }, 1200);
-    });
-
-    // Microphone Recording & Speech/Lyric Recognition Handler
-    const toggleRecordBtn = document.getElementById('toggle-record-btn');
-    const recordBtnText = document.getElementById('record-btn-text');
-    const recordStatusTitle = document.getElementById('record-status-title');
-    let isRecording = false;
-    let speechRecognizer: any = null;
-
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      speechRecognizer = new SpeechRecognition();
-      speechRecognizer.continuous = true;
-      speechRecognizer.interimResults = true;
-      speechRecognizer.onresult = (event: any) => {
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            recognizedLyrics += ' ' + event.results[i][0].transcript;
+        if (r.apple_music) {
+          const am = r.apple_music;
+          appleUrl   = am.url || appleUrl;
+          previewUrl = am.previews?.[0]?.url || null;
+          if (am.artwork?.url) {
+            // AudD returns a template URL — fill in 600×600
+            artwork = am.artwork.url.replace('{w}', '600').replace('{h}', '600');
           }
         }
-      };
+
+        // Spotify external URL
+        let spotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(r.artist + ' ' + r.title)}`;
+        if (r.spotify?.external_urls?.spotify) spotifyUrl = r.spotify.external_urls.spotify;
+
+        const genre = r.apple_music?.genreNames?.[0] || r.spotify?.album?.genres?.[0] || 'Music';
+        const year  = (r.release_date || '').substring(0, 4) || new Date().getFullYear().toString();
+        const album = r.album || r.apple_music?.albumName || r.spotify?.album?.name || 'Single';
+
+        return {
+          title:      r.title,
+          artist:     r.artist,
+          album:      `${album} (${year})`,
+          genre,
+          artwork,
+          previewUrl,
+          appleUrl:   appleUrl || `https://music.apple.com/us/search?term=${encodeURIComponent(r.title + ' ' + r.artist)}`,
+          spotifyUrl,
+          youtubeUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(r.title + ' ' + r.artist)}`,
+          timecode:   r.timecode || null,
+          isAudd:     true,
+        };
+      } catch (err) {
+        console.error('AudD fingerprint error:', err);
+        return null;
+      }
     }
 
-    toggleRecordBtn?.addEventListener('click', () => {
-      isRecording = !isRecording;
-      if (isRecording) {
-        recognizedLyrics = "";
-        if (recordBtnText) recordBtnText.textContent = 'Stop Recording';
-        if (recordStatusTitle) recordStatusTitle.textContent = 'Listening for ambient audio & lyrics...';
-        if (speechRecognizer) {
-          try { speechRecognizer.start(); } catch(e){}
+    // ── iTunes secondary enrichment ───────────────────────────────────────────
+    // Called ONLY when AudD returns a confirmed title+artist but is missing artwork
+    // or preview URL. NOT used as a primary recognition source.
+    async function enrichViaiTunes(title: string, artist: string) {
+      try {
+        const q   = encodeURIComponent(`${artist} ${title}`);
+        const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=3`);
+        const data = await res.json();
+        if (!data.results?.length) return null;
+        const t = data.results[0];
+        return {
+          artwork:    t.artworkUrl100?.replace('100x100bb', '600x600bb') || null,
+          previewUrl: t.previewUrl || null,
+          appleUrl:   t.trackViewUrl || null,
+          genre:      t.primaryGenreName || null,
+        };
+      } catch {
+        return null;
+      }
+    }
+
+    // ── "No match found" card helper ──────────────────────────────────────────
+    function showNoMatch(runBtn: HTMLElement | null) {
+      if (runBtn) runBtn.textContent = '🔍 Run Song Recognition';
+
+      const resTitle      = document.getElementById('res-title');
+      const resArtist     = document.getElementById('res-artist');
+      const resAlbum      = document.getElementById('res-album');
+      const resConfidence = document.getElementById('res-confidence');
+      const resArtwork    = document.getElementById('res-artwork') as HTMLImageElement | null;
+      const resBpm        = document.getElementById('res-bpm');
+      const resKey        = document.getElementById('res-key');
+
+      if (resArtwork)    resArtwork.src = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80';
+      if (resTitle)      resTitle.textContent      = 'No Match Found';
+      if (resArtist)     resArtist.textContent     = 'Song not in database';
+      if (resAlbum)      resAlbum.textContent      = 'Try a cleaner clip (10–30 s), use Normalize Volume, or try a different section of the track.';
+      if (resConfidence) resConfidence.textContent = 'Unrecognized';
+      if (resBpm)        resBpm.textContent        = '—';
+      if (resKey)        resKey.textContent        = '—';
+
+      document.getElementById('preview-player-container')?.classList.add('hidden');
+
+      const resSpotify = document.getElementById('res-spotify') as HTMLAnchorElement | null;
+      const resYoutube = document.getElementById('res-youtube') as HTMLAnchorElement | null;
+      const resApple   = document.getElementById('res-apple')   as HTMLAnchorElement | null;
+      if (resSpotify) resSpotify.href = 'https://open.spotify.com';
+      if (resYoutube) resYoutube.href = 'https://youtube.com';
+      if (resApple)   resApple.href   = 'https://music.apple.com';
+
+      matchCard?.classList.remove('hidden');
+      matchCard?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ── Render match result ───────────────────────────────────────────────────
+    function renderMatch(matchData: any, estimatedFeatures: { bpm: number; key: string; energyPct: number }) {
+      if (runRecBtn) runRecBtn.textContent = '🔍 Run Song Recognition';
+
+      const resArtwork    = document.getElementById('res-artwork')    as HTMLImageElement | null;
+      const resTitle      = document.getElementById('res-title');
+      const resArtist     = document.getElementById('res-artist');
+      const resAlbum      = document.getElementById('res-album');
+      const resBpm        = document.getElementById('res-bpm');
+      const resKey        = document.getElementById('res-key');
+      const resConfidence = document.getElementById('res-confidence');
+      const resSpotify    = document.getElementById('res-spotify')    as HTMLAnchorElement | null;
+      const resYoutube    = document.getElementById('res-youtube')    as HTMLAnchorElement | null;
+      const resApple      = document.getElementById('res-apple')      as HTMLAnchorElement | null;
+      const previewCont   = document.getElementById('preview-player-container');
+      const previewAudio  = document.getElementById('match-audio-preview')  as HTMLAudioElement | null;
+      const previewBtn    = document.getElementById('preview-play-btn');
+
+      if (resArtwork && matchData.artwork)    resArtwork.src        = matchData.artwork;
+      if (resTitle)                           resTitle.textContent  = matchData.title;
+      if (resArtist)                          resArtist.textContent = matchData.artist;
+      if (resAlbum)                           resAlbum.textContent  = `Album: ${matchData.album} • ${matchData.genre || 'Music'}`;
+
+      // BPM / Key — show AudD values if available, else client estimates labelled "Est."
+      const bpmDisplay = matchData.bpm > 0
+        ? matchData.bpm.toString()
+        : (estimatedFeatures.bpm > 0 ? `~${estimatedFeatures.bpm} (Est.)` : '—');
+      const keyDisplay = matchData.key || (estimatedFeatures.key ? `${estimatedFeatures.key} (Est.)` : '—');
+      if (resBpm) resBpm.textContent = bpmDisplay;
+      if (resKey) resKey.textContent = keyDisplay;
+
+      // Confidence label — honest, never a made-up percentage
+      if (resConfidence) {
+        resConfidence.textContent = matchData.isAudd
+          ? (matchData.timecode ? 'AudD Match at ' + matchData.timecode : 'AudD Fingerprint Match')
+          : 'iTunes Text Match';
+      }
+
+      if (resSpotify) resSpotify.href = matchData.spotifyUrl || 'https://open.spotify.com';
+      if (resYoutube) resYoutube.href = matchData.youtubeUrl || 'https://youtube.com';
+      if (resApple)   resApple.href   = matchData.appleUrl   || 'https://music.apple.com';
+
+      // Preview player
+      if (matchData.previewUrl && previewCont && previewAudio) {
+        previewAudio.src = matchData.previewUrl;
+        previewCont.classList.remove('hidden');
+        previewCont.style.display = 'flex';
+        let playing = false;
+        // replaceWith clones the node to strip old listeners; get fresh ref
+        previewBtn?.replaceWith(previewBtn.cloneNode(true));
+        const freshPreviewBtn = document.getElementById('preview-play-btn');
+        const playHandler = () => {
+          playing = !playing;
+          if (playing) { previewAudio.play(); if (freshPreviewBtn) freshPreviewBtn.textContent = 'Pause'; }
+          else          { previewAudio.pause(); if (freshPreviewBtn) freshPreviewBtn.textContent = 'Play'; }
+        };
+        freshPreviewBtn?.addEventListener('click', playHandler);
+        previewAudio.addEventListener('ended', () => { playing = false; if (freshPreviewBtn) freshPreviewBtn.textContent = 'Play'; });
+      } else if (previewCont) {
+        previewCont.classList.add('hidden');
+      }
+
+      matchCard?.classList.remove('hidden');
+      matchCard?.scrollIntoView({ behavior: 'smooth' });
+
+      // Persist to localStorage history
+      try {
+        const historyItem = {
+          title:   matchData.title,
+          artist:  matchData.artist,
+          artwork: matchData.artwork,
+          bpm:     matchData.bpm || estimatedFeatures.bpm,
+          key:     matchData.key || estimatedFeatures.key,
+          spotify: matchData.spotifyUrl,
+          date:    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+        const hist = JSON.parse(localStorage.getItem('musicfinder_history') || '[]');
+        hist.unshift(historyItem);
+        localStorage.setItem('musicfinder_history', JSON.stringify(hist.slice(0, 20)));
+      } catch { /* localStorage may be blocked */ }
+    }
+
+    // ── Primary Recognition Handler ───────────────────────────────────────────
+    runRecBtn?.addEventListener('click', async () => {
+      if (!currentLoadedFile && !currentPastedUrl && !currentMicBlob) {
+        alert('Please upload a file, paste a URL, or record from microphone first.');
+        return;
+      }
+
+      if (runRecBtn) runRecBtn.textContent = '⏳ Fingerprinting…';
+      matchCard?.classList.add('hidden');
+
+      // 1. Client-side feature estimation (runs in parallel with API call)
+      let estimated = { bpm: 0, key: '', energyPct: 0, duration: 0 };
+      const featureSource = currentLoadedFile || currentMicBlob;
+      if (featureSource) {
+        estimated = await estimateAudioFeatures(featureSource);
+      }
+
+      // 2. Real acoustic fingerprinting via AudD
+      const fingerprintSource: File | Blob | string | null =
+        currentLoadedFile ?? currentMicBlob ?? currentPastedUrl ?? null;
+
+      let matchData: any = null;
+
+      if (fingerprintSource) {
+        if (runRecBtn) runRecBtn.textContent = '⏳ Sending to AudD fingerprint engine…';
+        matchData = await callAuddFingerprint(fingerprintSource);
+      }
+
+      // 3. If AudD matched — enrich with iTunes if artwork/preview missing
+      if (matchData) {
+        if (!matchData.artwork || !matchData.previewUrl) {
+          const enriched = await enrichViaiTunes(matchData.title, matchData.artist);
+          if (enriched) {
+            matchData.artwork    = matchData.artwork    || enriched.artwork;
+            matchData.previewUrl = matchData.previewUrl || enriched.previewUrl;
+            matchData.appleUrl   = matchData.appleUrl   || enriched.appleUrl;
+            matchData.genre      = matchData.genre      || enriched.genre;
+          }
         }
+        renderMatch(matchData, estimated);
+        return;
+      }
+
+      // 4. AudD returned no match — show honest "not found" (no fake catalog fallback)
+      showNoMatch(runRecBtn);
+    });
+
+    // ── Live Microphone Recording (MediaRecorder, not SpeechRecognition) ─────
+    // We capture real audio PCM and send it to AudD — not speech-to-text.
+    const toggleRecordBtn  = document.getElementById('toggle-record-btn');
+    const recordBtnText    = document.getElementById('record-btn-text');
+    const recordStatusTitle = document.getElementById('record-status-title');
+    const recordStatusDesc  = document.getElementById('record-status-desc');
+
+    let isRecording    = false;
+    let mediaRecorder: MediaRecorder | null = null;
+    let recordedChunks: Blob[] = [];
+    let recordingTimer: ReturnType<typeof setTimeout> | null = null;
+    const MAX_RECORD_MS = 20000; // 20 seconds — enough for a solid fingerprint
+
+    toggleRecordBtn?.addEventListener('click', async () => {
+      if (!isRecording) {
+        // ── Start recording ──────────────────────────────────────────────────
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          recordedChunks = [];
+          mediaRecorder  = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) recordedChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            stream.getTracks().forEach(t => t.stop());
+            const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+            currentMicBlob    = blob;
+            currentLoadedFile = null;
+            currentPastedUrl  = null;
+            handleAudioLoaded('Live Microphone Capture', (blob.size / 1024).toFixed(0) + ' KB - Recorded');
+            if (recordStatusTitle) recordStatusTitle.textContent = 'Recording saved - click Identify';
+            if (recordStatusDesc)  recordStatusDesc.textContent  = 'Click Run Song Recognition to fingerprint the capture';
+          };
+
+          mediaRecorder.start(1000); // collect chunks every 1 s
+          isRecording = true;
+
+          if (recordBtnText)     recordBtnText.textContent     = 'Stop Recording';
+          if (recordStatusTitle) recordStatusTitle.textContent = 'Listening… (max 20 s)';
+          if (recordStatusDesc)  recordStatusDesc.textContent  = 'Hold device near the audio source';
+
+          // Auto-stop after MAX_RECORD_MS
+          recordingTimer = setTimeout(() => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+              mediaRecorder.stop();
+              isRecording = false;
+              if (recordBtnText) recordBtnText.textContent = 'Record Again';
+            }
+          }, MAX_RECORD_MS);
+
+        } catch (err) {
+          console.error('Microphone access denied:', err);
+          if (recordStatusTitle) recordStatusTitle.textContent = 'Microphone access denied';
+          if (recordStatusDesc)  recordStatusDesc.textContent  = 'Please allow microphone access in your browser settings.';
+        }
+
       } else {
-        if (recordBtnText) recordBtnText.textContent = 'Start Recording';
-        if (recordStatusTitle) recordStatusTitle.textContent = 'Processing Live Recording...';
-        if (speechRecognizer) {
-          try { speechRecognizer.stop(); } catch(e){}
-        }
-        setTimeout(() => {
-          if (recordStatusTitle) recordStatusTitle.textContent = 'Ready to Listen';
-          handleAudioLoaded('Live_Microphone_Capture.wav', 'Live Mic Recording • 15s');
-        }, 800);
+        // ── Stop recording ───────────────────────────────────────────────────
+        if (recordingTimer) { clearTimeout(recordingTimer); recordingTimer = null; }
+        if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+        isRecording = false;
+        if (recordBtnText) recordBtnText.textContent = 'Record Again';
       }
     });
   }
