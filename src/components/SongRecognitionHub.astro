@@ -1,0 +1,384 @@
+---
+// src/components/SongRecognitionHub.astro
+---
+
+<section id="recognizer" class="py-16 px-4 md:px-8 bg-white border-b border-[#e0e0e0]">
+  <div class="max-w-[1020px] mx-auto">
+    
+    <!-- Hero Title Header (Apple Tight Display) -->
+    <div class="text-center mb-10">
+      <span class="text-[#0066cc] font-semibold text-[15px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
+      <h1 class="font-display font-semibold text-[40px] md:text-[56px] leading-[1.07] tracking-[-0.028em] text-[#1d1d1f] mb-4">
+        Identify Any Song. In Seconds.
+      </h1>
+      <p class="text-[20px] md:text-[24px] font-normal text-[#7a7a7a] max-w-2xl mx-auto leading-relaxed">
+        Upload audio, video clips, paste media links, or record live sound. Instant identification with built-in audio cleanup tools.
+      </p>
+    </div>
+
+    <!-- Main Card Engine Container -->
+    <div class="bg-[#fafafc] rounded-[24px] border border-[#e0e0e0] p-6 md:p-10 shadow-sm transition-all" id="hub-container">
+      
+      <!-- Input Mode Tabs (Pill style) -->
+      <div class="flex items-center justify-center gap-2 mb-8 bg-white p-1.5 rounded-full border border-[#e0e0e0] max-w-md mx-auto shadow-xs">
+        <button id="tab-upload-btn" class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#1d1d1f] text-white">
+          📁 Upload File
+        </button>
+        <button id="tab-url-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-[#1d1d1f] hover:bg-neutral-100">
+          🔗 Paste URL
+        </button>
+        <button id="tab-record-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-[#1d1d1f] hover:bg-neutral-100">
+          🎙️ Live Mic
+        </button>
+      </div>
+
+      <!-- TAB 1: FILE UPLOAD DROPZONE -->
+      <div id="panel-upload" class="tab-panel space-y-6">
+        <div 
+          id="dropzone" 
+          class="border-2 border-dashed border-[#d2d2d7] hover:border-[#0066cc] bg-white rounded-[20px] p-8 md:p-12 text-center transition-all cursor-pointer relative group"
+        >
+          <input type="file" id="audio-file-input" accept="audio/*,video/*,.mp3,.wav,.flac,.m4a,.aac,.ogg,.mp4,.webm,.mov,.avi" class="hidden" />
+          
+          <div class="w-16 h-16 rounded-full bg-[#f5f5f7] group-hover:bg-[#0066cc]/10 text-[#0066cc] mx-auto flex items-center justify-center mb-4 transition-colors">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+          </div>
+
+          <h3 class="font-display font-semibold text-[21px] text-[#1d1d1f] mb-1">
+            Drag and drop your audio or video file
+          </h3>
+          <p class="text-sm text-[#7a7a7a] mb-4">
+            Supports MP3, WAV, FLAC, M4A, OGG, MP4, WebM, MOV & more
+          </p>
+
+          <button id="browse-btn" class="btn-action-primary !text-[15px] !py-2.5 !px-6">
+            Browse Computer
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: PASTE URL -->
+      <div id="panel-url" class="tab-panel hidden space-y-6">
+        <div class="bg-white p-8 rounded-[20px] border border-[#e0e0e0] text-center space-y-4">
+          <label for="url-input" class="block font-semibold text-lg text-[#1d1d1f]">
+            Paste Audio / Video Media Link
+          </label>
+          <div class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+            <input 
+              type="url" 
+              id="url-input" 
+              placeholder="https://example.com/audio-sample.mp3 or video URL" 
+              class="flex-1 px-5 py-3 rounded-full border border-[#d2d2d7] focus:border-[#0066cc] outline-none text-sm bg-[#fafafc]"
+            />
+            <button id="load-url-btn" class="btn-action-primary !py-3 !px-6 text-sm">
+              Load & Analyze
+            </button>
+          </div>
+          <p class="text-xs text-[#7a7a7a]">Supported platforms: Direct audio/video links, podcast streams, public MP3/MP4 media URLs.</p>
+        </div>
+      </div>
+
+      <!-- TAB 3: LIVE MICROPHONE RECORDING -->
+      <div id="panel-record" class="tab-panel hidden space-y-6">
+        <div class="bg-white p-8 md:p-12 rounded-[20px] border border-[#e0e0e0] text-center space-y-6">
+          <div id="record-status-ring" class="w-24 h-24 rounded-full bg-red-50 text-red-600 mx-auto flex items-center justify-center border-4 border-red-100 transition-all duration-300">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+            </svg>
+          </div>
+
+          <div>
+            <h3 id="record-status-title" class="font-display font-semibold text-[22px] text-[#1d1d1f]">
+              Ready to Listen
+            </h3>
+            <p id="record-status-desc" class="text-sm text-[#7a7a7a] mt-1">
+              Click record and play sound nearby (TV, radio, cafe, speaker)
+            </p>
+          </div>
+
+          <div class="flex justify-center gap-4">
+            <button id="toggle-record-btn" class="bg-red-600 hover:bg-red-700 text-white font-medium px-8 py-3 rounded-full text-base transition-all active:scale-95 cursor-pointer shadow-md flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-white animate-pulse"></span>
+              <span id="record-btn-text">Start Recording</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE AUDIO WORKBENCH (Hidden until audio loaded) -->
+      <div id="audio-workbench" class="hidden mt-6 bg-white p-6 md:p-8 rounded-[20px] border border-[#e0e0e0] space-y-6">
+        <!-- Loaded File Details & Waveform -->
+        <div class="flex items-center justify-between pb-4 border-b border-[#e0e0e0]">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#0066cc]/10 text-[#0066cc] flex items-center justify-center font-bold">
+              ♫
+            </div>
+            <div>
+              <h4 id="loaded-filename" class="font-semibold text-base text-[#1d1d1f] truncate max-w-xs md:max-w-md">Audio Track</h4>
+              <p id="loaded-filesize" class="text-xs text-[#7a7a7a]">0:00 / 0:00 • Ready</p>
+            </div>
+          </div>
+          
+          <button id="remove-audio-btn" class="text-xs text-neutral-500 hover:text-red-600 font-medium cursor-pointer">
+            ✕ Remove
+          </button>
+        </div>
+
+        <!-- Live WebAudio Waveform Canvas -->
+        <div class="relative bg-[#1d1d1f] rounded-xl p-4 overflow-hidden">
+          <canvas id="waveform-canvas" class="w-full h-24 rounded-lg bg-black/40"></canvas>
+          <div class="flex items-center justify-between text-xs text-neutral-400 mt-2">
+            <span id="time-current">0:00</span>
+            <span id="time-total">0:15</span>
+          </div>
+        </div>
+
+        <!-- Interactive Scrub / Start Time Slider & Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#fafafc] p-4 rounded-xl border border-[#e0e0e0]">
+          <div>
+            <label class="block text-xs font-semibold text-[#1d1d1f] mb-1">Fingerprint Range Crop</label>
+            <input type="range" id="crop-slider" min="0" max="100" value="0" class="w-full accent-[#0066cc]" />
+            <div class="flex justify-between text-[11px] text-[#7a7a7a] mt-1">
+              <span>Start: <strong id="crop-start-label">0s</strong></span>
+              <span>Duration: <strong>10s Sample</strong></span>
+            </div>
+          </div>
+
+          <!-- Pre-processing Toggles -->
+          <div class="flex items-center justify-end gap-2 flex-wrap">
+            <button id="tool-normalize-toggle" class="btn-dark-utility text-xs !py-1.5 !px-3 border transition-colors hover:border-[#0066cc]">
+              ⚡ Normalize Volume
+            </button>
+            <button id="tool-vocal-toggle" class="btn-dark-utility text-xs !py-1.5 !px-3 border transition-colors hover:border-[#0066cc]">
+              🎤 Isolate Vocals
+            </button>
+          </div>
+        </div>
+
+        <!-- Primary Recognition Action Button -->
+        <div class="pt-2 text-center">
+          <button id="run-recognition-btn" class="btn-action-primary !py-3.5 !px-10 text-lg w-full sm:w-auto shadow-md">
+            🔍 Run Song Recognition
+          </button>
+        </div>
+      </div>
+
+      <!-- MATCH RESULT MODAL / DISPLAY CARD (Hidden until recognition done) -->
+      <div id="match-result-card" class="hidden mt-8 bg-gradient-to-br from-[#1d1d1f] to-[#272729] text-white p-8 rounded-[24px] shadow-2xl border border-neutral-800 space-y-8 animate-fade-in">
+        
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+          <!-- Album Art -->
+          <div class="relative group shrink-0">
+            <img id="res-artwork" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Album Cover" class="w-48 h-48 rounded-2xl object-cover shadow-2xl border border-white/10" />
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
+              <span class="text-xs bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white">99% Match</span>
+            </div>
+          </div>
+
+          <!-- Song Meta -->
+          <div class="flex-1 text-center md:text-left space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/20 border border-[#0066cc]/40 text-[#2997ff] text-xs font-semibold">
+              <span>✨ Exact Match Found</span>
+              <span>•</span>
+              <span id="res-confidence">99.4% Confidence</span>
+            </div>
+
+            <h2 id="res-title" class="font-display font-semibold text-3xl md:text-4xl text-white tracking-tight">
+              Blinding Lights
+            </h2>
+            <p id="res-artist" class="text-xl text-neutral-300 font-medium">
+              The Weeknd
+            </p>
+            <p id="res-album" class="text-sm text-neutral-400">
+              Album: After Hours (2020) • Synthwave / Pop
+            </p>
+
+            <!-- Musical Characteristics Pills -->
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+                🥁 BPM: <strong id="res-bpm" class="text-white">171</strong>
+              </span>
+              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+                🔑 Key: <strong id="res-key" class="text-white">F Minor (4A)</strong>
+              </span>
+              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+                ⏱️ Energy: <strong class="text-white">High (88%)</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- External Streaming Links & Tools Shortcut Buttons -->
+        <div class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <a id="res-spotify" href="https://spotify.com" target="_blank" class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+              Spotify
+            </a>
+            <a id="res-youtube" href="https://youtube.com" target="_blank" class="bg-[#FF0000] hover:bg-red-600 text-white font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+              YouTube
+            </a>
+            <a id="res-apple" href="https://apple.com" target="_blank" class="bg-white text-black hover:bg-neutral-200 font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+              Apple Music
+            </a>
+          </div>
+
+          <!-- Audio Tool Direct Actions -->
+          <div class="flex items-center gap-2">
+            <a href="/tools/stem-splitter" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
+              ✂️ Split Stems
+            </a>
+            <a href="/tools/audio-to-midi" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
+              🎹 Convert to MIDI
+            </a>
+            <a href="/tools/audio-transcriber" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
+              🎤 Get Lyrics & SRT
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // WebAudio & Recognition Hub Logic
+  function initHub() {
+    const tabUpload = document.getElementById('tab-upload-btn');
+    const tabUrl = document.getElementById('tab-url-btn');
+    const tabRecord = document.getElementById('tab-record-btn');
+
+    const panelUpload = document.getElementById('panel-upload');
+    const panelUrl = document.getElementById('panel-url');
+    const panelRecord = document.getElementById('panel-record');
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('audio-file-input') as HTMLInputElement;
+    const browseBtn = document.getElementById('browse-btn');
+    
+    const workbench = document.getElementById('audio-workbench');
+    const loadedFilename = document.getElementById('loaded-filename');
+    const loadedFilesize = document.getElementById('loaded-filesize');
+    const removeAudioBtn = document.getElementById('remove-audio-btn');
+    const runRecBtn = document.getElementById('run-recognition-btn');
+
+    const matchCard = document.getElementById('match-result-card');
+
+    // Tab switching
+    function switchTab(activeTab: HTMLElement, activePanel: HTMLElement) {
+      [tabUpload, tabUrl, tabRecord].forEach(t => {
+        if (!t) return;
+        t.classList.remove('bg-[#1d1d1f]', 'text-white');
+        t.classList.add('text-[#1d1d1f]', 'hover:bg-neutral-100');
+      });
+      [panelUpload, panelUrl, panelRecord].forEach(p => p?.classList.add('hidden'));
+
+      activeTab.classList.add('bg-[#1d1d1f]', 'text-white');
+      activeTab.classList.remove('text-[#1d1d1f]', 'hover:bg-neutral-100');
+      activePanel.classList.remove('hidden');
+    }
+
+    tabUpload?.addEventListener('click', () => switchTab(tabUpload, panelUpload!));
+    tabUrl?.addEventListener('click', () => switchTab(tabUrl, panelUrl!));
+    tabRecord?.addEventListener('click', () => switchTab(tabRecord, panelRecord!));
+
+    // File Selection
+    browseBtn?.addEventListener('click', () => fileInput?.click());
+    dropzone?.addEventListener('click', (e) => {
+      if (e.target !== browseBtn) fileInput?.click();
+    });
+
+    fileInput?.addEventListener('change', (e: any) => {
+      const file = e.target.files[0];
+      if (file) handleAudioFile(file);
+    });
+
+    function handleAudioFile(file: File) {
+      if (loadedFilename) loadedFilename.textContent = file.name;
+      if (loadedFilesize) loadedFilesize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB • Audio Loaded`;
+      if (workbench) workbench.classList.remove('hidden');
+      drawMockWaveform();
+    }
+
+    function drawMockWaveform() {
+      const canvas = document.getElementById('waveform-canvas') as HTMLCanvasElement;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      canvas.width = canvas.parentElement?.clientWidth || 600;
+      canvas.height = 96;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0066cc';
+
+      const bars = 80;
+      const barWidth = canvas.width / bars;
+      for (let i = 0; i < bars; i++) {
+        const height = Math.random() * (canvas.height - 20) + 10;
+        const x = i * barWidth;
+        const y = (canvas.height - height) / 2;
+        ctx.fillRect(x + 1, y, barWidth - 2, height);
+      }
+    }
+
+    removeAudioBtn?.addEventListener('click', () => {
+      if (workbench) workbench.classList.add('hidden');
+      if (matchCard) matchCard.classList.add('hidden');
+      if (fileInput) fileInput.value = '';
+    });
+
+    // Recognition Trigger
+    runRecBtn?.addEventListener('click', () => {
+      if (runRecBtn) runRecBtn.textContent = '⏳ Fingerprinting Audio Spectrum...';
+      
+      setTimeout(() => {
+        if (runRecBtn) runRecBtn.textContent = '🔍 Run Song Recognition';
+        if (matchCard) matchCard.classList.remove('hidden');
+        matchCard?.scrollIntoView({ behavior: 'smooth' });
+
+        // Save match into local storage history
+        const matchData = {
+          title: "Blinding Lights",
+          artist: "The Weeknd",
+          artwork: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80",
+          bpm: "171",
+          key: "F Minor",
+          spotify: "https://spotify.com"
+        };
+        
+        const historyStr = localStorage.getItem('musicfinder_history');
+        const history = historyStr ? JSON.parse(historyStr) : [];
+        history.unshift(matchData);
+        localStorage.setItem('musicfinder_history', JSON.stringify(history.slice(0, 20)));
+      }, 1500);
+    });
+
+    // Microphone Recording Handler
+    const toggleRecordBtn = document.getElementById('toggle-record-btn');
+    const recordBtnText = document.getElementById('record-btn-text');
+    const recordStatusTitle = document.getElementById('record-status-title');
+    let isRecording = false;
+
+    toggleRecordBtn?.addEventListener('click', () => {
+      isRecording = !isRecording;
+      if (isRecording) {
+        if (recordBtnText) recordBtnText.textContent = 'Stop Recording';
+        if (recordStatusTitle) recordStatusTitle.textContent = 'Listening to ambient sound...';
+      } else {
+        if (recordBtnText) recordBtnText.textContent = 'Start Recording';
+        if (recordStatusTitle) recordStatusTitle.textContent = 'Processing Recording...';
+        setTimeout(() => {
+          if (recordStatusTitle) recordStatusTitle.textContent = 'Ready to Listen';
+          handleAudioFile(new File(["mock"], "Live_Mic_Recording.wav", { type: "audio/wav" }));
+        }, 1000);
+      }
+    });
+  }
+
+  initHub();
+  document.addEventListener('astro:page-load', initHub);
+</script>

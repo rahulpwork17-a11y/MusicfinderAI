@@ -1,0 +1,40 @@
+---
+// src/pages/tools/key-detector.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'key-notation', label: 'Key Notation Output', type: 'select' as const, default: 'Camelot Wheel Code (DJ)', options: ['Camelot Wheel Code (DJ)', 'Standard Musical Key (e.g., A Minor)', 'Open Key Notation'] },
+];
+---
+
+<Layout title="Musical Key & Scale Detector - Music Finder AI" subnavTitle="Key Detector" activeTool="Key">
+  <InteractiveAudioTool
+    toolName="Musical Key & Camelot Wheel Detector"
+    toolDescription="Detect musical key, scale, and Camelot wheel code for DJ harmonic mixing and song arrangement."
+    icon="🔑"
+    badge="Harmonic Pitch Analysis"
+    controls={controls}
+    exportFormats={["Key Report", "Camelot Map"]}
+  >
+    <!-- Camelot Wheel Visual Graphic -->
+    <div class="mt-6 bg-[#1d1d1f] text-white p-6 rounded-2xl border border-neutral-800 space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="font-semibold text-sm">Camelot Wheel Position</h4>
+        <span class="text-xs text-[#2997ff]">Harmonic Mixing Ready</span>
+      </div>
+
+      <div class="grid grid-cols-4 md:grid-cols-6 gap-2 text-center text-xs font-mono">
+        {[
+          { code: "1A", key: "A♭m" }, { code: "2A", key: "E♭m" }, { code: "3A", key: "B♭m" }, { code: "4A", key: "Fm", active: true }, { code: "5A", key: "Cm" }, { code: "6A", key: "Gm" },
+          { code: "7A", key: "Dm" }, { code: "8A", key: "Am" }, { code: "9A", key: "Em" }, { code: "10A", key: "Bm" }, { code: "11A", key: "F♯m" }, { code: "12A", key: "D♭m" }
+        ].map((k) => (
+          <div class={`p-3 rounded-xl border transition-all ${k.active ? 'bg-[#0066cc] text-white font-bold border-white/40 shadow-lg scale-105' : 'bg-white/5 border-white/10 text-neutral-300'}`}>
+            <div class="text-base font-bold">{k.code}</div>
+            <div class="text-[10px] text-neutral-300">{k.key}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </InteractiveAudioTool>
+</Layout>

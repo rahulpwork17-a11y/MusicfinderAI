@@ -1,0 +1,60 @@
+---
+// src/pages/tools/bpm-detector.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'analysis-window', label: 'BPM Analysis Accuracy', type: 'select' as const, default: 'Full Track Average', options: ['Full Track Average', '10-Second Peak Window', 'Live Mic Continuous'] },
+];
+---
+
+<Layout title="BPM & Tap Tempo Detector - Music Finder AI" subnavTitle="BPM Detector" activeTool="BPM">
+  <InteractiveAudioTool
+    toolName="BPM & Tap Tempo Counter"
+    toolDescription="Detect exact beats-per-minute (BPM) from any audio file or tap along manually in real-time."
+    icon="🥁"
+    badge="Rhythm Analysis"
+    controls={controls}
+    exportFormats={["CSV BPM Report", "JSON Specs"]}
+  >
+    <!-- Tap Tempo Tapper Box -->
+    <div class="mt-6 bg-[#fafafc] p-8 rounded-2xl border border-[#e0e0e0] text-center space-y-4">
+      <h4 class="font-semibold text-lg text-[#1d1d1f]">Manual Tap-Tempo Counter</h4>
+      <p class="text-xs text-[#7a7a7a]">Tap the button or press spacebar in rhythm with the music</p>
+      
+      <div class="text-5xl font-display font-bold text-[#0066cc]" id="tap-bpm-value">
+        124 <span class="text-base font-normal text-neutral-400">BPM</span>
+      </div>
+
+      <button id="tap-btn" class="btn-action-primary !py-4 !px-12 !text-lg shadow-md cursor-pointer">
+        🥁 TAP HERE TO COUNT BPM
+      </button>
+    </div>
+  </InteractiveAudioTool>
+
+  <script>
+    function setupBpmTap() {
+      let taps: number[] = [];
+      const tapBtn = document.getElementById('tap-btn');
+      const bpmVal = document.getElementById('tap-bpm-value');
+
+      tapBtn?.addEventListener('click', () => {
+        const now = Date.now();
+        taps.push(now);
+        if (taps.length > 8) taps.shift();
+
+        if (taps.length > 1) {
+          const intervals = [];
+          for (let i = 1; i < taps.length; i++) {
+            intervals.push(taps[i] - taps[i - 1]);
+          }
+          const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+          const bpm = Math.round(60000 / avgInterval);
+          if (bpmVal) bpmVal.innerHTML = `${bpm} <span class="text-base font-normal text-neutral-400">BPM</span>`;
+        }
+      });
+    }
+    setupBpmTap();
+    document.addEventListener('astro:page-load', setupBpmTap);
+  </script>
+</Layout>

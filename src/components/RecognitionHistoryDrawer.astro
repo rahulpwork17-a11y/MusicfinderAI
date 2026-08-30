@@ -1,0 +1,119 @@
+---
+// src/components/RecognitionHistoryDrawer.astro
+---
+
+<!-- Slide-over History Drawer -->
+<div id="history-drawer-overlay" class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
+  <div id="history-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white text-[#1d1d1f] shadow-2xl flex flex-col translate-x-full transition-transform duration-300 border-l border-[#e0e0e0]">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 bg-[#f5f5f7] border-b border-[#e0e0e0] flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-[#0066cc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="font-display font-semibold text-lg tracking-tight">Recognition History</h3>
+      </div>
+      <button id="close-history-btn" class="w-8 h-8 rounded-full bg-white hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer border border-[#e0e0e0]">
+        ✕
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-4" id="history-items-container">
+      <div class="text-center py-12 text-[#7a7a7a]" id="empty-history-msg">
+        <svg class="w-12 h-12 mx-auto text-neutral-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2z" />
+        </svg>
+        <p class="font-medium text-[#1d1d1f]">No songs identified yet</p>
+        <p class="text-sm mt-1">Uploaded or recorded songs will automatically be saved here.</p>
+      </div>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="p-4 bg-[#f5f5f7] border-t border-[#e0e0e0] flex items-center justify-between">
+      <button id="clear-history-btn" class="text-xs text-red-600 hover:text-red-700 font-medium cursor-pointer">
+        Clear History
+      </button>
+      <span class="text-xs text-[#7a7a7a]">Saved locally</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Script for managing History Drawer
+  function setupHistoryDrawer() {
+    const toggleBtn = document.getElementById('toggle-history-btn');
+    const closeBtn = document.getElementById('close-history-btn');
+    const overlay = document.getElementById('history-drawer-overlay');
+    const drawer = document.getElementById('history-drawer');
+    const container = document.getElementById('history-items-container');
+    const emptyMsg = document.getElementById('empty-history-msg');
+    const clearBtn = document.getElementById('clear-history-btn');
+
+    function openDrawer() {
+      if (!overlay || !drawer) return;
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.remove('translate-x-full');
+      renderHistory();
+    }
+
+    function closeDrawer() {
+      if (!overlay || !drawer) return;
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.add('translate-x-full');
+    }
+
+    function renderHistory() {
+      if (!container) return;
+      const historyStr = localStorage.getItem('musicfinder_history');
+      const history = historyStr ? JSON.parse(historyStr) : [];
+
+      if (history.length === 0) {
+        if (emptyMsg) emptyMsg.style.display = 'block';
+        container.querySelectorAll('.history-card-item').forEach(el => el.remove());
+        return;
+      }
+
+      if (emptyMsg) emptyMsg.style.display = 'none';
+      container.querySelectorAll('.history-card-item').forEach(el => el.remove());
+
+      history.forEach((item: any) => {
+        const div = document.createElement('div');
+        div.className = 'history-card-item p-4 rounded-2xl bg-[#fafafc] border border-[#e0e0e0] flex items-center gap-4 hover:shadow-md transition-shadow';
+        div.innerHTML = `
+          <img src="${item.artwork || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150&auto=format&fit=crop&q=80'}" class="w-14 h-14 rounded-xl object-cover shadow-sm shrink-0" alt="Cover" />
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold text-sm truncate text-[#1d1d1f]">${item.title}</h4>
+            <p class="text-xs text-[#7a7a7a] truncate">${item.artist}</p>
+            <div class="flex items-center gap-2 mt-1 text-[11px] text-[#0066cc]">
+              <span>${item.bpm || '120'} BPM</span>
+              <span>•</span>
+              <span>Key: ${item.key || 'C Maj'}</span>
+            </div>
+          </div>
+          <a href="${item.spotify || '#'}" target="_blank" class="w-8 h-8 rounded-full bg-[#0066cc] text-white flex items-center justify-center shrink-0 hover:bg-[#0071e3] transition-colors">
+            ▶
+          </a>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeDrawer();
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        localStorage.removeItem('musicfinder_history');
+        renderHistory();
+      });
+    }
+  }
+
+  setupHistoryDrawer();
+  document.addEventListener('astro:page-load', setupHistoryDrawer);
+</script>

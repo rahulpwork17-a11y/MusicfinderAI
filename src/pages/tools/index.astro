@@ -1,0 +1,84 @@
+---
+// src/pages/tools/index.astro
+import Layout from '../../layouts/Layout.astro';
+
+const tools = [
+  { name: "Media Converter", slug: "media-converter", icon: "🎵", category: "Conversion", desc: "Convert audio and video files between formats directly in your browser. MP3, WAV, OGG, FLAC, AAC, MP4, WebM." },
+  { name: "Audio to MIDI & Piano Roll", slug: "audio-to-midi", icon: "🎹", category: "Conversion", desc: "Convert vocal melodies, instrumental lines, or full tracks into editable MIDI files with interactive 88-key piano roll." },
+  { name: "10-Band Parametric Equalizer", slug: "equalizer", icon: "🎚️", desc: "Shape frequency curves with live spectrum analysis. Cut bass rumble, boost crisp highs, or sculpt vocals." },
+  { name: "Audio & Lyrics Transcriber", slug: "audio-transcriber", icon: "🎤", desc: "AI speech-to-text transcriber that generates timestamped lyrics, SRT, VTT, and LRC subtitle files." },
+  { name: "AI Stem Splitter", slug: "stem-splitter", icon: "🎼", category: "Separation", desc: "Isolate vocals, drums, bass, and instrumental backing stems from any song track." },
+  { name: "DAW Multi-Track Audio Merger", slug: "audio-merger", icon: "🎛️", desc: "Mix and layer multiple audio clips on a timeline. Adjust volume, pan, and export final stereo mix." },
+  { name: "Precision Audio Trimmer", slug: "audio-trimmer", icon: "✂️", category: "Editing", desc: "Cut and crop audio files visually. Drag start/end markers on the waveform canvas with millisecond accuracy." },
+  { name: "BPM & Tap Tempo Detector", slug: "bpm-detector", icon: "🥁", category: "Analysis", desc: "Instantly detect song tempo in BPM or tap manually along to find the rhythm speed." },
+  { name: "Musical Key & Scale Detector", slug: "key-detector", icon: "🔑", category: "Analysis", desc: "Detect musical key, scale, and Camelot wheel code for DJ harmonic mixing and song arrangement." },
+  { name: "AI Track Mood & Vibe Analyzer", slug: "mood-detector", icon: "⚡", category: "Analysis", desc: "Extract valence, danceability, energy scores, and emotional mood tags using AI audio analysis." },
+  { name: "AI Noise & Hum Remover", slug: "noise-remover", icon: "🔇", category: "Enhancement", desc: "Clean up noisy voice notes, podcasts, and recordings by suppressing hum, wind, and hiss." },
+  { name: "AI Reverb & Echo Remover", slug: "reverb-remover", icon: "🏛️", category: "Enhancement", desc: "Remove room echo and reverberation from un-treated vocal recordings." },
+  { name: "Speed & Pitch Shifter", slug: "speed-pitch-changer", icon: "⏩", category: "Editing", desc: "Real-time tempo transposing and pitch shifting for Nightcore, Sped Up, or Slowed & Reverb tracks." }
+];
+---
+
+<Layout title="Free Audio Tools Gallery - Music Finder AI" subnavTitle="Audio Tools (13)" activeTool="Directory">
+  <div class="py-16 px-4 md:px-8 bg-[#fafafc] border-b border-[#e0e0e0]">
+    <div class="max-w-[1200px] mx-auto text-center">
+      <span class="text-[#0066cc] font-semibold text-xs uppercase tracking-wider block mb-2">WebAudio DAW Studio</span>
+      <h1 class="font-display font-semibold text-4xl md:text-5xl text-[#1d1d1f] tracking-tight mb-4">
+        13 Browser Audio Tools
+      </h1>
+      <p class="text-lg md:text-xl text-[#7a7a7a] max-w-2xl mx-auto">
+        Free browser-based audio production and analysis tools. No sign-up, no downloads, complete privacy.
+      </p>
+
+      <!-- Category Filter Pills -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
+        <button class="px-4 py-1.5 rounded-full bg-[#1d1d1f] text-white text-xs font-medium cursor-pointer">
+          All Tools (13)
+        </button>
+        <button class="px-4 py-1.5 rounded-full bg-white text-[#1d1d1f] hover:bg-[#e0e0e0] text-xs font-medium border border-[#e0e0e0] cursor-pointer">
+          Analysis
+        </button>
+        <button class="px-4 py-1.5 rounded-full bg-white text-[#1d1d1f] hover:bg-[#e0e0e0] text-xs font-medium border border-[#e0e0e0] cursor-pointer">
+          Enhancement
+        </button>
+        <button class="px-4 py-1.5 rounded-full bg-white text-[#1d1d1f] hover:bg-[#e0e0e0] text-xs font-medium border border-[#e0e0e0] cursor-pointer">
+          Editing & Conversion
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-16 px-4 md:px-8 bg-white">
+    <div class="max-w-[1440px] mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {tools.map((t) => (
+          <div class="bg-[#fafafc] rounded-[20px] p-8 border border-[#e0e0e0] hover:border-[#0066cc] hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="w-12 h-12 rounded-2xl bg-white border border-[#e0e0e0] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                  {t.icon}
+                </span>
+                <span class="text-xs font-medium text-[#0066cc] bg-[#0066cc]/10 px-3 py-1 rounded-full">
+                  {t.category || "Audio Tool"}
+                </span>
+              </div>
+              <h2 class="font-display font-semibold text-2xl text-[#1d1d1f] mb-3 group-hover:text-[#0066cc] transition-colors">
+                {t.name}
+              </h2>
+              <p class="text-sm text-[#7a7a7a] leading-relaxed">
+                {t.desc}
+              </p>
+            </div>
+
+            <div class="pt-6 mt-6 border-t border-[#e0e0e0] flex items-center justify-between">
+              <span class="text-xs text-neutral-400">WebAudio API</span>
+              <a href={`/tools/${t.slug}`} class="btn-action-primary !py-2 !px-5 !text-xs no-underline">
+                Open Studio →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

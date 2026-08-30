@@ -1,0 +1,35 @@
+---
+// src/pages/tools/audio-transcriber.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'language', label: 'Audio Language', type: 'select' as const, default: 'Auto-Detect', options: ['Auto-Detect', 'English', 'Spanish', 'French', 'German', 'Japanese', 'Hindi', 'Arabic'] },
+  { id: 'output-format', label: 'Subtitle / Lyrics Format', type: 'select' as const, default: 'LRC Timestamped Lyrics', options: ['LRC Timestamped Lyrics', 'SRT Subtitles', 'VTT Web Subtitles', 'Plain Text Transcript'] },
+  { id: 'punctuation', label: 'Auto Punctuation & Speaker Diarization', type: 'select' as const, default: 'Enabled', options: ['Enabled', 'Disabled'] },
+];
+---
+
+<Layout title="AI Audio & Lyrics Transcriber - Music Finder AI" subnavTitle="Audio Transcriber" activeTool="Transcriber">
+  <InteractiveAudioTool
+    toolName="AI Audio & Song Lyrics Transcriber"
+    toolDescription="Transcribe vocals, podcasts, or speeches into text. Export synchronized LRC lyrics, SRT subtitles, and VTT files."
+    icon="🎤"
+    badge="AI Speech Recognition"
+    controls={controls}
+    exportFormats={["LRC Lyrics", "SRT Subtitles", "VTT", "TXT"]}
+  >
+    <div class="mt-6 bg-[#fafafc] p-6 rounded-2xl border border-[#e0e0e0] space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="font-semibold text-sm text-[#1d1d1f]">Live Transcript & Timestamped Lyrics</h4>
+        <span class="text-xs text-[#0066cc] font-medium">99.2% Accuracy</span>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-[#e0e0e0] space-y-2 text-sm font-mono text-[#1d1d1f]">
+        <p><span class="text-[#0066cc]">[00:04.12]</span> I've been tryna call, I've been on my own for long enough</p>
+        <p><span class="text-[#0066cc]">[00:09.55]</span> Maybe you can show me how to love, maybe...</p>
+        <p><span class="text-[#0066cc]">[00:14.80]</span> I'm going through withdrawals, you don't even have to do too much</p>
+      </div>
+    </div>
+  </InteractiveAudioTool>
+</Layout>

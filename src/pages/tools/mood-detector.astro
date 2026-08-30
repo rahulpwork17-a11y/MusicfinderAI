@@ -1,0 +1,49 @@
+---
+// src/pages/tools/mood-detector.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'mood-model', label: 'AI Mood Classification Model', type: 'select' as const, default: 'Full Valence-Arousal Matrix', options: ['Full Valence-Arousal Matrix', 'Genre Emotional Classifier', 'Fitness & Energy Classifier'] },
+];
+---
+
+<Layout title="AI Track Mood & Vibe Analyzer - Music Finder AI" subnavTitle="Mood Detector" activeTool="Mood">
+  <InteractiveAudioTool
+    toolName="AI Track Mood, Energy & Valence Analyzer"
+    toolDescription="Analyze track energy, danceability ratings, emotional valence, and mood tags using deep AI audio analysis."
+    icon="⚡"
+    badge="AI Audio Intelligence"
+    controls={controls}
+    exportFormats={["JSON Specs", "Mood PDF Sheet"]}
+  >
+    <!-- Mood Scores Card -->
+    <div class="mt-6 bg-white p-6 rounded-2xl border border-[#e0e0e0] space-y-4">
+      <h4 class="font-semibold text-sm text-[#1d1d1f]">Track Audio Attributes</h4>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 rounded-xl bg-[#fafafc] border border-[#e0e0e0]">
+          <span class="text-xs text-[#7a7a7a]">Energy Score</span>
+          <div class="text-2xl font-bold text-[#1d1d1f] mt-1">88 / 100</div>
+          <div class="w-full bg-[#e0e0e0] h-2 rounded-full mt-2">
+            <div class="bg-[#0066cc] h-2 rounded-full" style="width: 88%"></div>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-[#fafafc] border border-[#e0e0e0]">
+          <span class="text-xs text-[#7a7a7a]">Danceability</span>
+          <div class="text-2xl font-bold text-[#1d1d1f] mt-1">79 / 100</div>
+          <div class="w-full bg-[#e0e0e0] h-2 rounded-full mt-2">
+            <div class="bg-[#0066cc] h-2 rounded-full" style="width: 79%"></div>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-[#fafafc] border border-[#e0e0e0]">
+          <span class="text-xs text-[#7a7a7a]">Valence (Positivity)</span>
+          <div class="text-2xl font-bold text-[#1d1d1f] mt-1">65 / 100</div>
+          <div class="w-full bg-[#e0e0e0] h-2 rounded-full mt-2">
+            <div class="bg-[#0066cc] h-2 rounded-full" style="width: 65%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </InteractiveAudioTool>
+</Layout>

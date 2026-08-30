@@ -1,0 +1,46 @@
+---
+// src/pages/tools/audio-to-midi.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'midi-mode', label: 'Polyphonic Transcription Mode', type: 'select' as const, default: 'Full Polyphonic Mix', options: ['Full Polyphonic Mix', 'Monophonic Melody Lead', 'Bassline Isolation', 'Percussion / Drum Notes'] },
+  { id: 'sensitivity', label: 'Pitch Detection Sensitivity', type: 'slider' as const, min: 1, max: 100, step: 1, default: 75, unit: '%' },
+  { id: 'pitch-quantize', label: 'Note Quantization', type: 'select' as const, default: '1/16 Note', options: ['None (Free Form)', '1/8 Note', '1/16 Note', '1/32 Note'] },
+];
+---
+
+<Layout title="Audio to MIDI Converter & Piano Roll - Music Finder AI" subnavTitle="Audio to MIDI" activeTool="MIDI">
+  <InteractiveAudioTool
+    toolName="Audio to MIDI & Piano Roll Visualizer"
+    toolDescription="Turn vocal melodies, instrument solos, or full tracks into editable MIDI files with an interactive 88-key piano roll."
+    icon="🎹"
+    badge="AI Polyphonic Transcription"
+    controls={controls}
+    exportFormats={["MIDI (.mid)", "JSON Notation", "WAV Render"]}
+  >
+    <!-- Interactive 88-Key Piano Roll Visualizer Slot -->
+    <div class="mt-6 bg-[#1d1d1f] p-6 rounded-2xl border border-neutral-800 text-white space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="font-semibold text-sm flex items-center gap-2">
+          <span>🎹 Interactive Piano Roll Preview</span>
+          <span class="text-xs text-[#2997ff] font-mono">C2 - C6 Octaves</span>
+        </h4>
+        <span class="text-xs text-neutral-400">88 Keys Active</span>
+      </div>
+
+      <!-- Piano Roll Grid Visual -->
+      <div class="h-44 bg-black/60 rounded-xl border border-neutral-800 p-2 overflow-x-auto flex gap-1 relative">
+        {Array.from({ length: 32 }).map((_, i) => (
+          <div class="w-8 h-full shrink-0 flex flex-col justify-end gap-1 relative">
+            {/* Mock note blocks */}
+            <div
+              class="w-full bg-[#0066cc] rounded-md transition-all opacity-80"
+              style={`height: ${Math.sin(i * 0.4) * 30 + 40}px`}
+            ></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </InteractiveAudioTool>
+</Layout>

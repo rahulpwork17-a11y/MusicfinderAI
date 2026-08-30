@@ -1,0 +1,82 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class="bg-[#f5f5f7] text-[#333333] border-t border-[#e0e0e0] pt-16 pb-12 px-6 md:px-12 text-[14px]">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Top Specifications & Privacy Note -->
+    <div class="pb-8 mb-8 border-b border-[#e0e0e0] text-[12px] text-[#7a7a7a] leading-relaxed">
+      <p class="mb-2">
+        * Music Finder AI provides high-precision acoustic audio fingerprinting and browser-native WebAudio analysis tools. All file uploads are processed securely and automatically purged. Browser-based processing for tools runs locally on client hardware whenever possible for maximum speed and complete privacy.
+      </p>
+      <p>
+        Supported Formats: MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, AIFF, MP4, WebM, MKV, AVI, MOV.
+      </p>
+    </div>
+
+    <!-- 4-Column Link Hierarchy -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <!-- Column 1: AI Recognizer -->
+      <div>
+        <h4 class="font-semibold text-[14px] text-[#1d1d1f] mb-3">Song Recognition</h4>
+        <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
+          <li><a href="/#recognizer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Identify Song by Audio</a></li>
+          <li><a href="/#recognizer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Identify Song by Video</a></li>
+          <li><a href="/#recognizer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Record Live Sound</a></li>
+          <li><a href="/#recognizer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Paste Media URL</a></li>
+          <li><a href="/#history" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Recognition History</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 2: Audio Enhancement Tools -->
+      <div>
+        <h4 class="font-semibold text-[14px] text-[#1d1d1f] mb-3">Audio Enhancement</h4>
+        <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
+          <li><a href="/tools/stem-splitter" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">AI Stem Splitter</a></li>
+          <li><a href="/tools/equalizer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">10-Band Equalizer</a></li>
+          <li><a href="/tools/noise-remover" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Noise & Hum Remover</a></li>
+          <li><a href="/tools/reverb-remover" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Reverb & Echo Remover</a></li>
+          <li><a href="/tools/speed-pitch-changer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Speed & Pitch Changer</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Analysis & Conversion Tools -->
+      <div>
+        <h4 class="font-semibold text-[14px] text-[#1d1d1f] mb-3">Analysis & MIDI</h4>
+        <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
+          <li><a href="/tools/audio-to-midi" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Audio to MIDI & Piano Roll</a></li>
+          <li><a href="/tools/audio-transcriber" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Audio & Lyrics Transcriber</a></li>
+          <li><a href="/tools/bpm-detector" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">BPM & Tap Tempo Counter</a></li>
+          <li><a href="/tools/key-detector" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Key & Camelot Scale Finder</a></li>
+          <li><a href="/tools/mood-detector" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">AI Track Mood Analyzer</a></li>
+          <li><a href="/tools/media-converter" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Browser Media Converter</a></li>
+          <li><a href="/tools/audio-trimmer" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">Waveform Audio Trimmer</a></li>
+          <li><a href="/tools/audio-merger" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">DAW Multi-Track Merger</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Platform & Legal -->
+      <div>
+        <h4 class="font-semibold text-[14px] text-[#1d1d1f] mb-3">Music Finder AI</h4>
+        <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
+          <li><a href="/tools" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">All 13 Audio Tools</a></li>
+          <li><a href="/#faq" class="text-[#333333] hover:text-[#0066cc] transition-colors no-underline">FAQ & How It Works</a></li>
+          <li><span class="text-[#7a7a7a]">Domain: musicfinderai.com</span></li>
+          <li><span class="text-[#7a7a7a]">Version 2.0 WebAudio Studio</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Legal Bar -->
+    <div class="pt-6 border-t border-[#e0e0e0] flex flex-col md:flex-row items-center justify-between gap-4 text-[12px] text-[#7a7a7a]">
+      <div>
+        © 2026 Music Finder AI. All rights reserved. Built with Astro & WebAudio API.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-[#0066cc] transition-colors no-underline">Privacy Policy</a>
+        <a href="#" class="hover:text-[#0066cc] transition-colors no-underline">Terms of Service</a>
+        <a href="#" class="hover:text-[#0066cc] transition-colors no-underline">Audio API</a>
+      </div>
+    </div>
+  </div>
+</footer>

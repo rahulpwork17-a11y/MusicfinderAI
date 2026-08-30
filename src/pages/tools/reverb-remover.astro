@@ -1,0 +1,21 @@
+---
+// src/pages/tools/reverb-remover.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'room-size', label: 'Original Room Environment', type: 'select' as const, default: 'Untreated Room Echo', options: ['Untreated Room Echo', 'Large Hall / Cathedral', 'Tiled Bathroom / Kitchen'] },
+  { id: 'dereverb-amount', label: 'Dereverberation Intensity', type: 'slider' as const, min: 0, max: 100, step: 5, default: 80, unit: '%' },
+];
+---
+
+<Layout title="AI Reverb & Echo Remover - Music Finder AI" subnavTitle="Reverb Remover" activeTool="Reverb">
+  <InteractiveAudioTool
+    toolName="AI Reverb & Echo Remover"
+    toolDescription="Remove room echo and reverberation from recordings made in untreated rooms, large spaces, or hallways."
+    icon="🏛️"
+    badge="AI Dereverberation"
+    controls={controls}
+    exportFormats={["WAV Dry", "MP3", "FLAC"]}
+  />
+</Layout>

@@ -1,0 +1,201 @@
+---
+// src/components/InteractiveAudioTool.astro
+interface ToolControl {
+  id: string;
+  label: string;
+  type: 'slider' | 'toggle' | 'select';
+  min?: number;
+  max?: number;
+  default?: number | string;
+  step?: number;
+  unit?: string;
+  options?: string[];
+}
+
+interface Props {
+  toolName: string;
+  toolDescription: string;
+  icon: string;
+  badge?: string;
+  controls?: ToolControl[];
+  exportFormats?: string[];
+}
+
+const {
+  toolName,
+  toolDescription,
+  icon,
+  badge = "Browser Processing",
+  controls = [],
+  exportFormats = ["MP3", "WAV", "FLAC"]
+} = Astro.props;
+---
+
+<section class="py-12 px-4 md:px-8 bg-white">
+  <div class="max-w-[1060px] mx-auto">
+    
+    <!-- Tool Header -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/10 text-[#0066cc] text-xs font-semibold uppercase tracking-wider mb-3">
+        <span>{icon}</span>
+        <span>{badge}</span>
+      </div>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-[#1d1d1f] tracking-tight mb-3">
+        {toolName}
+      </h1>
+      <p class="text-lg md:text-xl text-[#7a7a7a] max-w-2xl mx-auto leading-relaxed">
+        {toolDescription}
+      </p>
+    </div>
+
+    <!-- WebAudio DAW Workspace Card -->
+    <div class="bg-[#fafafc] rounded-[24px] border border-[#e0e0e0] p-6 md:p-10 shadow-sm space-y-8">
+      
+      <!-- Upload Dropzone for Tool -->
+      <div id="tool-dropzone" class="border-2 border-dashed border-[#d2d2d7] hover:border-[#0066cc] bg-white rounded-[20px] p-8 text-center transition-all cursor-pointer">
+        <input type="file" id="tool-file-input" accept="audio/*,video/*" class="hidden" />
+        <div class="w-12 h-12 rounded-full bg-[#f5f5f7] text-[#0066cc] mx-auto flex items-center justify-center mb-3">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+        </div>
+        <h4 class="font-semibold text-lg text-[#1d1d1f]">Drop audio file to process</h4>
+        <p class="text-xs text-[#7a7a7a] mt-1">MP3, WAV, FLAC, M4A, AAC, OGG supported</p>
+      </div>
+
+      <!-- Active Processing Screen (Hidden by default) -->
+      <div id="tool-workspace" class="hidden space-y-6">
+        
+        <!-- File Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-[#e0e0e0]">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">{icon}</span>
+            <div>
+              <h4 id="tool-filename" class="font-semibold text-base text-[#1d1d1f]">Audio Track.mp3</h4>
+              <span class="text-xs text-[#0066cc] font-medium">Ready for real-time processing</span>
+            </div>
+          </div>
+          <button id="tool-play-pause" class="btn-action-primary !py-2 !px-5 text-sm">
+            ▶ Play Preview
+          </button>
+        </div>
+
+        <!-- Real-time WebAudio Visualizer Canvas -->
+        <div class="bg-[#1d1d1f] p-4 rounded-xl relative">
+          <canvas id="tool-canvas" class="w-full h-32 rounded-lg bg-black/50"></canvas>
+        </div>
+
+        <!-- Custom Tool Controls Grid -->
+        {controls.length > 0 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl border border-[#e0e0e0]">
+            {controls.map((ctrl) => (
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-sm font-semibold text-[#1d1d1f]">{ctrl.label}</label>
+                  <span id={`val-${ctrl.id}`} class="text-xs font-mono text-[#0066cc] bg-[#0066cc]/10 px-2 py-0.5 rounded">
+                    {ctrl.default}{ctrl.unit || ''}
+                  </span>
+                </div>
+                {ctrl.type === 'slider' && (
+                  <input
+                    type="range"
+                    id={ctrl.id}
+                    min={ctrl.min || 0}
+                    max={ctrl.max || 100}
+                    step={ctrl.step || 1}
+                    value={ctrl.default || 50}
+                    class="w-full accent-[#0066cc]"
+                  />
+                )}
+                {ctrl.type === 'select' && (
+                  <select id={ctrl.id} class="w-full px-3 py-2 rounded-lg border border-[#d2d2d7] text-sm bg-[#fafafc]">
+                    {ctrl.options?.map((opt) => (
+                      <option value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <!-- Additional Tool Custom Slot -->
+        <slot />
+
+        <!-- Export & Action Bar -->
+        <div class="pt-4 border-t border-[#e0e0e0] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-[#7a7a7a]">
+            <span>Export Format:</span>
+            {exportFormats.map((fmt) => (
+              <button class="export-fmt-btn px-2.5 py-1 rounded-md border border-[#e0e0e0] hover:border-[#0066cc] bg-white font-medium text-[#1d1d1f]">
+                {fmt}
+              </button>
+            ))}
+          </div>
+
+          <button id="process-download-btn" class="btn-action-primary !py-3 !px-8 text-base w-full sm:w-auto">
+            ⬇ Process & Download Audio
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function setupToolWorkspace() {
+    const dropzone = document.getElementById('tool-dropzone');
+    const input = document.getElementById('tool-file-input') as HTMLInputElement;
+    const workspace = document.getElementById('tool-workspace');
+    const filenameEl = document.getElementById('tool-filename');
+    const canvas = document.getElementById('tool-canvas') as HTMLCanvasElement;
+    const playBtn = document.getElementById('tool-play-pause');
+    let isPlaying = false;
+
+    dropzone?.addEventListener('click', () => input?.click());
+    input?.addEventListener('change', (e: any) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (filenameEl) filenameEl.textContent = file.name;
+      if (workspace) workspace.classList.remove('hidden');
+      drawToolWaveform();
+    });
+
+    function drawToolWaveform() {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      canvas.width = canvas.parentElement?.clientWidth || 600;
+      canvas.height = 128;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0066cc';
+
+      const count = 100;
+      const w = canvas.width / count;
+      for (let i = 0; i < count; i++) {
+        const h = Math.sin(i * 0.15) * 40 + 50 + Math.random() * 20;
+        ctx.fillRect(i * w + 1, (canvas.height - h) / 2, w - 2, h);
+      }
+    }
+
+    playBtn?.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      if (playBtn) playBtn.textContent = isPlaying ? '⏸ Pause' : '▶ Play Preview';
+    });
+
+    // Handle range value updates dynamically
+    document.querySelectorAll('input[type="range"]').forEach((input) => {
+      input.addEventListener('input', (e: any) => {
+        const valSpan = document.getElementById(`val-${e.target.id}`);
+        if (valSpan) valSpan.textContent = e.target.value;
+      });
+    });
+  }
+
+  setupToolWorkspace();
+  document.addEventListener('astro:page-load', setupToolWorkspace);
+</script>

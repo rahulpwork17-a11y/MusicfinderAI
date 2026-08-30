@@ -1,0 +1,22 @@
+---
+// src/pages/tools/noise-remover.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'noise-type', label: 'Target Noise Type', type: 'select' as const, default: 'General Background Hum', options: ['General Background Hum', 'Microphone Hiss & Static', 'Wind & Fan Noise', 'Crowd & Room Chatter'] },
+  { id: 'suppression-level', label: 'Noise Reduction Amount', type: 'slider' as const, min: 0, max: 100, step: 5, default: 70, unit: '%' },
+  { id: 'voice-preserve', label: 'Voice Intelligibility Preservation', type: 'slider' as const, min: 50, max: 100, step: 5, default: 90, unit: '%' },
+];
+---
+
+<Layout title="AI Background Noise Remover - Music Finder AI" subnavTitle="Noise Remover" activeTool="Noise">
+  <InteractiveAudioTool
+    toolName="AI Background Noise & Hum Suppressor"
+    toolDescription="Clean up voice notes, podcasts, and recordings by suppressing hum, fan noise, wind, and mic hiss."
+    icon="🔇"
+    badge="AI Denoiser"
+    controls={controls}
+    exportFormats={["WAV Clean", "MP3 (320kbps)", "FLAC"]}
+  />
+</Layout>

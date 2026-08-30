@@ -1,11 +1,236 @@
 ---
-import Welcome from '../components/Welcome.astro';
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
+import SongRecognitionHub from '../components/SongRecognitionHub.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const audioTools = [
+  { name: "AI Stem Splitter", href: "/tools/stem-splitter", icon: "🎼", desc: "Isolate vocals, drums, bass, and instrumental tracks with studio quality AI." },
+  { name: "Audio to MIDI & Piano Roll", href: "/tools/audio-to-midi", icon: "🎹", desc: "Convert melodies, vocals, or full tracks into editable MIDI files & piano roll." },
+  { name: "10-Band Parametric EQ", href: "/tools/equalizer", icon: "🎚️", desc: "Shape frequency curves in real-time with zero latency WebAudio filters." },
+  { name: "AI Audio & Lyrics Transcriber", href: "/tools/audio-transcriber", icon: "🎤", desc: "Generate timestamped lyrics, SRT, VTT, and LRC subtitle files automatically." },
+  { name: "Browser Media Converter", href: "/tools/media-converter", icon: "🎵", desc: "Convert audio & video formats (MP3, WAV, FLAC, M4A, OGG, MP4) client-side." },
+  { name: "DAW Multi-Track Audio Merger", href: "/tools/audio-merger", icon: "🎛️", desc: "Mix, layer, and timeline sequence multiple audio clips right in browser." },
+  { name: "Precision Audio Trimmer", href: "/tools/audio-trimmer", icon: "✂️", desc: "Millisecond-precise visual waveform cutter and slice export." },
+  { name: "BPM & Tap Tempo Detector", href: "/tools/bpm-detector", icon: "🥁", desc: "Instant beat detection, tempo classification, and live manual tap counter." },
+  { name: "Musical Key & Scale Finder", href: "/tools/key-detector", icon: "🔑", desc: "Detect musical key, scale, and Camelot wheel position for DJ harmonic mixing." },
+  { name: "AI Track Mood & Energy Analyzer", href: "/tools/mood-detector", icon: "⚡", desc: "Extract valence, danceability, energy scores, and emotional vibe tags." },
+  { name: "AI Background Noise Remover", href: "/tools/noise-remover", icon: "🔇", desc: "Suppress background hum, wind, crowd chatter, and microphone hiss." },
+  { name: "AI Reverb & Echo Remover", href: "/tools/reverb-remover", icon: "🏛️", desc: "Clean room reverberation and echo for crisp studio-like vocals." },
+  { name: "Speed & Pitch Shifter", href: "/tools/speed-pitch-changer", icon: "⏩", desc: "Real-time tempo transposing and pitch shifting for Nightcore / Slowed audio." },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Music Finder AI - Identify Songs by Audio or Video + 13 Audio Tools" subnavTitle="Music Finder AI">
+  
+  <!-- HERO SONG RECOGNITION HUB -->
+  <SongRecognitionHub />
+
+  <!-- SECTION 1: DARK TILE - ACOUSTIC FINGERPRINTING PRODUCT SHOWCASE -->
+  <section class="py-20 px-4 md:px-8 bg-[#272729] text-white">
+    <div class="max-w-[1200px] mx-auto text-center space-y-8">
+      <span class="text-[#2997ff] font-semibold text-sm uppercase tracking-widest block">Studio Grade Engine</span>
+      
+      <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-white leading-tight">
+        Acoustic Fingerprinting Re-Engineered.
+      </h2>
+
+      <p class="text-xl md:text-2xl font-light text-neutral-300 max-w-3xl mx-auto leading-relaxed">
+        Our deep audio engine analyzes spectral frequency peak maps in 200ms. It isolates melodies through noisy recordings, live cafes, and distorted video clips.
+      </p>
+
+      <!-- Photographic Audio Surface resting with system shadow per DESIGN.md -->
+      <div class="pt-8">
+        <div class="relative bg-[#1d1d1f] rounded-[24px] p-8 border border-neutral-800 shadow-product-render max-w-4xl mx-auto overflow-hidden">
+          <div class="flex items-center justify-between text-xs text-neutral-400 mb-4 pb-4 border-b border-neutral-800">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
+              Real-time Spectrogram FFT Analysis
+            </span>
+            <span>22,050 Hz Dual Channel</span>
+          </div>
+
+          <!-- Animated Frequency Waves -->
+          <div class="h-40 flex items-center justify-between gap-1 px-4">
+            {Array.from({ length: 60 }).map((_, i) => (
+              <div
+                class="w-full bg-gradient-to-t from-[#0066cc] to-[#2997ff] rounded-t-sm transition-all"
+                style={`height: ${Math.sin(i * 0.3) * 40 + 50 + (i % 5) * 6}%; opacity: ${0.4 + (i % 4) * 0.15}`}
+              ></div>
+            ))}
+          </div>
+
+          <div class="mt-6 flex items-center justify-between text-xs text-neutral-400 pt-4 border-t border-neutral-800">
+            <span>Signal-to-Noise Ratio: +42dB</span>
+            <span class="text-[#2997ff] font-mono">Fingerprint Hash: 0x9F82A4C01</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PARCHMENT TILE - 13 AUDIO TOOLS DIRECTORY GRID -->
+  <section class="py-20 px-4 md:px-8 bg-[#f5f5f7] border-t border-b border-[#e0e0e0]">
+    <div class="max-w-[1440px] mx-auto">
+      
+      <div class="text-center mb-16">
+        <span class="text-[#0066cc] font-semibold text-sm uppercase tracking-wider block mb-2">Browser WebAudio Studio</span>
+        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-[#1d1d1f]">
+          13 Dedicated Audio Tools. Zero Software Needed.
+        </h2>
+        <p class="text-lg md:text-xl text-[#7a7a7a] mt-3 max-w-2xl mx-auto">
+          Every tool runs directly in your browser with real-time audio visualizers, interactive controls, and instant downloads.
+        </p>
+      </div>
+
+      <!-- 3-Column Utility Cards Grid (rounded-lg = 18px per DESIGN.md) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {audioTools.map((tool) => (
+          <div class="bg-white rounded-[18px] p-6 border border-[#e0e0e0] hover:border-[#0066cc] hover:shadow-md transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-[#fafafc] border border-[#e0e0e0] flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">
+                {tool.icon}
+              </div>
+              <h3 class="font-display font-semibold text-xl text-[#1d1d1f] mb-2 group-hover:text-[#0066cc] transition-colors">
+                {tool.name}
+              </h3>
+              <p class="text-sm text-[#7a7a7a] leading-relaxed">
+                {tool.desc}
+              </p>
+            </div>
+
+            <div class="pt-6 mt-4 border-t border-neutral-100 flex items-center justify-between text-sm">
+              <span class="text-xs font-semibold text-[#0066cc] bg-[#0066cc]/10 px-2.5 py-1 rounded-full">
+                Browser Native
+              </span>
+              <a href={tool.href} class="text-[#0066cc] font-medium hover:underline flex items-center gap-1 no-underline">
+                <span>Launch Tool</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 text-center">
+        <a href="/tools" class="btn-action-primary !py-3.5 !px-8 text-base">
+          Explore All 13 Audio Tools Gallery →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3: LIGHT TILE - WHY MUSIC FINDER AI IS BETTER -->
+  <section class="py-20 px-4 md:px-8 bg-white">
+    <div class="max-w-[1100px] mx-auto">
+      
+      <div class="text-center mb-16">
+        <span class="text-[#0066cc] font-semibold text-sm uppercase tracking-wider block mb-2">Unmatched Performance</span>
+        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-[#1d1d1f]">
+          Why Music Finder AI Outperforms Competitors
+        </h2>
+        <p class="text-lg text-[#7a7a7a] mt-3">
+          Designed for pro creators, listeners, and musicians who expect studio quality without ad noise.
+        </p>
+      </div>
+
+      <!-- Comparison Matrix Table -->
+      <div class="overflow-x-auto rounded-[20px] border border-[#e0e0e0] shadow-sm">
+        <table class="w-full text-left border-collapse bg-white text-sm">
+          <thead>
+            <tr class="bg-[#fafafc] border-b border-[#e0e0e0]">
+              <th class="p-4 md:p-6 font-semibold text-[#1d1d1f]">Feature / Capability</th>
+              <th class="p-4 md:p-6 font-semibold text-[#0066cc] bg-[#0066cc]/5">Music Finder AI</th>
+              <th class="p-4 md:p-6 font-semibold text-neutral-400">SongFinder.gg & Legacy Tools</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#e0e0e0]">
+            <tr>
+              <td class="p-4 md:p-6 font-medium text-[#1d1d1f]">Ad Experience & Interface</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 bg-[#0066cc]/5">100% Ad-Free Museum Gallery UI</td>
+              <td class="p-4 md:p-6 text-neutral-500">Cluttered Banner Ads & Popups</td>
+            </tr>
+            <tr>
+              <td class="p-4 md:p-6 font-medium text-[#1d1d1f]">Interactive WebAudio Tools</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 bg-[#0066cc]/5">13 Dedicated Real-Time DAW Tools</td>
+              <td class="p-4 md:p-6 text-neutral-500">Basic static tools or slow server queues</td>
+            </tr>
+            <tr>
+              <td class="p-4 md:p-6 font-medium text-[#1d1d1f]">Audio to MIDI & Piano Roll</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 bg-[#0066cc]/5">Interactive 88-Key Piano Roll Visualizer</td>
+              <td class="p-4 md:p-6 text-neutral-500">Plain MIDI file download only</td>
+            </tr>
+            <tr>
+              <td class="p-4 md:p-6 font-medium text-[#1d1d1f]">Pre-Recognition Audio Cleanup</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 bg-[#0066cc]/5">Normalize, Vocal Isolate, Speed/Pitch, EQ</td>
+              <td class="p-4 md:p-6 text-neutral-500">Manual basic trimming only</td>
+            </tr>
+            <tr>
+              <td class="p-4 md:p-6 font-medium text-[#1d1d1f]">Recognition History</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 bg-[#0066cc]/5">Persistent localStorage Drawer</td>
+              <td class="p-4 md:p-6 text-neutral-500">Lost on page refresh</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: PARCHMENT TILE - FAQ ACCORDION -->
+  <section id="faq" class="py-20 px-4 md:px-8 bg-[#f5f5f7] border-t border-[#e0e0e0]">
+    <div class="max-w-[840px] mx-auto space-y-12">
+      
+      <div class="text-center">
+        <h2 class="font-display font-semibold text-3xl md:text-4xl text-[#1d1d1f]">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-[#7a7a7a] mt-2">Everything you need to know about song recognition & audio tools.</p>
+      </div>
+
+      <div class="space-y-4">
+        <details class="group bg-white p-6 rounded-2xl border border-[#e0e0e0] [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-[#1d1d1f]">
+            <span>What audio and video formats are supported?</span>
+            <span class="transition group-open:-rotate-180">▼</span>
+          </summary>
+          <p class="text-sm text-[#7a7a7a] mt-3 leading-relaxed">
+            We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track.
+          </p>
+        </details>
+
+        <details class="group bg-white p-6 rounded-2xl border border-[#e0e0e0] [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-[#1d1d1f]">
+            <span>How does song recognition work on noisy recordings?</span>
+            <span class="transition group-open:-rotate-180">▼</span>
+          </summary>
+          <p class="text-sm text-[#7a7a7a] mt-3 leading-relaxed">
+            Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Equalizer) right inside the recognition hub before running fingerprint analysis.
+          </p>
+        </details>
+
+        <details class="group bg-white p-6 rounded-2xl border border-[#e0e0e0] [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-[#1d1d1f]">
+            <span>Is my uploaded audio file stored on your servers?</span>
+            <span class="transition group-open:-rotate-180">▼</span>
+          </summary>
+          <p class="text-sm text-[#7a7a7a] mt-3 leading-relaxed">
+            No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Browser tools run entirely client-side using the Web Audio API without uploading your files anywhere.
+          </p>
+        </details>
+
+        <details class="group bg-white p-6 rounded-2xl border border-[#e0e0e0] [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-[#1d1d1f]">
+            <span>Are all 13 audio tools free to use?</span>
+            <span class="transition group-open:-rotate-180">▼</span>
+          </summary>
+          <p class="text-sm text-[#7a7a7a] mt-3 leading-relaxed">
+            Yes! All 13 audio tools (Stem Splitter, Equalizer, Audio-to-MIDI, Transcriber, Converter, Trimmer, BPM Detector, Key Detector, etc.) are 100% free with unlimited browser processing and zero forced sign-ups.
+          </p>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
 </Layout>

@@ -1,0 +1,22 @@
+---
+// src/pages/tools/media-converter.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'target-format', label: 'Output Audio Format', type: 'select' as const, default: 'MP3', options: ['MP3 (320kbps)', 'WAV (Uncompressed)', 'FLAC (Lossless)', 'M4A / AAC', 'OGG Vorbis'] },
+  { id: 'bitrate', label: 'Audio Quality Bitrate', type: 'slider' as const, min: 64, max: 320, step: 32, default: 320, unit: 'kbps' },
+  { id: 'sample-rate', label: 'Sample Rate', type: 'select' as const, default: '44100 Hz', options: ['44100 Hz (CD Standard)', '48000 Hz (Studio / Video)', '96000 Hz (Hi-Res)'] },
+];
+---
+
+<Layout title="Free Browser Media Converter - Music Finder AI" subnavTitle="Media Converter" activeTool="Converter">
+  <InteractiveAudioTool
+    toolName="Browser Media Converter"
+    toolDescription="Transcode audio and video files directly in your browser. MP3, WAV, FLAC, M4A, OGG, WebM, MP4 with zero file uploads."
+    icon="🎵"
+    badge="Client Transcoder"
+    controls={controls}
+    exportFormats={["MP3", "WAV", "FLAC", "M4A"]}
+  />
+</Layout>

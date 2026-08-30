@@ -1,0 +1,48 @@
+---
+// src/pages/tools/equalizer.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'eq-preset', label: 'Equalizer Preset', type: 'select' as const, default: 'Vocal Clarity', options: ['Flat / Reset', 'Vocal Clarity', 'Bass Boost', 'Treble Booster', 'Podcast Voice', 'Club Punch', 'Acoustic Warmth'] },
+  { id: 'low-shelf', label: 'Sub-Bass (32 Hz)', type: 'slider' as const, min: -12, max: 12, step: 0.5, default: 0, unit: 'dB' },
+  { id: 'mid-gain', label: 'Vocal Mids (1 kHz)', type: 'slider' as const, min: -12, max: 12, step: 0.5, default: 3, unit: 'dB' },
+  { id: 'high-shelf', label: 'Crisp Highs (8 kHz)', type: 'slider' as const, min: -12, max: 12, step: 0.5, default: 2, unit: 'dB' },
+];
+---
+
+<Layout title="10-Band Parametric Equalizer - Music Finder AI" subnavTitle="Parametric EQ" activeTool="Equalizer">
+  <InteractiveAudioTool
+    toolName="10-Band Parametric Graphic Equalizer"
+    toolDescription="Sculpt tone and frequency balance in real-time with WebAudio filters. Boost bass, enhance vocal presence, or reduce harsh sibilance."
+    icon="🎚️"
+    badge="WebAudio Filters"
+    controls={controls}
+    exportFormats={["WAV (24-Bit)", "MP3 (320kbps)", "FLAC"]}
+  >
+    <!-- 10 Frequency Band Sliders Visual -->
+    <div class="mt-6 bg-white p-6 rounded-2xl border border-[#e0e0e0] space-y-4">
+      <h4 class="font-semibold text-sm text-[#1d1d1f]">10-Band Frequency Sliders</h4>
+      
+      <div class="grid grid-cols-5 md:grid-cols-10 gap-3 text-center">
+        {['32Hz', '64Hz', '125Hz', '250Hz', '500Hz', '1kHz', '2kHz', '4kHz', '8kHz', '16kHz'].map((freq, idx) => (
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] text-[#0066cc] font-mono font-semibold">+0dB</span>
+            <div class="h-32 flex items-center justify-center">
+              <input
+                type="range"
+                orient="vertical"
+                min="-12"
+                max="12"
+                value={idx % 2 === 0 ? 2 : -1}
+                class="h-full accent-[#0066cc]"
+                style="writing-mode: bt-lr; -webkit-appearance: slider-vertical;"
+              />
+            </div>
+            <span class="text-[11px] font-medium text-[#1d1d1f]">{freq}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </InteractiveAudioTool>
+</Layout>

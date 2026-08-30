@@ -1,0 +1,22 @@
+---
+// src/pages/tools/audio-trimmer.astro
+import Layout from '../../layouts/Layout.astro';
+import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
+
+const controls = [
+  { id: 'fade-in', label: 'Fade In Duration', type: 'slider' as const, min: 0, max: 5, step: 0.5, default: 0.5, unit: 'sec' },
+  { id: 'fade-out', label: 'Fade Out Duration', type: 'slider' as const, min: 0, max: 5, step: 0.5, default: 1.0, unit: 'sec' },
+  { id: 'mode', label: 'Action Mode', type: 'select' as const, default: 'Keep Selection', options: ['Keep Selection (Crop)', 'Cut Selection (Remove)'] },
+];
+---
+
+<Layout title="Precision Waveform Audio Trimmer - Music Finder AI" subnavTitle="Audio Trimmer" activeTool="Trimmer">
+  <InteractiveAudioTool
+    toolName="Precision Waveform Audio Trimmer & Cutter"
+    toolDescription="Cut and crop audio clips visually. Drag start/end handles with millisecond precision."
+    icon="✂️"
+    badge="Millisecond Accuracy"
+    controls={controls}
+    exportFormats={["MP3", "WAV", "M4A"]}
+  />
+</Layout>

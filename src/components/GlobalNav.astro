@@ -1,0 +1,46 @@
+---
+// src/components/GlobalNav.astro
+---
+
+<header class="bg-black text-white h-[44px] sticky top-0 z-50 flex items-center px-4 md:px-8 border-b border-neutral-900 text-[12px] font-normal tracking-tight">
+  <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between">
+    <!-- Brand Logo -->
+    <a href="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity no-underline">
+      <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-[#0066cc] via-indigo-500 to-purple-500 flex items-center justify-center p-[1px]">
+        <div class="w-full h-full bg-black rounded-full flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-[#2997ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2z" />
+          </svg>
+        </div>
+      </div>
+      <span class="font-semibold text-[15px] tracking-tight">Music Finder <span class="text-[#2997ff] font-bold">AI</span></span>
+    </a>
+
+    <!-- Nav Links -->
+    <nav class="hidden md:flex items-center gap-8 text-neutral-300">
+      <a href="/" class="hover:text-white transition-colors no-underline">Recognizer</a>
+      <a href="/tools" class="hover:text-white transition-colors no-underline">Audio Tools (13)</a>
+      <a href="/tools/stem-splitter" class="hover:text-white transition-colors no-underline">AI Stem Splitter</a>
+      <a href="/tools/audio-to-midi" class="hover:text-white transition-colors no-underline">Audio to MIDI</a>
+      <a href="/tools/equalizer" class="hover:text-white transition-colors no-underline">Parametric EQ</a>
+    </nav>
+
+    <!-- Utility Action -->
+    <div class="flex items-center gap-3">
+      <button 
+        id="toggle-history-btn" 
+        class="bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white px-3 py-1 rounded-full border border-neutral-800 text-[12px] flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+        title="View Recognition History"
+      >
+        <svg class="w-3.5 h-3.5 text-[#2997ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>History</span>
+      </button>
+
+      <a href="/" class="btn-action-primary !text-[12px] !py-1 !px-3.5 !min-h-0 hidden sm:inline-flex">
+        Identify Song
+      </a>
+    </div>
+  </div>
+</header>
