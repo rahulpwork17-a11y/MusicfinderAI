@@ -26,13 +26,18 @@ const tools = [
   <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
     <!-- Category Tagline / Page Title -->
     <div class="flex items-center gap-3 shrink-0">
-      <span class="font-display font-semibold text-[20px] text-ink tracking-tight">{title}</span>
+      <!-- 21px per {typography.tagline} in DESIGN.md -->
+      <span class="font-display font-semibold text-[21px] text-ink tracking-tight">{title}</span>
       <span class="text-neutral-400 text-sm hidden lg:inline">|</span>
       <span class="text-neutral-500 dark:text-neutral-400 text-xs font-normal hidden lg:inline">Audio Intelligence & WebAudio DAW Studio</span>
     </div>
 
-    <!-- Quick Pill Nav Items -->
-    <div class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none shrink-0">
+    <!-- Quick Pill Nav Items — masked edges signal horizontal scrollability -->
+    <div class="relative shrink-0">
+      <div
+        class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none"
+        style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);"
+      >
       {tools.map((t) => {
         const isActive = activeTool === t.name || (t.name === "All Tools" && activeTool === "Directory");
         return (
@@ -48,6 +53,7 @@ const tools = [
           </a>
         );
       })}
+      </div>
     </div>
 
     <!-- Primary Action Pill -->

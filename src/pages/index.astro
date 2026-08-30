@@ -49,14 +49,32 @@ const audioTools = [
             <span>22,050 Hz Dual Channel</span>
           </div>
 
-          <!-- Animated Frequency Waves -->
-          <div class="h-40 flex items-center justify-between gap-1 px-4">
-            {Array.from({ length: 60 }).map((_, i) => (
-              <div
-                class="w-full bg-gradient-to-t from-[#0066cc] to-[#2997ff] rounded-t-sm transition-all"
-                style={`height: ${Math.sin(i * 0.3) * 40 + 50 + (i % 5) * 6}%; opacity: ${0.4 + (i % 4) * 0.15}`}
-              ></div>
-            ))}
+          <!-- Animated Frequency Waves (CSS keyframe animation, no JS) -->
+          <style>
+            @keyframes bar-wave {
+              0%, 100% { height: var(--bar-h-low); }
+              50%       { height: var(--bar-h-high); }
+            }
+            .freq-bar {
+              animation: bar-wave var(--bar-duration) ease-in-out infinite;
+              animation-delay: var(--bar-delay);
+            }
+          </style>
+          <div class="h-40 flex items-end justify-between gap-0.5 px-4">
+            {Array.from({ length: 60 }).map((_, i) => {
+              const base = Math.sin(i * 0.3) * 40 + 50 + (i % 5) * 6;
+              const low  = Math.max(10, base * 0.35);
+              const high = Math.min(100, base * 1.15);
+              const dur  = (1.2 + (i % 7) * 0.18).toFixed(2);
+              const del  = ((i % 11) * 0.09).toFixed(2);
+              const op   = (0.4 + (i % 4) * 0.15).toFixed(2);
+              return (
+                <div
+                  class="freq-bar flex-1 bg-gradient-to-t from-[#0066cc] to-[#2997ff] rounded-t-sm"
+                  style={`--bar-h-low: ${low}%; --bar-h-high: ${high}%; --bar-duration: ${dur}s; --bar-delay: -${del}s; opacity: ${op};`}
+                ></div>
+              );
+            })}
           </div>
 
           <div class="mt-6 flex items-center justify-between text-xs text-neutral-400 pt-4 border-t border-neutral-800">
@@ -134,40 +152,45 @@ const audioTools = [
         </p>
       </div>
 
-      <!-- Comparison Matrix Table -->
+      <!-- Comparison Matrix Table (explicit column widths prevent feature col overstretching) -->
       <div class="overflow-x-auto rounded-[20px] border border-adaptive shadow-sm">
         <table class="w-full text-left border-collapse bg-canvas text-sm">
+          <colgroup>
+            <col style="width: 30%" />
+            <col style="width: 35%" />
+            <col style="width: 35%" />
+          </colgroup>
           <thead>
             <tr class="bg-surface-card border-b border-adaptive">
               <th class="p-4 md:p-6 font-semibold text-ink">Feature / Capability</th>
-              <th class="p-4 md:p-6 font-semibold text-[#0066cc] dark:text-[#2997ff] bg-[#0066cc]/5">Music Finder AI</th>
+              <th class="p-4 md:p-6 font-semibold text-[#0066cc] dark:text-[#2997ff] bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Music Finder AI</th>
               <th class="p-4 md:p-6 font-semibold text-muted-adaptive">SongFinder.gg & Legacy Tools</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-adaptive">
             <tr>
               <td class="p-4 md:p-6 font-medium text-ink">Ad Experience & Interface</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5">100% Ad-Free Museum Gallery UI</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">100% Ad-Free Museum Gallery UI</td>
               <td class="p-4 md:p-6 text-muted-adaptive">Cluttered Banner Ads & Popups</td>
             </tr>
             <tr>
               <td class="p-4 md:p-6 font-medium text-ink">Interactive WebAudio Tools</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5">13 Dedicated Real-Time DAW Tools</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">13 Dedicated Real-Time DAW Tools</td>
               <td class="p-4 md:p-6 text-muted-adaptive">Basic static tools or slow server queues</td>
             </tr>
             <tr>
               <td class="p-4 md:p-6 font-medium text-ink">Audio to MIDI & Piano Roll</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5">Interactive 88-Key Piano Roll Visualizer</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Interactive 88-Key Piano Roll Visualizer</td>
               <td class="p-4 md:p-6 text-muted-adaptive">Plain MIDI file download only</td>
             </tr>
             <tr>
               <td class="p-4 md:p-6 font-medium text-ink">Pre-Recognition Audio Cleanup</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5">Normalize, Vocal Isolate, Speed/Pitch, EQ</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Normalize, Vocal Isolate, Speed/Pitch, EQ</td>
               <td class="p-4 md:p-6 text-muted-adaptive">Manual basic trimming only</td>
             </tr>
             <tr>
               <td class="p-4 md:p-6 font-medium text-ink">Recognition History</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5">Persistent localStorage Drawer</td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Persistent localStorage Drawer</td>
               <td class="p-4 md:p-6 text-muted-adaptive">Lost on page refresh</td>
             </tr>
           </tbody>
@@ -192,7 +215,7 @@ const audioTools = [
         <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
           <summary class="flex items-center justify-between font-semibold text-lg text-ink">
             <span>What audio and video formats are supported?</span>
-            <span class="transition group-open:-rotate-180 text-muted-adaptive">▼</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
             We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track.
@@ -202,7 +225,7 @@ const audioTools = [
         <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
           <summary class="flex items-center justify-between font-semibold text-lg text-ink">
             <span>How does song recognition work on noisy recordings?</span>
-            <span class="transition group-open:-rotate-180 text-muted-adaptive">▼</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
             Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Equalizer) right inside the recognition hub before running fingerprint analysis.
@@ -212,7 +235,7 @@ const audioTools = [
         <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
           <summary class="flex items-center justify-between font-semibold text-lg text-ink">
             <span>Is my uploaded audio file stored on your servers?</span>
-            <span class="transition group-open:-rotate-180 text-muted-adaptive">▼</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
             No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Browser tools run entirely client-side using the Web Audio API without uploading your files anywhere.
@@ -222,7 +245,7 @@ const audioTools = [
         <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
           <summary class="flex items-center justify-between font-semibold text-lg text-ink">
             <span>Are all 13 audio tools free to use?</span>
-            <span class="transition group-open:-rotate-180 text-muted-adaptive">▼</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
             Yes! All 13 audio tools (Stem Splitter, Equalizer, Audio-to-MIDI, Transcriber, Converter, Trimmer, BPM Detector, Key Detector, etc.) are 100% free with unlimited browser processing and zero forced sign-ups.

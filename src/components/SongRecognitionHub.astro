@@ -7,11 +7,13 @@
     
     <!-- Hero Title Header (Apple Tight Display) -->
     <div class="text-center mb-10">
-      <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-[15px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
+      <!-- 12px eyebrow per {typography.nav-link} in DESIGN.md -->
+      <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-[12px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
       <h1 class="font-display font-semibold text-[40px] md:text-[56px] leading-[1.07] tracking-[-0.028em] text-ink mb-4">
         Identify Any Song. In Seconds.
       </h1>
-      <p class="text-[20px] md:text-[24px] font-normal text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
+      <!-- font-light (300) per {typography.lead-airy}: 24px / 300 / 1.5 line-height -->
+      <p class="text-[20px] md:text-[24px] font-light text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
         Upload audio, video clips, paste media links, or record live sound. Instant identification with built-in audio cleanup tools.
       </p>
     </div>
@@ -19,23 +21,45 @@
     <!-- Main Card Engine Container -->
     <div class="bg-surface-card rounded-[24px] border border-adaptive p-6 md:p-10 shadow-sm transition-all" id="hub-container">
       
-      <!-- Input Mode Tabs (Pill style) -->
-      <div class="flex items-center justify-center gap-2 mb-8 bg-canvas p-1.5 rounded-full border border-adaptive max-w-md mx-auto shadow-xs">
-        <button id="tab-upload-btn" class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#0066cc] text-white">
+      <!-- Input Mode Tabs — ARIA role=tablist for screen reader navigation -->
+      <div role="tablist" aria-label="Audio input method" class="flex items-center justify-center gap-2 mb-8 bg-canvas p-1.5 rounded-full border border-adaptive max-w-md mx-auto shadow-xs">
+        <button
+          id="tab-upload-btn"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-upload"
+          class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#0066cc] text-white"
+        >
           📁 Upload File
         </button>
-        <button id="tab-url-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment">
+        <button
+          id="tab-url-btn"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-url"
+          class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment"
+        >
           🔗 Paste URL
         </button>
-        <button id="tab-record-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment">
+        <button
+          id="tab-record-btn"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-record"
+          class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment"
+        >
           🎙️ Live Mic
         </button>
       </div>
 
       <!-- TAB 1: FILE UPLOAD DROPZONE -->
-      <div id="panel-upload" class="tab-panel space-y-6">
-        <div 
-          id="dropzone" 
+      <div id="panel-upload" role="tabpanel" aria-labelledby="tab-upload-btn" class="tab-panel space-y-6">
+        <!-- Keyboard-accessible dropzone: tabindex, role=button, aria-label, keydown Enter/Space -->
+        <div
+          id="dropzone"
+          role="button"
+          tabindex="0"
+          aria-label="Upload audio or video file. Press Enter or Space to browse."
           class="border-2 border-dashed border-adaptive hover:border-[#0066cc] bg-canvas rounded-[20px] p-8 md:p-12 text-center transition-all cursor-pointer relative group"
         >
           <input type="file" id="audio-file-input" accept="audio/*,video/*,.mp3,.wav,.flac,.m4a,.aac,.ogg,.mp4,.webm,.mov,.avi" class="hidden" />
@@ -60,33 +84,46 @@
       </div>
 
       <!-- TAB 2: PASTE URL -->
-      <div id="panel-url" class="tab-panel hidden space-y-6">
+      <div id="panel-url" role="tabpanel" aria-labelledby="tab-url-btn" class="tab-panel hidden space-y-6">
         <div class="bg-canvas p-8 rounded-[20px] border border-adaptive text-center space-y-4">
           <label for="url-input" class="block font-semibold text-lg text-ink">
             Paste Audio / Video Media Link
           </label>
           <div class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-            <input 
-              type="url" 
-              id="url-input" 
-              placeholder="https://example.com/audio-sample.mp3 or video URL" 
-              class="flex-1 px-5 py-3 rounded-full border border-adaptive focus:border-[#0066cc] outline-none text-sm bg-surface-card text-ink"
-            />
+            <!-- Real-time URL validation: border changes green/red based on URL pattern -->
+            <div class="relative flex-1">
+              <input
+                type="url"
+                id="url-input"
+                placeholder="https://example.com/audio-sample.mp3 or video URL"
+                class="w-full px-5 py-3 pr-10 rounded-full border border-adaptive focus:border-[#0066cc] outline-none text-sm bg-surface-card text-ink transition-colors"
+                aria-describedby="url-validation-hint"
+              />
+              <!-- Inline validation indicator (populated by JS) -->
+              <span id="url-validation-icon" class="absolute right-4 top-1/2 -translate-y-1/2 text-sm hidden" aria-live="polite"></span>
+            </div>
             <button id="load-url-btn" class="btn-action-primary !py-3 !px-6 text-sm">
               Load & Analyze
             </button>
           </div>
-          <p class="text-xs text-muted-adaptive">Supported platforms: Direct audio/video links, podcast streams, public MP3/MP4 media URLs.</p>
+          <p id="url-validation-hint" class="text-xs text-muted-adaptive">Supported platforms: Direct audio/video links, podcast streams, public MP3/MP4 media URLs.</p>
         </div>
       </div>
 
       <!-- TAB 3: LIVE MICROPHONE RECORDING -->
-      <div id="panel-record" class="tab-panel hidden space-y-6">
+      <div id="panel-record" role="tabpanel" aria-labelledby="tab-record-btn" class="tab-panel hidden space-y-6">
         <div class="bg-canvas p-8 md:p-12 rounded-[20px] border border-adaptive text-center space-y-6">
-          <div id="record-status-ring" class="w-24 h-24 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 mx-auto flex items-center justify-center border-4 border-red-100 dark:border-red-900/50 transition-all duration-300">
-            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
-            </svg>
+          <!-- Recording ring: animates to red+pulse when recording -->
+          <div class="relative mx-auto w-24 h-24">
+            <div id="record-status-ring" class="w-24 h-24 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 mx-auto flex items-center justify-center border-4 border-red-100 dark:border-red-900/50 transition-all duration-300">
+              <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+              </svg>
+            </div>
+            <!-- Countdown overlay: shown only while recording -->
+            <div id="record-countdown" class="hidden absolute inset-0 flex items-center justify-center">
+              <span id="record-countdown-num" class="text-red-600 dark:text-red-400 font-bold font-mono text-2xl">15</span>
+            </div>
           </div>
 
           <div>
@@ -96,6 +133,8 @@
             <p id="record-status-desc" class="text-sm text-muted-adaptive mt-1">
               Click record and play sound nearby (TV, radio, cafe, speaker)
             </p>
+            <!-- Auto-stop hint, visible while recording -->
+            <p id="record-auto-stop-hint" class="hidden text-xs text-red-500 dark:text-red-400 mt-2 font-medium">Auto-stops at 15s for best fingerprint accuracy</p>
           </div>
 
           <div class="flex justify-center gap-4">
@@ -165,15 +204,32 @@
         </div>
       </div>
 
-      <!-- MATCH RESULT MODAL / DISPLAY CARD (Hidden until recognition done) -->
-      <div id="match-result-card" class="hidden mt-8 bg-gradient-to-br from-[#1d1d1f] to-[#272729] dark:from-[#272729] dark:to-[#161617] text-white p-8 rounded-[24px] shadow-2xl border border-neutral-800 space-y-8 animate-fade-in">
+      <!-- ERROR STATE CARD (shown on API failure or no match) -->
+      <div id="error-state-card" class="hidden mt-8 bg-canvas border border-red-200 dark:border-red-800 p-8 rounded-[24px] text-center space-y-4">
+        <div class="w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/40 text-red-500 mx-auto flex items-center justify-center">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-semibold text-xl text-ink">No Match Found</h3>
+        <p id="error-state-msg" class="text-sm text-muted-adaptive max-w-sm mx-auto">
+          We couldn't identify this track. Try using Noise Remover or Vocal Isolation first, then run recognition again.
+        </p>
+        <button id="error-retry-btn" class="btn-action-primary !py-2.5 !px-7 text-sm">
+          Try Again
+        </button>
+      </div>
+
+      <!-- MATCH RESULT MODAL / DISPLAY CARD (Hidden until recognition done — no placeholder data shown) -->
+      <!-- Flat bg-[#272729] per DESIGN.md: no decorative gradients, atmosphere from surface color only -->
+      <div id="match-result-card" class="hidden mt-8 bg-[#272729] text-white p-8 rounded-[24px] shadow-2xl border border-neutral-800 space-y-8">
         
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
           <!-- Album Art -->
           <div class="relative group shrink-0">
-            <img id="res-artwork" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Album Cover" class="w-48 h-48 rounded-2xl object-cover shadow-2xl border border-white/10" />
+            <img id="res-artwork" src="" alt="Album Cover" class="w-48 h-48 rounded-2xl object-cover shadow-2xl border border-white/10 bg-neutral-800" />
             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
-              <span class="text-xs bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white">99% Match</span>
+              <span id="res-match-pct" class="text-xs bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white"></span>
             </div>
           </div>
 
@@ -182,29 +238,24 @@
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/20 border border-[#0066cc]/40 text-[#2997ff] text-xs font-semibold">
               <span>✨ Exact Match Found</span>
               <span>•</span>
-              <span id="res-confidence">99.4% Confidence</span>
+              <span id="res-confidence"></span>
             </div>
 
-            <h2 id="res-title" class="font-display font-semibold text-3xl md:text-4xl text-white tracking-tight">
-              Blinding Lights
-            </h2>
-            <p id="res-artist" class="text-xl text-neutral-300 font-medium">
-              The Weeknd
-            </p>
-            <p id="res-album" class="text-sm text-neutral-400">
-              Album: After Hours (2020) • Synthwave / Pop
-            </p>
+            <!-- Titles populated entirely by JS — no placeholder text -->
+            <h2 id="res-title" class="font-display font-semibold text-3xl md:text-4xl text-white tracking-tight"></h2>
+            <p id="res-artist" class="text-xl text-neutral-300 font-medium"></p>
+            <p id="res-album" class="text-sm text-neutral-400"></p>
 
             <!-- Musical Characteristics Pills -->
             <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
               <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
-                🥁 BPM: <strong id="res-bpm" class="text-white">171</strong>
+                🥁 BPM: <strong id="res-bpm" class="text-white"></strong>
               </span>
               <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
-                🔑 Key: <strong id="res-key" class="text-white">F Minor (4A)</strong>
+                🔑 Key: <strong id="res-key" class="text-white"></strong>
               </span>
               <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
-                ⏱️ Energy: <strong class="text-white">High (88%)</strong>
+                ⏱️ Energy: <strong id="res-energy" class="text-white"></strong>
               </span>
             </div>
           </div>
@@ -213,24 +264,27 @@
         <!-- External Streaming Links & Audio Preview -->
         <div class="pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start">
-            <a id="res-spotify" href="https://spotify.com" target="_blank" class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+            <a id="res-spotify" href="#" target="_blank" class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
               <span>🟢</span> Spotify
             </a>
-            <a id="res-youtube" href="https://youtube.com" target="_blank" class="bg-[#FF0000] hover:bg-red-600 text-white font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
-              <span>▶</span> YouTube
+            <a id="res-youtube" href="#" target="_blank" class="bg-[#FF0000] hover:bg-red-600 text-white font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+              <!-- SVG play icon instead of ▶ Unicode -->
+              <svg class="w-3 h-3 fill-white" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> YouTube
             </a>
-            <a id="res-apple" href="https://apple.com" target="_blank" class="bg-white text-black hover:bg-neutral-200 font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+            <a id="res-apple" href="#" target="_blank" class="bg-white text-black hover:bg-neutral-200 font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
               <span>🍎</span> Apple Music
             </a>
           </div>
 
-          <!-- Audio Preview Player -->
-          <div id="preview-player-container" class="hidden items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/10">
-            <button id="preview-play-btn" class="w-8 h-8 rounded-full bg-[#2997ff] text-white flex items-center justify-center font-bold text-xs hover:scale-105 transition-transform cursor-pointer">
-              ▶
-            </button>
-            <span class="text-xs text-neutral-300 font-medium">30s Audio Preview</span>
-            <audio id="match-audio-preview" class="hidden"></audio>
+          <!-- Audio Preview Player — uses flex directly (no hidden+items-center conflict) -->
+          <div id="preview-player-container" class="hidden">
+            <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/10">
+              <button id="preview-play-btn" class="w-8 h-8 rounded-full bg-[#2997ff] text-white flex items-center justify-center font-bold text-xs hover:scale-105 transition-transform cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+              </button>
+              <span class="text-xs text-neutral-300 font-medium">30s Audio Preview</span>
+              <audio id="match-audio-preview" class="hidden"></audio>
+            </div>
           </div>
 
           <!-- Audio Tool Direct Actions -->
@@ -292,16 +346,18 @@
     let currentPastedUrl: string | null = null;
     let currentMicBlob: Blob | null = null;   // captured audio from MediaRecorder
 
-    // ── Tab switching ──────────────────────────────────────────────────────────
+    // ── Tab switching (with ARIA aria-selected updates) ───────────────────────
     function switchTab(activeTab: HTMLElement, activePanel: HTMLElement) {
       [tabUpload, tabUrl, tabRecord].forEach(t => {
         if (!t) return;
         t.classList.remove('bg-[#0066cc]', 'text-white');
         t.classList.add('text-ink', 'hover:bg-parchment');
+        t.setAttribute('aria-selected', 'false');
       });
       [panelUpload, panelUrl, panelRecord].forEach(p => p?.classList.add('hidden'));
       activeTab.classList.add('bg-[#0066cc]', 'text-white');
       activeTab.classList.remove('text-ink', 'hover:bg-parchment');
+      activeTab.setAttribute('aria-selected', 'true');
       activePanel.classList.remove('hidden');
     }
 
@@ -313,6 +369,13 @@
     browseBtn?.addEventListener('click', () => fileInput?.click());
     dropzone?.addEventListener('click', (e) => {
       if (e.target !== browseBtn) fileInput?.click();
+    });
+    // Keyboard accessibility: Enter or Space activates the dropzone
+    dropzone?.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput?.click();
+      }
     });
 
     fileInput?.addEventListener('change', (e: any) => {
@@ -343,7 +406,29 @@
       handleAudioLoaded(file.name, `${(file.size / (1024 * 1024)).toFixed(2)} MB • Ready`);
     });
 
-    // ── URL handler ────────────────────────────────────────────────────────────
+    // ── URL handler with real-time validation ─────────────────────────────────
+    const urlValidIcon = document.getElementById('url-validation-icon');
+    urlInput?.addEventListener('input', () => {
+      const val = urlInput.value.trim();
+      if (!val) {
+        if (urlValidIcon) { urlValidIcon.textContent = ''; urlValidIcon.classList.add('hidden'); }
+        urlInput.classList.remove('border-emerald-500', 'border-red-400');
+        return;
+      }
+      try {
+        new URL(val);
+        // Valid URL
+        urlInput.classList.add('border-emerald-500');
+        urlInput.classList.remove('border-red-400', 'border-adaptive');
+        if (urlValidIcon) { urlValidIcon.textContent = '✓'; urlValidIcon.className = 'absolute right-4 top-1/2 -translate-y-1/2 text-sm text-emerald-500'; }
+      } catch {
+        // Invalid URL
+        urlInput.classList.add('border-red-400');
+        urlInput.classList.remove('border-emerald-500', 'border-adaptive');
+        if (urlValidIcon) { urlValidIcon.textContent = '✗'; urlValidIcon.className = 'absolute right-4 top-1/2 -translate-y-1/2 text-sm text-red-400'; }
+      }
+    });
+
     loadUrlBtn?.addEventListener('click', () => {
       const val = urlInput?.value.trim();
       if (!val) return;
@@ -381,10 +466,16 @@
     removeAudioBtn?.addEventListener('click', () => {
       workbench?.classList.add('hidden');
       matchCard?.classList.add('hidden');
+      document.getElementById('error-state-card')?.classList.add('hidden');
       if (fileInput) fileInput.value = '';
       currentLoadedFile = null;
       currentPastedUrl  = null;
       currentMicBlob    = null;
+    });
+
+    // ── Error retry button ──────────────────────────────────────────────────────
+    document.getElementById('error-retry-btn')?.addEventListener('click', () => {
+      document.getElementById('error-state-card')?.classList.add('hidden');
     });
 
     // ── WebAudio feature estimation (BPM / Key / Energy) ─────────────────────
@@ -516,37 +607,16 @@
       }
     }
 
-    // ── "No match found" card helper ──────────────────────────────────────────
+    // ── Show error state card (instead of polluting the match card with failure text) ──
     function showNoMatch(runBtn: HTMLElement | null) {
       if (runBtn) runBtn.textContent = '🔍 Run Song Recognition';
-
-      const resTitle      = document.getElementById('res-title');
-      const resArtist     = document.getElementById('res-artist');
-      const resAlbum      = document.getElementById('res-album');
-      const resConfidence = document.getElementById('res-confidence');
-      const resArtwork    = document.getElementById('res-artwork') as HTMLImageElement | null;
-      const resBpm        = document.getElementById('res-bpm');
-      const resKey        = document.getElementById('res-key');
-
-      if (resArtwork)    resArtwork.src = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80';
-      if (resTitle)      resTitle.textContent      = 'No Match Found';
-      if (resArtist)     resArtist.textContent     = 'Song not in database';
-      if (resAlbum)      resAlbum.textContent      = 'Try a cleaner clip (10–30 s), use Normalize Volume, or try a different section of the track.';
-      if (resConfidence) resConfidence.textContent = 'Unrecognized';
-      if (resBpm)        resBpm.textContent        = '—';
-      if (resKey)        resKey.textContent        = '—';
-
-      document.getElementById('preview-player-container')?.classList.add('hidden');
-
-      const resSpotify = document.getElementById('res-spotify') as HTMLAnchorElement | null;
-      const resYoutube = document.getElementById('res-youtube') as HTMLAnchorElement | null;
-      const resApple   = document.getElementById('res-apple')   as HTMLAnchorElement | null;
-      if (resSpotify) resSpotify.href = 'https://open.spotify.com';
-      if (resYoutube) resYoutube.href = 'https://youtube.com';
-      if (resApple)   resApple.href   = 'https://music.apple.com';
-
-      matchCard?.classList.remove('hidden');
-      matchCard?.scrollIntoView({ behavior: 'smooth' });
+      // Show the dedicated error card, keep match card hidden
+      const errorCard = document.getElementById('error-state-card');
+      const errorMsg  = document.getElementById('error-state-msg');
+      matchCard?.classList.add('hidden');
+      if (errorMsg) errorMsg.textContent = "We couldn't identify this track. Try using Noise Remover or Vocal Isolation first, or try a different section of the track.";
+      errorCard?.classList.remove('hidden');
+      errorCard?.scrollIntoView({ behavior: 'smooth' });
     }
 
     // ── Render match result ───────────────────────────────────────────────────
@@ -572,20 +642,25 @@
       if (resArtist)                          resArtist.textContent = matchData.artist;
       if (resAlbum)                           resAlbum.textContent  = `Album: ${matchData.album} • ${matchData.genre || 'Music'}`;
 
-      // BPM / Key — show AudD values if available, else client estimates labelled "Est."
-      const bpmDisplay = matchData.bpm > 0
+      // BPM / Key / Energy — show AudD values if available, else client estimates labelled "Est."
+      const bpmDisplay    = matchData.bpm > 0
         ? matchData.bpm.toString()
         : (estimatedFeatures.bpm > 0 ? `~${estimatedFeatures.bpm} (Est.)` : '—');
-      const keyDisplay = matchData.key || (estimatedFeatures.key ? `${estimatedFeatures.key} (Est.)` : '—');
+      const keyDisplay    = matchData.key || (estimatedFeatures.key ? `${estimatedFeatures.key} (Est.)` : '—');
+      const energyDisplay = estimatedFeatures.energyPct > 0 ? `${estimatedFeatures.energyPct}%` : '—';
       if (resBpm) resBpm.textContent = bpmDisplay;
       if (resKey) resKey.textContent = keyDisplay;
+      const resEnergy = document.getElementById('res-energy');
+      if (resEnergy) resEnergy.textContent = energyDisplay;
 
-      // Confidence label — honest, never a made-up percentage
+      // Confidence + match percentage hover label
+      const resMatchPct = document.getElementById('res-match-pct');
       if (resConfidence) {
         resConfidence.textContent = matchData.isAudd
           ? (matchData.timecode ? 'AudD Match at ' + matchData.timecode : 'AudD Fingerprint Match')
           : 'iTunes Text Match';
       }
+      if (resMatchPct) resMatchPct.textContent = matchData.isAudd ? '✓ Fingerprint' : '~ Text Match';
 
       if (resSpotify) resSpotify.href = matchData.spotifyUrl || 'https://open.spotify.com';
       if (resYoutube) resYoutube.href = matchData.youtubeUrl || 'https://youtube.com';
@@ -640,6 +715,7 @@
 
       if (runRecBtn) runRecBtn.textContent = '⏳ Fingerprinting…';
       matchCard?.classList.add('hidden');
+      document.getElementById('error-state-card')?.classList.add('hidden');
 
       // 1. Client-side feature estimation (runs in parallel with API call)
       let estimated = { bpm: 0, key: '', energyPct: 0, duration: 0 };
@@ -689,7 +765,30 @@
     let mediaRecorder: MediaRecorder | null = null;
     let recordedChunks: Blob[] = [];
     let recordingTimer: ReturnType<typeof setTimeout> | null = null;
-    const MAX_RECORD_MS = 20000; // 20 seconds — enough for a solid fingerprint
+    let countdownInterval: ReturnType<typeof setInterval> | null = null;
+    const MAX_RECORD_MS = 15000; // 15 seconds — optimal fingerprint window
+    const MAX_RECORD_S  = MAX_RECORD_MS / 1000;
+
+    function startCountdown() {
+      const countdownEl  = document.getElementById('record-countdown');
+      const countdownNum = document.getElementById('record-countdown-num');
+      const autoHint     = document.getElementById('record-auto-stop-hint');
+      let remaining = MAX_RECORD_S;
+      if (countdownNum) countdownNum.textContent = String(remaining);
+      countdownEl?.classList.remove('hidden');
+      autoHint?.classList.remove('hidden');
+      countdownInterval = setInterval(() => {
+        remaining -= 1;
+        if (countdownNum) countdownNum.textContent = String(remaining);
+        if (remaining <= 0) stopCountdown();
+      }, 1000);
+    }
+
+    function stopCountdown() {
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+      document.getElementById('record-countdown')?.classList.add('hidden');
+      document.getElementById('record-auto-stop-hint')?.classList.add('hidden');
+    }
 
     toggleRecordBtn?.addEventListener('click', async () => {
       if (!isRecording) {
@@ -716,9 +815,10 @@
 
           mediaRecorder.start(1000); // collect chunks every 1 s
           isRecording = true;
+          startCountdown();
 
           if (recordBtnText)     recordBtnText.textContent     = 'Stop Recording';
-          if (recordStatusTitle) recordStatusTitle.textContent = 'Listening… (max 20 s)';
+          if (recordStatusTitle) recordStatusTitle.textContent = 'Listening… (max 15 s)';
           if (recordStatusDesc)  recordStatusDesc.textContent  = 'Hold device near the audio source';
 
           // Auto-stop after MAX_RECORD_MS
@@ -726,6 +826,7 @@
             if (mediaRecorder && mediaRecorder.state === 'recording') {
               mediaRecorder.stop();
               isRecording = false;
+              stopCountdown();
               if (recordBtnText) recordBtnText.textContent = 'Record Again';
             }
           }, MAX_RECORD_MS);

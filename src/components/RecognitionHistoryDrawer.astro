@@ -82,7 +82,7 @@
         const div = document.createElement('div');
         div.className = 'history-card-item p-4 rounded-2xl bg-surface-card border border-adaptive flex items-center gap-4 hover:shadow-md transition-shadow';
         div.innerHTML = `
-          <img src="${item.artwork || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150&auto=format&fit=crop&q=80'}" class="w-14 h-14 rounded-xl object-cover shadow-sm shrink-0" alt="Cover" />
+          <img src="${item.artwork || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23e8e8ed' rx='8'/%3E%3Cpath d='M28 18v28l18-14z' fill='%230066cc' opacity='.6'/%3E%3C/svg%3E"}" class="w-16 h-16 rounded-xl object-cover shadow-sm shrink-0 bg-surface-card" alt="${item.title}" />
           <div class="flex-1 min-w-0">
             <h4 class="font-semibold text-sm truncate text-ink">${item.title}</h4>
             <p class="text-xs text-muted-adaptive truncate">${item.artist}</p>
@@ -92,9 +92,11 @@
               <span>Key: ${item.key || 'C Maj'}</span>
             </div>
           </div>
-          <a href="${item.spotify || '#'}" target="_blank" class="w-8 h-8 rounded-full bg-[#0066cc] text-white flex items-center justify-center shrink-0 hover:bg-[#0071e3] transition-colors">
-            ▶
-          </a>
+          ${item.spotify ? `
+            <a href="${item.spotify}" target="_blank" class="text-emerald-500 hover:text-emerald-400 transition-colors no-underline" aria-label="Open in Spotify">
+              <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </a>
+          ` : ''}
         `;
         container.appendChild(div);
       });

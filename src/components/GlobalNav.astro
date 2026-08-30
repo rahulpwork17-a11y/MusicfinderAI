@@ -1,5 +1,10 @@
 ---
 // src/components/GlobalNav.astro
+const currentPath = Astro.url.pathname;
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
 ---
 
 <header class="bg-black text-white h-[44px] sticky top-0 z-50 flex items-center px-4 md:px-8 border-b border-neutral-900 text-[12px] font-normal tracking-tight">
@@ -18,11 +23,11 @@
 
     <!-- Nav Links -->
     <nav class="hidden md:flex items-center gap-8 text-neutral-300">
-      <a href="/" class="hover:text-white transition-colors no-underline">Recognizer</a>
-      <a href="/tools" class="hover:text-white transition-colors no-underline">Audio Tools (13)</a>
-      <a href="/tools/stem-splitter" class="hover:text-white transition-colors no-underline">AI Stem Splitter</a>
-      <a href="/tools/audio-to-midi" class="hover:text-white transition-colors no-underline">Audio to MIDI</a>
-      <a href="/tools/equalizer" class="hover:text-white transition-colors no-underline">Parametric EQ</a>
+      <a href="/" class={`hover:text-white transition-colors no-underline ${isActive('/') ? 'text-white font-medium' : ''}`}>Recognizer</a>
+      <a href="/tools" class={`hover:text-white transition-colors no-underline ${isActive('/tools') ? 'text-white font-medium' : ''}`}>Audio Tools (13)</a>
+      <a href="/tools/stem-splitter" class={`hover:text-white transition-colors no-underline ${isActive('/tools/stem-splitter') ? 'text-white font-medium' : ''}`}>AI Stem Splitter</a>
+      <a href="/tools/audio-to-midi" class={`hover:text-white transition-colors no-underline ${isActive('/tools/audio-to-midi') ? 'text-white font-medium' : ''}`}>Audio to MIDI</a>
+      <a href="/tools/equalizer" class={`hover:text-white transition-colors no-underline ${isActive('/tools/equalizer') ? 'text-white font-medium' : ''}`}>Parametric EQ</a>
     </nav>
 
     <!-- Utility Cluster (Theme Toggle + History + Identify CTA) -->

@@ -51,7 +51,8 @@
 
 /* Custom Typography & Utility Classes per DESIGN.md */
 .font-display {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Inter is the open-source SF Pro Display substitute per DESIGN.md */
+  font-family: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .tracking-apple-tight {
@@ -105,9 +106,14 @@
   text-decoration: none;
 }
 
+/* In dark mode, primary buttons shift to #2997ff per {colors.primary-on-dark} in DESIGN.md */
 html.dark .btn-action-primary {
-  background-color: #0066cc;
+  background-color: #2997ff;
   color: #ffffff;
+}
+
+html.dark .btn-action-primary:hover {
+  background-color: #3aa4ff;
 }
 
 .btn-action-primary:hover {
@@ -175,7 +181,8 @@ html.dark .btn-action-secondary {
 
 html.dark .frosted-glass {
   background-color: rgba(29, 29, 31, 0.85);
-  border-bottom-color: #38383a !important;
+  /* Use the CSS variable so specificity is consistent — no !important needed */
+  border-color: var(--color-border-line);
 }
 
 /* Scrollbar customization */

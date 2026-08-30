@@ -30,18 +30,18 @@ const tools = [
         Free browser-based audio production and analysis tools. No sign-up, no downloads, complete privacy.
       </p>
 
-      <!-- Category Filter Pills -->
-      <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
-        <button class="px-4 py-1.5 rounded-full bg-[#0066cc] text-white text-xs font-medium cursor-pointer">
+      <!-- Category Filter Pills — functional: clicking filters the tool grid -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-8" id="filter-pills">
+        <button data-filter="all" class="filter-pill px-4 py-1.5 rounded-full bg-[#0066cc] text-white text-xs font-medium cursor-pointer transition-all">
           All Tools (13)
         </button>
-        <button class="px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer">
+        <button data-filter="Analysis" class="filter-pill px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer transition-all">
           Analysis
         </button>
-        <button class="px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer">
+        <button data-filter="Enhancement" class="filter-pill px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer transition-all">
           Enhancement
         </button>
-        <button class="px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer">
+        <button data-filter="Editing" class="filter-pill px-4 py-1.5 rounded-full bg-surface-card text-ink hover:bg-canvas text-xs font-medium border border-adaptive cursor-pointer transition-all">
           Editing & Conversion
         </button>
       </div>
@@ -50,9 +50,13 @@ const tools = [
 
   <div class="py-16 px-4 md:px-8 bg-canvas">
     <div class="max-w-[1440px] mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="tools-grid">
         {tools.map((t) => (
-          <div class="bg-surface-card rounded-[20px] p-8 border border-adaptive hover:border-[#0066cc] dark:hover:border-[#2997ff] hover:shadow-lg transition-all flex flex-col justify-between group">
+          <!-- data-category enables JS filtering -->
+          <div
+            data-category={t.category}
+            class="tool-card bg-surface-card rounded-[20px] p-8 border border-adaptive hover:border-[#0066cc] dark:hover:border-[#2997ff] hover:shadow-lg transition-all flex flex-col justify-between group"
+          >
             <div>
               <div class="flex items-center justify-between mb-4">
                 <span class="w-12 h-12 rounded-2xl bg-canvas border border-adaptive flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
@@ -81,4 +85,39 @@ const tools = [
       </div>
     </div>
   </div>
+
+  <script>
+    // Category filter functionality
+    function setupFilter() {
+      const pills    = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+      const cards    = document.querySelectorAll<HTMLElement>('.tool-card');
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          const filter = pill.dataset.filter || 'all';
+
+          // Update pill active states
+          pills.forEach(p => {
+            const isActive = p === pill;
+            p.classList.toggle('bg-[#0066cc]', isActive);
+            p.classList.toggle('text-white', isActive);
+            p.classList.toggle('bg-surface-card', !isActive);
+            p.classList.toggle('text-ink', !isActive);
+            p.classList.toggle('border', !isActive);
+            p.classList.toggle('border-adaptive', !isActive);
+          });
+
+          // Show/hide cards
+          cards.forEach(card => {
+            const cat = card.dataset.category || '';
+            const show = filter === 'all' || cat === filter || (filter === 'Editing' && (cat === 'Editing' || cat === 'Conversion'));
+            card.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    }
+
+    setupFilter();
+    document.addEventListener('astro:page-load', setupFilter);
+  </script>
 </Layout>

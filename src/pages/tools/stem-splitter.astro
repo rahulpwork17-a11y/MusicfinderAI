@@ -18,9 +18,9 @@ const controls = [
     controls={controls}
     exportFormats={["ZIP All Stems", "Vocals WAV", "Instrumental WAV", "Drums WAV"]}
   >
-    <!-- 4 Stem Mixer Sliders -->
-    <div class="mt-6 bg-white p-6 rounded-2xl border border-[#e0e0e0] space-y-4">
-      <h4 class="font-semibold text-sm text-[#1d1d1f]">Live Stem Mixer & Solo / Mute Toggles</h4>
+    <!-- 4 Stem Mixer Sliders — using adaptive tokens, dark mode compatible -->
+    <div class="mt-6 bg-canvas p-6 rounded-2xl border border-adaptive space-y-4">
+      <h4 class="font-semibold text-sm text-ink">Live Stem Mixer & Solo / Mute Toggles</h4>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {[
@@ -29,19 +29,19 @@ const controls = [
           { name: "🎸 Bass", color: "from-amber-500 to-orange-500" },
           { name: "🎹 Other / Synth", color: "from-emerald-500 to-teal-500" }
         ].map((stem) => (
-          <div class="p-4 rounded-xl bg-[#fafafc] border border-[#e0e0e0] space-y-3">
+          <div class="p-4 rounded-xl bg-surface-card border border-adaptive space-y-3">
             <div class="flex items-center justify-between">
-              <span class="font-semibold text-sm text-[#1d1d1f]">{stem.name}</span>
-              <span class="text-xs text-[#0066cc] font-mono font-bold">100%</span>
+              <span class="font-semibold text-sm text-ink">{stem.name}</span>
+              <span class="text-xs text-[#0066cc] dark:text-[#2997ff] font-mono font-bold">100%</span>
             </div>
             
             <input type="range" min="0" max="100" value="100" class="w-full accent-[#0066cc]" />
             
             <div class="flex gap-2 text-xs">
-              <button class="flex-1 py-1 rounded bg-white hover:bg-neutral-200 border border-[#e0e0e0] font-medium text-[#1d1d1f]">
+              <button class="flex-1 py-1 rounded bg-canvas hover:bg-parchment border border-adaptive font-medium text-ink transition-colors">
                 Solo
               </button>
-              <button class="flex-1 py-1 rounded bg-white hover:bg-neutral-200 border border-[#e0e0e0] font-medium text-[#1d1d1f]">
+              <button class="flex-1 py-1 rounded bg-canvas hover:bg-parchment border border-adaptive font-medium text-ink transition-colors">
                 Mute
               </button>
             </div>
@@ -49,5 +49,7 @@ const controls = [
         ))}
       </div>
     </div>
+
   </InteractiveAudioTool>
 </Layout>
+
