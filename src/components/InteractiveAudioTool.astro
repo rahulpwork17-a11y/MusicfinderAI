@@ -31,48 +31,48 @@ const {
 } = Astro.props;
 ---
 
-<section class="py-12 px-4 md:px-8 bg-white">
+<section class="py-12 px-4 md:px-8 bg-canvas">
   <div class="max-w-[1060px] mx-auto">
     
     <!-- Tool Header -->
     <div class="text-center mb-10">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/10 text-[#0066cc] text-xs font-semibold uppercase tracking-wider mb-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/10 text-[#0066cc] dark:text-[#2997ff] text-xs font-semibold uppercase tracking-wider mb-3">
         <span>{icon}</span>
         <span>{badge}</span>
       </div>
-      <h1 class="font-display font-semibold text-3xl md:text-5xl text-[#1d1d1f] tracking-tight mb-3">
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-tight mb-3">
         {toolName}
       </h1>
-      <p class="text-lg md:text-xl text-[#7a7a7a] max-w-2xl mx-auto leading-relaxed">
+      <p class="text-lg md:text-xl text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
         {toolDescription}
       </p>
     </div>
 
     <!-- WebAudio DAW Workspace Card -->
-    <div class="bg-[#fafafc] rounded-[24px] border border-[#e0e0e0] p-6 md:p-10 shadow-sm space-y-8">
+    <div class="bg-surface-card rounded-[24px] border border-adaptive p-6 md:p-10 shadow-sm space-y-8">
       
       <!-- Upload Dropzone for Tool -->
-      <div id="tool-dropzone" class="border-2 border-dashed border-[#d2d2d7] hover:border-[#0066cc] bg-white rounded-[20px] p-8 text-center transition-all cursor-pointer">
+      <div id="tool-dropzone" class="border-2 border-dashed border-adaptive hover:border-[#0066cc] bg-canvas rounded-[20px] p-8 text-center transition-all cursor-pointer">
         <input type="file" id="tool-file-input" accept="audio/*,video/*" class="hidden" />
-        <div class="w-12 h-12 rounded-full bg-[#f5f5f7] text-[#0066cc] mx-auto flex items-center justify-center mb-3">
+        <div class="w-12 h-12 rounded-full bg-parchment text-[#0066cc] dark:text-[#2997ff] mx-auto flex items-center justify-center mb-3">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
         </div>
-        <h4 class="font-semibold text-lg text-[#1d1d1f]">Drop audio file to process</h4>
-        <p class="text-xs text-[#7a7a7a] mt-1">MP3, WAV, FLAC, M4A, AAC, OGG supported</p>
+        <h4 class="font-semibold text-lg text-ink">Drop audio file to process</h4>
+        <p class="text-xs text-muted-adaptive mt-1">MP3, WAV, FLAC, M4A, AAC, OGG supported</p>
       </div>
 
       <!-- Active Processing Screen (Hidden by default) -->
       <div id="tool-workspace" class="hidden space-y-6">
         
         <!-- File Header -->
-        <div class="flex items-center justify-between pb-4 border-b border-[#e0e0e0]">
+        <div class="flex items-center justify-between pb-4 border-b border-adaptive">
           <div class="flex items-center gap-3">
             <span class="text-2xl">{icon}</span>
             <div>
-              <h4 id="tool-filename" class="font-semibold text-base text-[#1d1d1f]">Audio Track.mp3</h4>
-              <span class="text-xs text-[#0066cc] font-medium">Ready for real-time processing</span>
+              <h4 id="tool-filename" class="font-semibold text-base text-ink">Audio Track.mp3</h4>
+              <span class="text-xs text-[#0066cc] dark:text-[#2997ff] font-medium">Ready for real-time processing</span>
             </div>
           </div>
           <button id="tool-play-pause" class="btn-action-primary !py-2 !px-5 text-sm">
@@ -81,18 +81,18 @@ const {
         </div>
 
         <!-- Real-time WebAudio Visualizer Canvas -->
-        <div class="bg-[#1d1d1f] p-4 rounded-xl relative">
+        <div class="bg-black p-4 rounded-xl relative border border-adaptive">
           <canvas id="tool-canvas" class="w-full h-32 rounded-lg bg-black/50"></canvas>
         </div>
 
         <!-- Custom Tool Controls Grid -->
         {controls.length > 0 && (
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl border border-[#e0e0e0]">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-canvas p-6 rounded-2xl border border-adaptive">
             {controls.map((ctrl) => (
               <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                  <label class="text-sm font-semibold text-[#1d1d1f]">{ctrl.label}</label>
-                  <span id={`val-${ctrl.id}`} class="text-xs font-mono text-[#0066cc] bg-[#0066cc]/10 px-2 py-0.5 rounded">
+                  <label class="text-sm font-semibold text-ink">{ctrl.label}</label>
+                  <span id={`val-${ctrl.id}`} class="text-xs font-mono text-[#0066cc] dark:text-[#2997ff] bg-[#0066cc]/10 px-2 py-0.5 rounded">
                     {ctrl.default}{ctrl.unit || ''}
                   </span>
                 </div>
@@ -108,7 +108,7 @@ const {
                   />
                 )}
                 {ctrl.type === 'select' && (
-                  <select id={ctrl.id} class="w-full px-3 py-2 rounded-lg border border-[#d2d2d7] text-sm bg-[#fafafc]">
+                  <select id={ctrl.id} class="w-full px-3 py-2 rounded-lg border border-adaptive text-sm bg-surface-card text-ink">
                     {ctrl.options?.map((opt) => (
                       <option value={opt}>{opt}</option>
                     ))}
@@ -123,11 +123,11 @@ const {
         <slot />
 
         <!-- Export & Action Bar -->
-        <div class="pt-4 border-t border-[#e0e0e0] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-2 text-xs text-[#7a7a7a]">
+        <div class="pt-4 border-t border-adaptive flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-muted-adaptive">
             <span>Export Format:</span>
             {exportFormats.map((fmt) => (
-              <button class="export-fmt-btn px-2.5 py-1 rounded-md border border-[#e0e0e0] hover:border-[#0066cc] bg-white font-medium text-[#1d1d1f]">
+              <button class="export-fmt-btn px-2.5 py-1 rounded-md border border-adaptive hover:border-[#0066cc] bg-canvas font-medium text-ink">
                 {fmt}
               </button>
             ))}
@@ -172,7 +172,7 @@ const {
       canvas.height = 128;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#0066cc';
+      ctx.fillStyle = '#2997ff';
 
       const count = 100;
       const w = canvas.width / count;

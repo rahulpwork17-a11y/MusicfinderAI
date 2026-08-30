@@ -25,8 +25,28 @@
       <a href="/tools/equalizer" class="hover:text-white transition-colors no-underline">Parametric EQ</a>
     </nav>
 
-    <!-- Utility Action -->
-    <div class="flex items-center gap-3">
+    <!-- Utility Cluster (Theme Toggle + History + Identify CTA) -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      
+      <!-- Theme Switcher Button -->
+      <button
+        id="theme-toggle-btn"
+        class="bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white px-2.5 py-1 rounded-full border border-neutral-800 text-[12px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+        aria-label="Toggle Light and Dark Mode"
+        title="Toggle Theme"
+      >
+        <!-- Sun Icon (shown in dark mode) -->
+        <svg id="theme-icon-sun" class="w-3.5 h-3.5 text-amber-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon Icon (shown in light mode) -->
+        <svg id="theme-icon-moon" class="w-3.5 h-3.5 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+        <span id="theme-btn-text" class="hidden sm:inline text-[11px]">Theme</span>
+      </button>
+
+      <!-- History Button -->
       <button 
         id="toggle-history-btn" 
         class="bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white px-3 py-1 rounded-full border border-neutral-800 text-[12px] flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
@@ -38,9 +58,50 @@
         <span>History</span>
       </button>
 
-      <a href="/" class="btn-action-primary !text-[12px] !py-1 !px-3.5 !min-h-0 hidden sm:inline-flex">
+      <a href="/#recognizer" class="btn-action-primary !text-[12px] !py-1 !px-3.5 !min-h-0 hidden sm:inline-flex">
         Identify Song
       </a>
     </div>
   </div>
 </header>
+
+<script>
+  function setupThemeToggle() {
+    const btn = document.getElementById('theme-toggle-btn');
+    const sunIcon = document.getElementById('theme-icon-sun');
+    const moonIcon = document.getElementById('theme-icon-moon');
+    const btnText = document.getElementById('theme-btn-text');
+
+    function updateIcons() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (sunIcon && moonIcon) {
+        if (isDark) {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+          if (btnText) btnText.textContent = 'Light';
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+          if (btnText) btnText.textContent = 'Dark';
+        }
+      }
+    }
+
+    updateIcons();
+
+    btn?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('musicfinder_theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('musicfinder_theme', 'dark');
+      }
+      updateIcons();
+    });
+  }
+
+  setupThemeToggle();
+  document.addEventListener('astro:page-load', setupThemeToggle);
+</script>

@@ -4,38 +4,38 @@
 
 <!-- Slide-over History Drawer -->
 <div id="history-drawer-overlay" class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-  <div id="history-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white text-[#1d1d1f] shadow-2xl flex flex-col translate-x-full transition-transform duration-300 border-l border-[#e0e0e0]">
+  <div id="history-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-canvas text-ink shadow-2xl flex flex-col translate-x-full transition-transform duration-300 border-l border-adaptive">
     
     <!-- Drawer Header -->
-    <div class="p-6 bg-[#f5f5f7] border-b border-[#e0e0e0] flex items-center justify-between">
+    <div class="p-6 bg-parchment border-b border-adaptive flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-[#0066cc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-5 h-5 text-[#0066cc] dark:text-[#2997ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 class="font-display font-semibold text-lg tracking-tight">Recognition History</h3>
+        <h3 class="font-display font-semibold text-lg tracking-tight text-ink">Recognition History</h3>
       </div>
-      <button id="close-history-btn" class="w-8 h-8 rounded-full bg-white hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer border border-[#e0e0e0]">
+      <button id="close-history-btn" class="w-8 h-8 rounded-full bg-surface-card hover:bg-parchment text-ink flex items-center justify-center transition-colors cursor-pointer border border-adaptive">
         ✕
       </button>
     </div>
 
     <!-- Drawer Body -->
     <div class="flex-1 overflow-y-auto p-6 space-y-4" id="history-items-container">
-      <div class="text-center py-12 text-[#7a7a7a]" id="empty-history-msg">
-        <svg class="w-12 h-12 mx-auto text-neutral-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="text-center py-12 text-muted-adaptive" id="empty-history-msg">
+        <svg class="w-12 h-12 mx-auto text-neutral-300 dark:text-neutral-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2z" />
         </svg>
-        <p class="font-medium text-[#1d1d1f]">No songs identified yet</p>
-        <p class="text-sm mt-1">Uploaded or recorded songs will automatically be saved here.</p>
+        <p class="font-medium text-ink">No songs identified yet</p>
+        <p class="text-sm mt-1 text-muted-adaptive">Uploaded or recorded songs will automatically be saved here.</p>
       </div>
     </div>
 
     <!-- Drawer Footer -->
-    <div class="p-4 bg-[#f5f5f7] border-t border-[#e0e0e0] flex items-center justify-between">
-      <button id="clear-history-btn" class="text-xs text-red-600 hover:text-red-700 font-medium cursor-pointer">
+    <div class="p-4 bg-parchment border-t border-adaptive flex items-center justify-between">
+      <button id="clear-history-btn" class="text-xs text-red-600 dark:text-red-400 hover:underline font-medium cursor-pointer">
         Clear History
       </button>
-      <span class="text-xs text-[#7a7a7a]">Saved locally</span>
+      <span class="text-xs text-muted-adaptive">Saved locally</span>
     </div>
   </div>
 </div>
@@ -80,13 +80,13 @@
 
       history.forEach((item: any) => {
         const div = document.createElement('div');
-        div.className = 'history-card-item p-4 rounded-2xl bg-[#fafafc] border border-[#e0e0e0] flex items-center gap-4 hover:shadow-md transition-shadow';
+        div.className = 'history-card-item p-4 rounded-2xl bg-surface-card border border-adaptive flex items-center gap-4 hover:shadow-md transition-shadow';
         div.innerHTML = `
           <img src="${item.artwork || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150&auto=format&fit=crop&q=80'}" class="w-14 h-14 rounded-xl object-cover shadow-sm shrink-0" alt="Cover" />
           <div class="flex-1 min-w-0">
-            <h4 class="font-semibold text-sm truncate text-[#1d1d1f]">${item.title}</h4>
-            <p class="text-xs text-[#7a7a7a] truncate">${item.artist}</p>
-            <div class="flex items-center gap-2 mt-1 text-[11px] text-[#0066cc]">
+            <h4 class="font-semibold text-sm truncate text-ink">${item.title}</h4>
+            <p class="text-xs text-muted-adaptive truncate">${item.artist}</p>
+            <div class="flex items-center gap-2 mt-1 text-[11px] text-[#0066cc] dark:text-[#2997ff]">
               <span>${item.bpm || '120'} BPM</span>
               <span>•</span>
               <span>Key: ${item.key || 'C Maj'}</span>

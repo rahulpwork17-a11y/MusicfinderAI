@@ -2,32 +2,32 @@
 // src/components/SongRecognitionHub.astro
 ---
 
-<section id="recognizer" class="py-16 px-4 md:px-8 bg-white border-b border-[#e0e0e0]">
+<section id="recognizer" class="py-16 px-4 md:px-8 bg-canvas border-b border-adaptive">
   <div class="max-w-[1020px] mx-auto">
     
     <!-- Hero Title Header (Apple Tight Display) -->
     <div class="text-center mb-10">
-      <span class="text-[#0066cc] font-semibold text-[15px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
-      <h1 class="font-display font-semibold text-[40px] md:text-[56px] leading-[1.07] tracking-[-0.028em] text-[#1d1d1f] mb-4">
+      <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-[15px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
+      <h1 class="font-display font-semibold text-[40px] md:text-[56px] leading-[1.07] tracking-[-0.028em] text-ink mb-4">
         Identify Any Song. In Seconds.
       </h1>
-      <p class="text-[20px] md:text-[24px] font-normal text-[#7a7a7a] max-w-2xl mx-auto leading-relaxed">
+      <p class="text-[20px] md:text-[24px] font-normal text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
         Upload audio, video clips, paste media links, or record live sound. Instant identification with built-in audio cleanup tools.
       </p>
     </div>
 
     <!-- Main Card Engine Container -->
-    <div class="bg-[#fafafc] rounded-[24px] border border-[#e0e0e0] p-6 md:p-10 shadow-sm transition-all" id="hub-container">
+    <div class="bg-surface-card rounded-[24px] border border-adaptive p-6 md:p-10 shadow-sm transition-all" id="hub-container">
       
       <!-- Input Mode Tabs (Pill style) -->
-      <div class="flex items-center justify-center gap-2 mb-8 bg-white p-1.5 rounded-full border border-[#e0e0e0] max-w-md mx-auto shadow-xs">
-        <button id="tab-upload-btn" class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#1d1d1f] text-white">
+      <div class="flex items-center justify-center gap-2 mb-8 bg-canvas p-1.5 rounded-full border border-adaptive max-w-md mx-auto shadow-xs">
+        <button id="tab-upload-btn" class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#0066cc] text-white">
           📁 Upload File
         </button>
-        <button id="tab-url-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-[#1d1d1f] hover:bg-neutral-100">
+        <button id="tab-url-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment">
           🔗 Paste URL
         </button>
-        <button id="tab-record-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-[#1d1d1f] hover:bg-neutral-100">
+        <button id="tab-record-btn" class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment">
           🎙️ Live Mic
         </button>
       </div>
@@ -36,20 +36,20 @@
       <div id="panel-upload" class="tab-panel space-y-6">
         <div 
           id="dropzone" 
-          class="border-2 border-dashed border-[#d2d2d7] hover:border-[#0066cc] bg-white rounded-[20px] p-8 md:p-12 text-center transition-all cursor-pointer relative group"
+          class="border-2 border-dashed border-adaptive hover:border-[#0066cc] bg-canvas rounded-[20px] p-8 md:p-12 text-center transition-all cursor-pointer relative group"
         >
           <input type="file" id="audio-file-input" accept="audio/*,video/*,.mp3,.wav,.flac,.m4a,.aac,.ogg,.mp4,.webm,.mov,.avi" class="hidden" />
           
-          <div class="w-16 h-16 rounded-full bg-[#f5f5f7] group-hover:bg-[#0066cc]/10 text-[#0066cc] mx-auto flex items-center justify-center mb-4 transition-colors">
+          <div class="w-16 h-16 rounded-full bg-parchment group-hover:bg-[#0066cc]/10 text-[#0066cc] dark:text-[#2997ff] mx-auto flex items-center justify-center mb-4 transition-colors">
             <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
           </div>
 
-          <h3 class="font-display font-semibold text-[21px] text-[#1d1d1f] mb-1">
+          <h3 class="font-display font-semibold text-[21px] text-ink mb-1">
             Drag and drop your audio or video file
           </h3>
-          <p class="text-sm text-[#7a7a7a] mb-4">
+          <p class="text-sm text-muted-adaptive mb-4">
             Supports MP3, WAV, FLAC, M4A, OGG, MP4, WebM, MOV & more
           </p>
 
@@ -61,8 +61,8 @@
 
       <!-- TAB 2: PASTE URL -->
       <div id="panel-url" class="tab-panel hidden space-y-6">
-        <div class="bg-white p-8 rounded-[20px] border border-[#e0e0e0] text-center space-y-4">
-          <label for="url-input" class="block font-semibold text-lg text-[#1d1d1f]">
+        <div class="bg-canvas p-8 rounded-[20px] border border-adaptive text-center space-y-4">
+          <label for="url-input" class="block font-semibold text-lg text-ink">
             Paste Audio / Video Media Link
           </label>
           <div class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
@@ -70,30 +70,30 @@
               type="url" 
               id="url-input" 
               placeholder="https://example.com/audio-sample.mp3 or video URL" 
-              class="flex-1 px-5 py-3 rounded-full border border-[#d2d2d7] focus:border-[#0066cc] outline-none text-sm bg-[#fafafc]"
+              class="flex-1 px-5 py-3 rounded-full border border-adaptive focus:border-[#0066cc] outline-none text-sm bg-surface-card text-ink"
             />
             <button id="load-url-btn" class="btn-action-primary !py-3 !px-6 text-sm">
               Load & Analyze
             </button>
           </div>
-          <p class="text-xs text-[#7a7a7a]">Supported platforms: Direct audio/video links, podcast streams, public MP3/MP4 media URLs.</p>
+          <p class="text-xs text-muted-adaptive">Supported platforms: Direct audio/video links, podcast streams, public MP3/MP4 media URLs.</p>
         </div>
       </div>
 
       <!-- TAB 3: LIVE MICROPHONE RECORDING -->
       <div id="panel-record" class="tab-panel hidden space-y-6">
-        <div class="bg-white p-8 md:p-12 rounded-[20px] border border-[#e0e0e0] text-center space-y-6">
-          <div id="record-status-ring" class="w-24 h-24 rounded-full bg-red-50 text-red-600 mx-auto flex items-center justify-center border-4 border-red-100 transition-all duration-300">
+        <div class="bg-canvas p-8 md:p-12 rounded-[20px] border border-adaptive text-center space-y-6">
+          <div id="record-status-ring" class="w-24 h-24 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 mx-auto flex items-center justify-center border-4 border-red-100 dark:border-red-900/50 transition-all duration-300">
             <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
             </svg>
           </div>
 
           <div>
-            <h3 id="record-status-title" class="font-display font-semibold text-[22px] text-[#1d1d1f]">
+            <h3 id="record-status-title" class="font-display font-semibold text-[22px] text-ink">
               Ready to Listen
             </h3>
-            <p id="record-status-desc" class="text-sm text-[#7a7a7a] mt-1">
+            <p id="record-status-desc" class="text-sm text-muted-adaptive mt-1">
               Click record and play sound nearby (TV, radio, cafe, speaker)
             </p>
           </div>
@@ -108,16 +108,16 @@
       </div>
 
       <!-- ACTIVE AUDIO WORKBENCH (Hidden until audio loaded) -->
-      <div id="audio-workbench" class="hidden mt-6 bg-white p-6 md:p-8 rounded-[20px] border border-[#e0e0e0] space-y-6">
+      <div id="audio-workbench" class="hidden mt-6 bg-canvas p-6 md:p-8 rounded-[20px] border border-adaptive space-y-6">
         <!-- Loaded File Details & Waveform -->
-        <div class="flex items-center justify-between pb-4 border-b border-[#e0e0e0]">
+        <div class="flex items-center justify-between pb-4 border-b border-adaptive">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-[#0066cc]/10 text-[#0066cc] flex items-center justify-center font-bold">
+            <div class="w-10 h-10 rounded-xl bg-[#0066cc]/10 text-[#0066cc] dark:text-[#2997ff] flex items-center justify-center font-bold">
               ♫
             </div>
             <div>
-              <h4 id="loaded-filename" class="font-semibold text-base text-[#1d1d1f] truncate max-w-xs md:max-w-md">Audio Track</h4>
-              <p id="loaded-filesize" class="text-xs text-[#7a7a7a]">0:00 / 0:00 • Ready</p>
+              <h4 id="loaded-filename" class="font-semibold text-base text-ink truncate max-w-xs md:max-w-md">Audio Track</h4>
+              <p id="loaded-filesize" class="text-xs text-muted-adaptive">0:00 / 0:00 • Ready</p>
             </div>
           </div>
           
@@ -127,7 +127,7 @@
         </div>
 
         <!-- Live WebAudio Waveform Canvas -->
-        <div class="relative bg-[#1d1d1f] rounded-xl p-4 overflow-hidden">
+        <div class="relative bg-black p-4 rounded-xl overflow-hidden border border-adaptive">
           <canvas id="waveform-canvas" class="w-full h-24 rounded-lg bg-black/40"></canvas>
           <div class="flex items-center justify-between text-xs text-neutral-400 mt-2">
             <span id="time-current">0:00</span>
@@ -136,11 +136,11 @@
         </div>
 
         <!-- Interactive Scrub / Start Time Slider & Controls -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#fafafc] p-4 rounded-xl border border-[#e0e0e0]">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-surface-card p-4 rounded-xl border border-adaptive">
           <div>
-            <label class="block text-xs font-semibold text-[#1d1d1f] mb-1">Fingerprint Range Crop</label>
+            <label class="block text-xs font-semibold text-ink mb-1">Fingerprint Range Crop</label>
             <input type="range" id="crop-slider" min="0" max="100" value="0" class="w-full accent-[#0066cc]" />
-            <div class="flex justify-between text-[11px] text-[#7a7a7a] mt-1">
+            <div class="flex justify-between text-[11px] text-muted-adaptive mt-1">
               <span>Start: <strong id="crop-start-label">0s</strong></span>
               <span>Duration: <strong>10s Sample</strong></span>
             </div>
@@ -166,7 +166,7 @@
       </div>
 
       <!-- MATCH RESULT MODAL / DISPLAY CARD (Hidden until recognition done) -->
-      <div id="match-result-card" class="hidden mt-8 bg-gradient-to-br from-[#1d1d1f] to-[#272729] text-white p-8 rounded-[24px] shadow-2xl border border-neutral-800 space-y-8 animate-fade-in">
+      <div id="match-result-card" class="hidden mt-8 bg-gradient-to-br from-[#1d1d1f] to-[#272729] dark:from-[#272729] dark:to-[#161617] text-white p-8 rounded-[24px] shadow-2xl border border-neutral-800 space-y-8 animate-fade-in">
         
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
           <!-- Album Art -->
@@ -271,13 +271,13 @@
     function switchTab(activeTab: HTMLElement, activePanel: HTMLElement) {
       [tabUpload, tabUrl, tabRecord].forEach(t => {
         if (!t) return;
-        t.classList.remove('bg-[#1d1d1f]', 'text-white');
-        t.classList.add('text-[#1d1d1f]', 'hover:bg-neutral-100');
+        t.classList.remove('bg-[#0066cc]', 'text-white');
+        t.classList.add('text-ink', 'hover:bg-parchment');
       });
       [panelUpload, panelUrl, panelRecord].forEach(p => p?.classList.add('hidden'));
 
-      activeTab.classList.add('bg-[#1d1d1f]', 'text-white');
-      activeTab.classList.remove('text-[#1d1d1f]', 'hover:bg-neutral-100');
+      activeTab.classList.add('bg-[#0066cc]', 'text-white');
+      activeTab.classList.remove('text-ink', 'hover:bg-parchment');
       activePanel.classList.remove('hidden');
     }
 
@@ -313,7 +313,7 @@
       canvas.height = 96;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#0066cc';
+      ctx.fillStyle = '#2997ff';
 
       const bars = 80;
       const barWidth = canvas.width / bars;

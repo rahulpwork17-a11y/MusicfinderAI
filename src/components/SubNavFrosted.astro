@@ -22,13 +22,13 @@ const tools = [
 ];
 ---
 
-<div class="sticky top-[44px] z-40 h-[52px] frosted-glass border-b border-[#e0e0e0] flex items-center px-4 md:px-8">
+<div class="sticky top-[44px] z-40 h-[52px] frosted-glass border-b border-adaptive flex items-center px-4 md:px-8">
   <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
     <!-- Category Tagline / Page Title -->
     <div class="flex items-center gap-3 shrink-0">
-      <span class="font-display font-semibold text-[20px] text-[#1d1d1f] tracking-tight">{title}</span>
+      <span class="font-display font-semibold text-[20px] text-ink tracking-tight">{title}</span>
       <span class="text-neutral-400 text-sm hidden lg:inline">|</span>
-      <span class="text-neutral-500 text-xs font-normal hidden lg:inline">Audio Intelligence & WebAudio DAW Studio</span>
+      <span class="text-neutral-500 dark:text-neutral-400 text-xs font-normal hidden lg:inline">Audio Intelligence & WebAudio DAW Studio</span>
     </div>
 
     <!-- Quick Pill Nav Items -->
@@ -40,8 +40,8 @@ const tools = [
             href={t.href}
             class={`px-3 py-1 text-[13px] rounded-full transition-all whitespace-nowrap no-underline ${
               isActive
-                ? "bg-[#1d1d1f] text-white font-medium shadow-sm"
-                : "bg-white/80 hover:bg-white text-[#1d1d1f] hover:text-[#0066cc] border border-[#e0e0e0]"
+                ? "bg-[#0066cc] text-white font-medium shadow-sm"
+                : "bg-surface-card hover:bg-canvas text-ink hover:text-[#0066cc] border border-adaptive"
             }`}
           >
             {t.name}
@@ -52,7 +52,7 @@ const tools = [
 
     <!-- Primary Action Pill -->
     <div class="shrink-0 hidden md:flex items-center">
-      <a href="/#recognizer" class="bg-[#0066cc] hover:bg-[#0071e3] text-white text-[13px] font-medium px-4 py-1.5 rounded-full transition-all active:scale-95 no-underline flex items-center gap-1.5 shadow-sm">
+      <a href="/#recognizer" class="btn-action-primary !text-[13px] font-medium !px-4 !py-1.5 no-underline flex items-center gap-1.5 shadow-sm">
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
         </svg>

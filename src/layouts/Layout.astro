@@ -40,8 +40,21 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Anti-Flicker Theme Initialization -->
+    <script is:inline>
+      (function() {
+        const storedTheme = localStorage.getItem('musicfinder_theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-white text-[#1d1d1f] antialiased selection:bg-[#0066cc] selection:text-white flex flex-col min-h-screen">
+  <body class="bg-canvas text-ink antialiased selection:bg-[#0066cc] selection:text-white flex flex-col min-h-screen transition-colors duration-250">
     <!-- Top Black Bar Navigation -->
     <GlobalNav />
 
