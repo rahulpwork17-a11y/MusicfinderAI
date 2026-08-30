@@ -52,7 +52,6 @@ const tools = [
     <div class="max-w-[1440px] mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="tools-grid">
         {tools.map((t) => (
-          <!-- data-category enables JS filtering -->
           <div
             data-category={t.category}
             class="tool-card bg-surface-card rounded-[20px] p-8 border border-adaptive hover:border-[#0066cc] dark:hover:border-[#2997ff] hover:shadow-lg transition-all flex flex-col justify-between group"

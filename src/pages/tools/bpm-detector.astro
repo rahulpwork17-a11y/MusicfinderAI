@@ -16,17 +16,18 @@ const controls = [
     badge="Rhythm Analysis"
     controls={controls}
     exportFormats={["CSV BPM Report", "JSON Specs"]}
+    showSlotInitially={true}
   >
     <!-- Tap Tempo Tapper Box -->
-    <div class="mt-6 bg-[#fafafc] p-8 rounded-2xl border border-[#e0e0e0] text-center space-y-4">
-      <h4 class="font-semibold text-lg text-[#1d1d1f]">Manual Tap-Tempo Counter</h4>
-      <p class="text-xs text-[#7a7a7a]">Tap the button or press spacebar in rhythm with the music</p>
+    <div class="mt-6 bg-canvas p-8 rounded-2xl border border-adaptive text-center space-y-4 shadow-sm">
+      <h4 class="font-semibold text-lg text-ink">Manual Tap-Tempo Counter</h4>
+      <p class="text-xs text-muted-adaptive">Tap the button or press spacebar in rhythm with the music</p>
       
-      <div class="text-5xl font-display font-bold text-[#0066cc]" id="tap-bpm-value">
-        124 <span class="text-base font-normal text-neutral-400">BPM</span>
+      <div class="text-5xl font-display font-bold text-[#0066cc] dark:text-[#2997ff]" id="tap-bpm-value">
+        124 <span class="text-base font-normal text-muted-adaptive">BPM</span>
       </div>
 
-      <button id="tap-btn" class="btn-action-primary !py-4 !px-12 !text-lg shadow-md cursor-pointer">
+      <button id="tap-btn" class="btn-action-primary !py-4 !px-12 !text-lg shadow-md cursor-pointer select-none">
         🥁 TAP HERE TO COUNT BPM
       </button>
     </div>
@@ -38,7 +39,7 @@ const controls = [
       const tapBtn = document.getElementById('tap-btn');
       const bpmVal = document.getElementById('tap-bpm-value');
 
-      tapBtn?.addEventListener('click', () => {
+      function handleTap() {
         const now = Date.now();
         taps.push(now);
         if (taps.length > 8) taps.shift();
@@ -50,9 +51,25 @@ const controls = [
           }
           const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
           const bpm = Math.round(60000 / avgInterval);
-          if (bpmVal) bpmVal.innerHTML = `${bpm} <span class="text-base font-normal text-neutral-400">BPM</span>`;
+          if (bpmVal) bpmVal.innerHTML = `${bpm} <span class="text-base font-normal text-muted-adaptive">BPM</span>`;
         }
-      });
+      }
+
+      tapBtn?.addEventListener('click', handleTap);
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.code === 'Space') {
+          const active = document.activeElement;
+          if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')) {
+            return;
+          }
+          e.preventDefault();
+          tapBtn?.focus();
+          handleTap();
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
     }
     setupBpmTap();
     document.addEventListener('astro:page-load', setupBpmTap);
