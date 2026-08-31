@@ -2,10 +2,11 @@
 // src/components/Footer.astro
 ---
 
-<footer class="bg-parchment text-ink border-t border-adaptive pt-16 pb-12 px-6 md:px-12 text-[14px]">
+<!-- {component.footer}: bg {colors.canvas-parchment}, text {colors.ink-muted-80}, padding 64px, {typography.dense-link} for columns -->
+<footer class="bg-parchment text-ink border-t border-adaptive px-6 md:px-12" style="padding-top: 64px; padding-bottom: 64px;">
   <div class="max-w-[1440px] mx-auto">
-    <!-- Top Specifications & Privacy Note -->
-    <div class="pb-8 mb-8 border-b border-adaptive text-[12px] text-muted-adaptive leading-relaxed">
+    <!-- Privacy note — {typography.fine-print}: 12px / 400 / 1.0 / -0.12px, {colors.ink-muted-48} -->
+    <div class="pb-8 mb-8 border-b border-adaptive leading-relaxed" style="font-size: 12px; line-height: 1.43; letter-spacing: -0.12px; color: var(--color-ink-muted-48);">
       <p class="mb-2">
         * Music Finder AI provides high-precision acoustic audio fingerprinting and recognition. All file uploads and audio streams are processed securely and immediately purged. Local preprocessing runs directly on client hardware for maximum speed and complete privacy.
       </p>
@@ -17,8 +18,9 @@
     <!-- 4-Column Link Hierarchy -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
       <!-- Column 1: AI Recognizer -->
+      <!-- Column headings: {typography.caption-strong}: 14px / 600 / 1.29 / -0.224px -->
       <div>
-        <h4 class="font-semibold text-[14px] text-ink mb-3">Song Recognition</h4>
+        <h4 class="text-ink mb-3" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px;">Song Recognition</h4>
         <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
           <li><a href="/#recognizer" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Identify Song by Audio</a></li>
           <li><a href="/#recognizer" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Identify Song by Video</a></li>
@@ -30,7 +32,7 @@
 
       <!-- Column 2: Technology & Features -->
       <div>
-        <h4 class="font-semibold text-[14px] text-ink mb-3">Features & Tech</h4>
+        <h4 class="text-ink mb-3" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px;">Features &amp; Tech</h4>
         <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
           <li><a href="/technology" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Acoustic Fingerprinting</a></li>
           <li><a href="/technology" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Real-time Spectrogram FFT</a></li>
@@ -42,7 +44,7 @@
 
       <!-- Column 3: Streaming Integrations -->
       <div>
-        <h4 class="font-semibold text-[14px] text-ink mb-3">Integrations</h4>
+        <h4 class="text-ink mb-3" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px;">Integrations</h4>
         <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
           <li><a href="https://spotify.com" target="_blank" rel="noopener" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Spotify Direct Link</a></li>
           <li><a href="https://music.apple.com" target="_blank" rel="noopener" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Apple Music Sync</a></li>
@@ -54,7 +56,7 @@
 
       <!-- Column 4: Platform & Legal -->
       <div>
-        <h4 class="font-semibold text-[14px] text-ink mb-3">Music Finder AI</h4>
+        <h4 class="text-ink mb-3" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px;">Music Finder AI</h4>
         <ul class="list-none p-0 m-0 text-[14px] leading-[2.41]">
           <li><a href="/#faq" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">FAQ & How It Works</a></li>
           <li><a href="/technology" class="text-ink hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors no-underline">Engine Specifications</a></li>
@@ -64,8 +66,8 @@
       </div>
     </div>
 
-    <!-- Bottom Legal Bar -->
-    <div class="pt-6 border-t border-adaptive flex flex-col md:flex-row items-center justify-between gap-4 text-[12px] text-muted-adaptive">
+    <!-- Legal bar — {typography.fine-print}: 12px / 400 / 1.0 / -0.12px, {colors.ink-muted-48} -->
+    <div class="pt-6 border-t border-adaptive flex flex-col md:flex-row items-center justify-between gap-4" style="font-size: 12px; letter-spacing: -0.12px; color: var(--color-ink-muted-48);">
       <div>
         © 2026 Music Finder AI. All rights reserved. Built with Astro & Acoustic AI.
       </div>

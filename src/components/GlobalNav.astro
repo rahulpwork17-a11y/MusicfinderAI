@@ -7,105 +7,204 @@ function isActive(href: string) {
 }
 ---
 
-<header class="bg-black text-white h-[44px] sticky top-0 z-50 flex items-center px-4 md:px-8 border-b border-neutral-900 text-[12px] font-normal tracking-tight">
-  <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between">
-    <!-- Brand Logo -->
-    <a href="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity no-underline">
-      <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-[#0066cc] via-indigo-500 to-purple-500 flex items-center justify-center p-[1px]">
-        <div class="w-full h-full bg-black rounded-full flex items-center justify-center">
-          <svg class="w-3.5 h-3.5 text-[#2997ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2z" />
-          </svg>
-        </div>
+<!-- 
+  global-nav: {colors.surface-black} bg, 44px height, 12px nav-link typography.
+  Nav collapses to hamburger at 833px (tablet portrait) per design.md §Responsive.
+  Single Action Blue (#0066cc) — no second accent, no gradients on chrome.
+-->
+<header
+  id="global-nav"
+  class="bg-[#000000] text-white sticky top-0 z-50 border-b border-[#1a1a1a]"
+  style="height: 44px;"
+>
+  <div class="max-w-[1440px] w-full h-full mx-auto flex items-center justify-between px-5 md:px-8">
+
+    <!-- Brand Logo — solid single-color mark, no decorative gradients -->
+    <a href="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity no-underline flex-shrink-0">
+      <!-- Solid blue circle mark — {colors.primary} only, no gradient ring -->
+      <div class="w-6 h-6 rounded-full bg-[#0066cc] flex items-center justify-center">
+        <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2z" />
+        </svg>
       </div>
-      <span class="font-semibold text-[15px] tracking-tight">Music Finder <span class="text-[#2997ff] font-bold">AI</span></span>
+      <!-- 
+        "AI" text: {colors.primary-on-dark} = #2997ff is correct on dark nav surface.
+        Weight: font-semibold (600) — design.md weight ladder is 300/400/600 only. 
+        "font-bold" (700) is reserved for {typography.tagline} only.
+      -->
+      <span class="font-semibold text-[15px] tracking-[-0.12px]">
+        Music Finder <span class="text-[#2997ff] font-semibold">AI</span>
+      </span>
     </a>
 
-    <!-- Nav Links -->
-    <nav class="hidden md:flex items-center gap-8 text-neutral-300">
-      <a href="/#recognizer" class={`transition-colors no-underline ${isActive('/#recognizer') || currentPath === '/' ? 'text-white font-medium' : 'hover:text-white'}`}>Recognizer</a>
-      <a href="/technology" class={`transition-colors no-underline ${isActive('/technology') ? 'text-[#2997ff] font-medium' : 'hover:text-white'}`}>Technology</a>
-      <a href="/comparison" class={`transition-colors no-underline ${isActive('/comparison') ? 'text-[#2997ff] font-medium' : 'hover:text-white'}`}>Comparison</a>
+    <!-- 
+      Nav Links — hidden below 834px (design.md: global nav collapses at 834px).
+      Tailwind's `lg` breakpoint is 1024px. We use a custom inline media approach
+      via the nav-desktop class defined in the <style> block below.
+    -->
+    <nav id="nav-desktop" class="nav-desktop-links items-center gap-8 text-[12px] text-neutral-400 tracking-[-0.12px]">
+      <a
+        href="/#recognizer"
+        class={`transition-colors no-underline ${currentPath === '/' ? 'text-white' : 'hover:text-white'}`}
+      >Recognizer</a>
+      <a
+        href="/technology"
+        class={`transition-colors no-underline ${isActive('/technology') ? 'text-[#2997ff]' : 'hover:text-white'}`}
+      >Technology</a>
+      <a
+        href="/comparison"
+        class={`transition-colors no-underline ${isActive('/comparison') ? 'text-[#2997ff]' : 'hover:text-white'}`}
+      >Comparison</a>
       <a href="/#faq" class="hover:text-white transition-colors no-underline">FAQ</a>
     </nav>
 
-    <!-- Utility Cluster (Theme Toggle + History + Identify CTA) -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      
-      <!-- Theme Switcher Button -->
+    <!-- Utility Cluster: Theme Toggle + History + Primary CTA + Hamburger -->
+    <div class="flex items-center gap-2">
+
+      <!-- Theme Toggle — {component.button-dark-utility}: ink bg, rounded-sm (8px), 8px×15px padding -->
       <button
         id="theme-toggle-btn"
-        class="bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white px-2.5 py-1 rounded-full border border-neutral-800 text-[12px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+        class="btn-dark-utility hidden sm:inline-flex"
         aria-label="Toggle Light and Dark Mode"
         title="Toggle Theme"
       >
-        <!-- Sun Icon (shown in dark mode) -->
-        <svg id="theme-icon-sun" class="w-3.5 h-3.5 text-amber-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Sun (shown in dark mode) -->
+        <svg id="theme-icon-sun" class="w-3.5 h-3.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
-        <!-- Moon Icon (shown in light mode) -->
-        <svg id="theme-icon-moon" class="w-3.5 h-3.5 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Moon (shown in light mode) -->
+        <svg id="theme-icon-moon" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
-        <span id="theme-btn-text" class="hidden sm:inline text-[11px]">Theme</span>
+        <span id="theme-btn-text" class="hidden sm:inline text-[12px]">Dark</span>
       </button>
 
-      <!-- History Button -->
-      <button 
-        id="toggle-history-btn" 
-        class="bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white px-3 py-1 rounded-full border border-neutral-800 text-[12px] flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+      <!-- History — {component.button-dark-utility} -->
+      <button
+        id="toggle-history-btn"
+        class="btn-dark-utility"
         title="View Recognition History"
       >
-        <svg class="w-3.5 h-3.5 text-[#2997ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span>History</span>
+        <span class="hidden sm:inline">History</span>
       </button>
 
-      <a href="/#recognizer" class="btn-action-primary !text-[12px] !py-1 !px-3.5 !min-h-0 hidden sm:inline-flex">
+      <!-- Primary CTA — {component.button-primary}: pill, Action Blue, always visible on desktop -->
+      <a
+        href="/#recognizer"
+        class="btn-action-primary nav-cta-desktop"
+        style="font-size: 12px; padding: 6px 14px; min-height: 0;"
+      >
         Identify Song
       </a>
+
+      <!-- Hamburger — visible at ≤833px; desktop links hidden below that -->
+      <button
+        id="hamburger-btn"
+        class="hamburger-btn btn-dark-utility sm:hidden"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Menu — slides down below nav bar, full-width, dark surface -->
+  <div
+    id="mobile-menu"
+    class="hidden absolute top-[44px] left-0 right-0 bg-[#000000] border-b border-[#2a2a2c] z-40"
+  >
+    <nav class="max-w-[1440px] mx-auto px-5 py-4 flex flex-col gap-1 text-[14px] text-neutral-300 tracking-[-0.224px]">
+      <a href="/" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${currentPath === '/' ? 'text-white font-semibold' : 'hover:text-white'}`}>Recognizer</a>
+      <a href="/technology" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${isActive('/technology') ? 'text-[#2997ff]' : 'hover:text-white'}`}>Technology</a>
+      <a href="/comparison" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${isActive('/comparison') ? 'text-[#2997ff]' : 'hover:text-white'}`}>Comparison</a>
+      <a href="/#faq" class="py-2.5 no-underline hover:text-white transition-colors">FAQ</a>
+      <div class="pt-3">
+        <a href="/#recognizer" class="btn-action-primary w-full justify-center" style="font-size: 14px;">Identify Song</a>
+      </div>
+    </nav>
   </div>
 </header>
 
+<style>
+  /*
+    Custom 834px breakpoint — design.md specifies nav collapses at "834px and below".
+    Tailwind's md=768px and lg=1024px; we need exactly 834px.
+  */
+  .nav-desktop-links {
+    display: none;
+  }
+  .hamburger-btn {
+    display: inline-flex;
+  }
+  .nav-cta-desktop {
+    display: none;
+  }
+
+  @media (min-width: 834px) {
+    .nav-desktop-links {
+      display: flex;
+    }
+    .hamburger-btn {
+      display: none !important;
+    }
+    .nav-cta-desktop {
+      display: inline-flex;
+    }
+  }
+</style>
+
 <script>
-  function setupThemeToggle() {
+  function setupNav() {
+    // --- Theme toggle ---
     const btn = document.getElementById('theme-toggle-btn');
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
     const btnText = document.getElementById('theme-btn-text');
 
-    function updateIcons() {
+    function updateThemeIcons() {
       const isDark = document.documentElement.classList.contains('dark');
       if (sunIcon && moonIcon) {
-        if (isDark) {
-          sunIcon.classList.remove('hidden');
-          moonIcon.classList.add('hidden');
-          if (btnText) btnText.textContent = 'Light';
-        } else {
-          sunIcon.classList.add('hidden');
-          moonIcon.classList.remove('hidden');
-          if (btnText) btnText.textContent = 'Dark';
-        }
+        sunIcon.classList.toggle('hidden', !isDark);
+        moonIcon.classList.toggle('hidden', isDark);
       }
+      if (btnText) btnText.textContent = isDark ? 'Light' : 'Dark';
     }
 
-    updateIcons();
+    updateThemeIcons();
 
     btn?.addEventListener('click', () => {
       const isDark = document.documentElement.classList.contains('dark');
-      if (isDark) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('musicfinder_theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('musicfinder_theme', 'dark');
-      }
-      updateIcons();
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('musicfinder_theme', isDark ? 'light' : 'dark');
+      updateThemeIcons();
+    });
+
+    // --- Hamburger menu ---
+    const hamburger = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.contains('hidden') === false;
+      mobileMenu?.classList.toggle('hidden', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+
+    // Close mobile menu on nav link click
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        hamburger?.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
-  setupThemeToggle();
-  document.addEventListener('astro:page-load', setupThemeToggle);
+  setupNav();
+  document.addEventListener('astro:page-load', setupNav);
 </script>

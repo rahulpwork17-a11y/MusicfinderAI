@@ -1,42 +1,115 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKEN SYSTEM — design.md (Apple-inspired)
+   Single source of truth for all colors, spacing, and radii.
+   Never inline hex values in components — use these variables.
+   ============================================================ */
+
 @layer base {
   :root {
-    --color-primary: #0066cc;
-    --color-primary-focus: #0071e3;
-    --color-primary-on-dark: #2997ff;
+    /* --- Brand & Accent --- */
+    --color-primary: #0066cc;          /* Action Blue — the ONLY interactive color */
+    --color-primary-focus: #0071e3;    /* Focus ring blue */
+    --color-primary-on-dark: #2997ff;  /* Sky Link Blue — dark-tile variant only */
 
-    --color-canvas: #ffffff;
-    --color-canvas-parchment: #f5f5f7;
-    --color-surface-card: #fafafc;
-    --color-text-ink: #1d1d1f;
-    --color-text-muted: #7a7a7a;
-    --color-border-line: #e0e0e0;
-    --shadow-product: 3px 5px 30px rgba(0, 0, 0, 0.22);
+    /* --- Text / Ink --- */
+    --color-ink: #1d1d1f;              /* Near-black — all headlines + body on light */
+    --color-body: #1d1d1f;             /* Same as ink; Apple uses one near-black */
+    --color-body-on-dark: #ffffff;     /* All text on dark tiles + global nav */
+    --color-body-muted: #cccccc;       /* Secondary copy on dark tiles */
+    --color-ink-muted-80: #333333;     /* Body text on pearl button surfaces */
+    --color-ink-muted-48: #7a7a7a;     /* Disabled text + legal fine-print */
+
+    /* --- Surfaces / Canvas --- */
+    --color-canvas: #ffffff;           /* Pure white — dominant canvas */
+    --color-canvas-parchment: #f5f5f7; /* Apple off-white — alternating light tiles */
+    --color-surface-pearl: #fafafc;    /* Near-white — secondary ghost buttons */
+    --color-surface-tile-1: #272729;   /* Primary dark tile */
+    --color-surface-tile-2: #2a2a2c;   /* Dark tile micro-step lighter */
+    --color-surface-tile-3: #252527;   /* Dark tile micro-step darker */
+    --color-surface-black: #000000;    /* Global nav, video backgrounds */
+    --color-surface-chip-translucent: #d2d2d7; /* Circular icon button base */
+
+    /* --- Hairlines & Borders --- */
+    --color-divider-soft: #f0f0f0;    /* Secondary button ring (rgba(0,0,0,0.04) in prod) */
+    --color-hairline: #e0e0e0;        /* 1px hairline on utility cards + chips */
+
+    /* --- On-color text --- */
+    --color-on-primary: #ffffff;
+    --color-on-dark: #ffffff;
+
+    /* --- Elevation --- */
+    --shadow-product: 3px 5px 30px rgba(0, 0, 0, 0.22); /* Only used on product imagery */
+
+    /* --- Spacing Scale (design.md §Layout) --- */
+    --spacing-xxs: 4px;
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 17px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    --spacing-section: 80px;
+
+    /* --- Border Radius Scale (design.md §Shapes) --- */
+    --rounded-none: 0px;
+    --rounded-xs: 5px;
+    --rounded-sm: 8px;
+    --rounded-md: 11px;
+    --rounded-lg: 18px;
+    --rounded-pill: 9999px;
+    --rounded-full: 9999px;
+
+    /* --- Legacy aliases for existing component class references --- */
+    --color-text-ink: var(--color-ink);
+    --color-text-muted: var(--color-ink-muted-48);
+    --color-border-line: var(--color-hairline);
+    --color-surface-card: var(--color-surface-pearl);
   }
 
+  /* Dark mode overrides — only surfaces + text flip; Action Blue stays */
   html.dark {
-    --color-primary: #2997ff;
+    --color-primary: #2997ff;           /* Sky Link Blue for dark surfaces */
     --color-primary-focus: #0071e3;
-    --color-primary-on-dark: #2997ff;
+
+    --color-ink: #ffffff;
+    --color-body: #ffffff;
+    --color-body-muted: #cccccc;
+    --color-ink-muted-80: #ebebf0;
+    --color-ink-muted-48: #98989d;
 
     --color-canvas: #161617;
     --color-canvas-parchment: #1d1d1f;
-    --color-surface-card: #272729;
-    --color-text-ink: #ffffff;
-    --color-text-muted: #a1a1a6;
-    --color-border-line: #38383a;
+    --color-surface-pearl: #2c2c2e;
+    --color-surface-tile-1: #1c1c1e;
+    --color-surface-tile-2: #2c2c2e;
+    --color-surface-tile-3: #141414;
+    --color-divider-soft: #3a3a3c;
+    --color-hairline: #38383a;
+
     --shadow-product: 3px 5px 30px rgba(0, 0, 0, 0.6);
+
+    /* Legacy aliases */
+    --color-text-ink: var(--color-ink);
+    --color-text-muted: var(--color-ink-muted-48);
+    --color-border-line: var(--color-hairline);
+    --color-surface-card: var(--color-surface-pearl);
   }
 
+  /* --- Base HTML/Body --- */
   html {
-    font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--color-text-ink);
-    background-color: var(--color-canvas);
-    font-size: 17px;
+    /* SF Pro Text is the body face; Inter is the approved open-source substitute */
+    font-family: "SF Pro Text", "Inter", -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;        /* {typography.body} — NOT 16px per design.md §Typography */
+    font-weight: 400;
     line-height: 1.47;
-    letter-spacing: -0.374px;
+    letter-spacing: -0.374px; /* Absolute px per spec — NOT em */
+    color: var(--color-ink);
+    background-color: var(--color-canvas);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
@@ -45,158 +118,391 @@
     padding: 0;
     overflow-x: hidden;
     background-color: var(--color-canvas);
-    color: var(--color-text-ink);
+    color: var(--color-ink);
   }
 }
 
-/* Custom Typography & Utility Classes per DESIGN.md */
+/* ============================================================
+   TYPOGRAPHY UTILITIES — design.md §Typography
+   All letter-spacing values are ABSOLUTE px, never em.
+   ============================================================ */
+
+/* Display face: SF Pro Display / Inter substitute */
 .font-display {
-  /* Inter is the open-source SF Pro Display substitute per DESIGN.md */
-  font-family: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
 }
 
-.tracking-apple-tight {
-  letter-spacing: -0.025em;
+/* Hero headline — 56px / 600 / 1.07 / -0.28px */
+.text-hero-display {
+  font-family: "SF Pro Display", "Inter", -apple-system, sans-serif;
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
 }
 
-.tracking-apple-display {
-  letter-spacing: -0.015em;
+/* Tile headline — 40px / 600 / 1.10 / 0 */
+.text-display-lg {
+  font-family: "SF Pro Display", "Inter", -apple-system, sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.10;
+  letter-spacing: 0;
 }
 
-/* Theme Adaptive Colors */
-.bg-canvas {
-  background-color: var(--color-canvas) !important;
+/* Section head — 34px / 600 / 1.47 / -0.374px */
+.text-display-md {
+  font-family: "SF Pro Text", "Inter", -apple-system, sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
 }
 
-.bg-parchment {
-  background-color: var(--color-canvas-parchment) !important;
-}
-
-.bg-surface-card {
-  background-color: var(--color-surface-card) !important;
-}
-
-.text-ink {
-  color: var(--color-text-ink) !important;
-}
-
-.text-muted-adaptive {
-  color: var(--color-text-muted) !important;
-}
-
-.border-adaptive {
-  border-color: var(--color-border-line) !important;
-}
-
-/* Apple-style Buttons */
-.btn-action-primary {
-  background-color: #0066cc;
-  color: #ffffff;
+/* Product subcopy — 28px / 400 / 1.14 / 0.196px */
+.text-lead {
+  font-family: "SF Pro Display", "Inter", -apple-system, sans-serif;
+  font-size: 28px;
   font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: 0.196px;
+}
+
+/* Airy lead — 24px / 300 / 1.5 / 0 */
+.text-lead-airy {
+  font-family: "SF Pro Text", "Inter", -apple-system, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* Sub-tile tagline / sub-nav label — 21px / 600 / 1.19 / 0.231px */
+.text-tagline {
+  font-family: "SF Pro Display", "Inter", -apple-system, sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.231px;
+}
+
+/* Inline strong — 17px / 600 / 1.24 / -0.374px */
+.text-body-strong {
+  font-family: "SF Pro Text", "Inter", -apple-system, sans-serif;
   font-size: 17px;
-  border-radius: 9999px;
-  padding: 11px 24px;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.374px;
+}
+
+/* Default paragraph — 17px / 400 / 1.47 / -0.374px (same as html base) */
+.text-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+}
+
+/* Dense link lists (footer columns) — 17px / 400 / 2.41 / 0 */
+.text-dense-link {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2.41;
+  letter-spacing: 0;
+}
+
+/* Caption — 14px / 400 / 1.43 / -0.224px */
+.text-caption {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: -0.224px;
+}
+
+/* Strong caption — 14px / 600 / 1.29 / -0.224px */
+.text-caption-strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+}
+
+/* Store hero CTA — 18px / 300 / 1.0 / 0 */
+.text-button-large {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: 0;
+}
+
+/* Utility/nav button labels — 14px / 400 / 1.29 / -0.224px */
+.text-button-utility {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+}
+
+/* Fine print / footer body — 12px / 400 / 1.0 / -0.12px */
+.text-fine-print {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.12px;
+}
+
+/* Micro legal — 10px / 400 / 1.3 / -0.08px */
+.text-micro-legal {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.08px;
+}
+
+/* Global nav links — 12px / 400 / 1.0 / -0.12px */
+.text-nav-link {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.12px;
+}
+
+/* Tracking utilities — ABSOLUTE px per design.md (not em) */
+.tracking-apple-tight {
+  letter-spacing: -0.374px;   /* body + display-md */
+}
+.tracking-apple-display {
+  letter-spacing: -0.28px;    /* hero-display headline */
+}
+.tracking-apple-caption {
+  letter-spacing: -0.224px;   /* caption + button-utility */
+}
+.tracking-apple-nav {
+  letter-spacing: -0.12px;    /* nav-link + fine-print */
+}
+
+/* ============================================================
+   THEME-ADAPTIVE UTILITY CLASSES
+   ============================================================ */
+
+.bg-canvas { background-color: var(--color-canvas) !important; }
+.bg-parchment { background-color: var(--color-canvas-parchment) !important; }
+.bg-surface-pearl { background-color: var(--color-surface-pearl) !important; }
+.bg-surface-card { background-color: var(--color-surface-card) !important; } /* legacy alias */
+.bg-surface-tile-1 { background-color: var(--color-surface-tile-1) !important; }
+.bg-surface-tile-2 { background-color: var(--color-surface-tile-2) !important; }
+.bg-surface-tile-3 { background-color: var(--color-surface-tile-3) !important; }
+
+.text-ink { color: var(--color-ink) !important; }
+.text-on-dark { color: var(--color-on-dark) !important; }
+.text-body-muted { color: var(--color-body-muted) !important; }
+.text-muted-adaptive { color: var(--color-ink-muted-48) !important; }
+.text-ink-muted-80 { color: var(--color-ink-muted-80) !important; }
+
+.border-adaptive { border-color: var(--color-hairline) !important; }
+.border-divider-soft { border-color: var(--color-divider-soft) !important; }
+
+/* ============================================================
+   BUTTON COMPONENTS — design.md §Components §Buttons
+   ============================================================ */
+
+/* --- button-primary: Action Blue pill CTA --- */
+/* Background: {colors.primary} | Text: {colors.on-primary} | Radius: {rounded.pill} | Padding: 11px 22px */
+.btn-action-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: "SF Pro Text", "Inter", -apple-system, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  border-radius: var(--rounded-pill);
+  padding: 11px 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.15s ease;
   border: none;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
 }
-
-/* In dark mode, primary buttons shift to #2997ff per {colors.primary-on-dark} in DESIGN.md */
-html.dark .btn-action-primary {
-  background-color: #2997ff;
-  color: #ffffff;
-}
-
-html.dark .btn-action-primary:hover {
-  background-color: #3aa4ff;
-}
-
 .btn-action-primary:hover {
-  background-color: #0071e3;
+  background-color: var(--color-primary-focus);
 }
-
 .btn-action-primary:active {
-  transform: scale(0.95);
+  transform: scale(0.95);  /* System-wide micro-interaction per design.md */
+}
+.btn-action-primary:focus-visible {
+  outline: 2px solid var(--color-primary-focus);
+  outline-offset: 2px;
 }
 
+/* --- button-secondary-pill: Ghost pill --- */
+/* Background: transparent | Text/Border: {colors.primary} | Radius: {rounded.pill} */
 .btn-action-secondary {
   background-color: transparent;
-  color: #0066cc;
-  border: 1px solid #0066cc;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
   font-size: 17px;
-  border-radius: 9999px;
-  padding: 11px 24px;
+  font-weight: 400;
+  letter-spacing: -0.374px;
+  border-radius: var(--rounded-pill);
+  padding: 11px 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.15s ease;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.15s ease;
 }
-
-html.dark .btn-action-secondary {
-  color: #2997ff;
-  border-color: #2997ff;
-}
-
 .btn-action-secondary:hover {
-  background-color: rgba(0, 102, 204, 0.1);
+  background-color: rgba(0, 102, 204, 0.08);
 }
-
 .btn-action-secondary:active {
   transform: scale(0.95);
 }
 
+/* --- button-dark-utility: Nav utility actions --- */
+/* Background: {colors.ink} (#1d1d1f) | Text: {colors.on-dark} | Radius: {rounded.sm} 8px | Padding: 8px 15px */
+/* NOTE: Design.md specifies ink (#1d1d1f) background — NOT the pearl fill */
 .btn-dark-utility {
-  background-color: var(--color-surface-card);
-  color: var(--color-text-ink);
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  font-family: "SF Pro Text", "Inter", -apple-system, sans-serif;
   font-size: 14px;
-  border-radius: 8px;
-  padding: 8px 16px;
-  border: 1px solid var(--color-border-line);
-  transition: all 0.15s ease;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  border-radius: var(--rounded-sm);  /* 8px */
+  padding: 8px 15px;
+  border: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
 }
-
+.btn-dark-utility:hover {
+  opacity: 0.85;
+}
 .btn-dark-utility:active {
   transform: scale(0.95);
 }
 
-/* Cards & Surfaces */
+html.dark .btn-dark-utility {
+  background-color: #3a3a3c;  /* Slightly lighter on dark backgrounds for contrast */
+}
+
+/* --- button-pearl-capsule: Secondary card button --- */
+/* Background: {colors.surface-pearl} | Border: 3px {colors.divider-soft} | Radius: {rounded.md} 11px */
+.btn-pearl-capsule {
+  background-color: var(--color-surface-pearl);
+  color: var(--color-ink-muted-80);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.224px;
+  border-radius: var(--rounded-md);  /* 11px */
+  padding: 8px 14px;
+  border: 3px solid var(--color-divider-soft);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+.btn-pearl-capsule:hover {
+  border-color: var(--color-hairline);
+}
+.btn-pearl-capsule:active {
+  transform: scale(0.95);
+}
+
+/* --- button-store-hero: Large store CTA --- */
+/* Background: {colors.primary} | Weight: 300 | Radius: {rounded.pill} | Padding: 14px 28px */
+.btn-store-hero {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: 0;
+  border-radius: var(--rounded-pill);
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.btn-store-hero:hover {
+  background-color: var(--color-primary-focus);
+}
+.btn-store-hero:active {
+  transform: scale(0.95);
+}
+
+/* --- button-icon-circular: Floating photo controls --- */
+/* Size: 44×44px | Background: {colors.surface-chip-translucent} ~64% | Radius: {rounded.full} */
+.btn-icon-circular {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(210, 210, 215, 0.64);
+  color: var(--color-ink);
+  border-radius: var(--rounded-full);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+.btn-icon-circular:hover {
+  background-color: rgba(210, 210, 215, 0.80);
+}
+.btn-icon-circular:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================
+   ELEVATION & DEPTH — design.md §Elevation
+   The single product-shadow rule: applied ONLY to product imagery.
+   Never on cards, buttons, or text.
+   ============================================================ */
+
 .shadow-product-render {
   box-shadow: var(--shadow-product);
 }
 
+/* Frosted glass — sub-nav + sticky bars */
 .frosted-glass {
-  background-color: rgba(245, 245, 247, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(245, 245, 247, 0.80);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
-
 html.dark .frosted-glass {
   background-color: rgba(29, 29, 31, 0.85);
-  /* Use the CSS variable so specificity is consistent — no !important needed */
-  border-color: var(--color-border-line);
 }
 
-/* Scrollbar customization */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Soft hairline — utility cards + sub-nav separator (no shadow) */
+.border-hairline {
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
-::-webkit-scrollbar-track {
-  background: var(--color-canvas-parchment);
-}
-::-webkit-scrollbar-thumb {
-  background: #a1a1a6;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #7a7a7a;
-}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-canvas-parchment); }
+::-webkit-scrollbar-thumb { background: #a1a1a6; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink-muted-48); }

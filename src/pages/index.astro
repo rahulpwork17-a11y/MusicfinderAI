@@ -6,26 +6,43 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
 
 <Layout title="Music Finder AI - Identify Songs by Audio or Video">
   
-  <!-- HERO SONG RECOGNITION HUB -->
+  <!-- HERO SONG RECOGNITION HUB — light tile, {colors.canvas} -->
   <SongRecognitionHub />
 
-  <!-- SECTION 1: DARK TILE - ACOUSTIC FINGERPRINTING PRODUCT SHOWCASE -->
-  <section id="technology" class="py-20 px-4 md:px-8 bg-[#272729] text-white">
-    <div class="max-w-[1200px] mx-auto text-center space-y-8">
-      <span class="text-[#2997ff] font-semibold text-sm uppercase tracking-widest block">Studio Grade Engine</span>
+  <!-- ============================================================
+    SECTION 1: DARK TILE — Acoustic Fingerprinting Showcase
+    {component.product-tile-dark}: bg {colors.surface-tile-1} #272729,
+    text {colors.on-dark}, padding {spacing.section} 80px, rounded-none.
+    NO border separator — the color change IS the divider.
+  ============================================================ -->
+  <section id="technology" class="px-4 md:px-8 bg-[#272729] text-white" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <div class="max-w-[1200px] mx-auto text-center" style="display: flex; flex-direction: column; gap: var(--spacing-xxl);">
       
-      <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-white leading-tight">
+      <!-- Eyebrow — {typography.caption-strong}: 14px / 600 / 1.29 / -0.224px -->
+      <span class="text-[#2997ff] block" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; text-transform: uppercase; word-spacing: 0.05em;">Studio Grade Engine</span>
+      
+      <!-- Section headline — {typography.display-lg}: 40px / 600 / 1.10 / 0 -->
+      <h2 class="font-display text-white" style="font-size: 40px; font-weight: 600; line-height: 1.10; letter-spacing: 0; margin: 0;">
         Acoustic Fingerprinting Re-Engineered.
       </h2>
 
-      <p class="text-xl md:text-2xl font-light text-neutral-300 max-w-3xl mx-auto leading-relaxed">
+      <!-- Lead paragraph — {typography.lead-airy}: 24px / 300 / 1.5 / 0 -->
+      <p class="text-neutral-300 max-w-3xl mx-auto" style="font-size: 24px; font-weight: 300; line-height: 1.5; letter-spacing: 0; margin: 0;">
         Our deep audio engine analyzes spectral frequency peak maps in 200ms. It isolates melodies through noisy recordings, live cafes, and distorted video clips.
       </p>
 
-      <!-- Photographic Audio Surface resting with system shadow per DESIGN.md -->
-      <div class="pt-8">
-        <div class="relative bg-[#1d1d1f] rounded-[24px] p-8 border border-neutral-800 shadow-product-render max-w-4xl mx-auto overflow-hidden">
-          <div class="flex items-center justify-between text-xs text-neutral-400 mb-4 pb-4 border-b border-neutral-800">
+      <!-- 
+        Spectrogram visualizer — product render resting on a dark surface.
+        Bars use SOLID {colors.primary-on-dark} #2997ff fill.
+        No CSS gradient on UI elements per design.md §Do's and Don'ts.
+        Single product-shadow on the containing "product surface" card.
+      -->
+      <div>
+        <div
+          class="relative rounded-[18px] p-8 max-w-4xl mx-auto overflow-hidden shadow-product-render"
+          style="background-color: #1d1d1f; border: 1px solid rgba(255,255,255,0.06);"
+        >
+          <div class="flex items-center justify-between pb-4 mb-4" style="border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: #6e6e73; letter-spacing: -0.12px;">
             <span class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
               Real-time Spectrogram FFT Analysis
@@ -33,7 +50,7 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
             <span>22,050 Hz Dual Channel</span>
           </div>
 
-          <!-- Animated Frequency Waves (CSS keyframe animation, no JS) -->
+          <!-- Frequency bars — SOLID single color, no CSS gradient on UI chrome -->
           <style>
             @keyframes bar-wave {
               0%, 100% { height: var(--bar-h-low); }
@@ -42,6 +59,8 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
             .freq-bar {
               animation: bar-wave var(--bar-duration) ease-in-out infinite;
               animation-delay: var(--bar-delay);
+              /* Solid {colors.primary-on-dark} #2997ff — no gradient per design.md */
+              background-color: #2997ff;
             }
           </style>
           <div class="h-40 flex items-end justify-between gap-0.5 px-4">
@@ -51,24 +70,26 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
               const high = Math.min(100, base * 1.15);
               const dur  = (1.2 + (i % 7) * 0.18).toFixed(2);
               const del  = ((i % 11) * 0.09).toFixed(2);
-              const op   = (0.4 + (i % 4) * 0.15).toFixed(2);
+              const op   = (0.35 + (i % 4) * 0.165).toFixed(2);
               return (
                 <div
-                  class="freq-bar flex-1 bg-gradient-to-t from-[#0066cc] to-[#2997ff] rounded-t-sm"
+                  class="freq-bar flex-1 rounded-t-sm"
                   style={`--bar-h-low: ${low}%; --bar-h-high: ${high}%; --bar-duration: ${dur}s; --bar-delay: -${del}s; opacity: ${op};`}
                 ></div>
               );
             })}
           </div>
 
-          <div class="mt-6 flex items-center justify-between text-xs text-neutral-400 pt-4 border-t border-neutral-800">
+          <div class="flex items-center justify-between mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: #6e6e73; letter-spacing: -0.12px;">
             <span>Signal-to-Noise Ratio: +42dB</span>
-            <span class="text-[#2997ff] font-mono">Fingerprint Hash: 0x9F82A4C01</span>
+            <span style="color: #2997ff; font-family: 'SF Mono', 'Fira Code', monospace;">Fingerprint Hash: 0x9F82A4C01</span>
           </div>
         </div>
 
-        <div class="mt-8">
-          <a href="/technology" class="inline-flex items-center gap-2 text-sm text-[#2997ff] hover:text-[#52adff] transition-colors font-medium">
+        <!-- Text link — {component.text-link-on-dark}: {colors.primary-on-dark} on dark tile -->
+        <div style="margin-top: var(--spacing-lg);">
+          <a href="/technology" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
+            style="font-size: 17px; font-weight: 400; color: #2997ff; letter-spacing: -0.374px;">
             Explore Full Technology Architecture & FFT Specs &rarr;
           </a>
         </div>
@@ -76,23 +97,31 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
     </div>
   </section>
 
-  <!-- SECTION 2: LIGHT TILE - WHY MUSIC FINDER AI IS BETTER -->
-  <section id="comparison" class="py-20 px-4 md:px-8 bg-canvas">
+  <!-- ============================================================
+    SECTION 2: LIGHT TILE — Why Music Finder AI is Better
+    {component.product-tile-light}: bg {colors.canvas} #ffffff,
+    padding {spacing.section} 80px.
+    NO border separator between tiles — color change IS the divider.
+  ============================================================ -->
+  <section id="comparison" class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
     <div class="max-w-[1100px] mx-auto">
       
-      <div class="text-center mb-16">
-        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Unmatched Performance</span>
-        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-ink">
+      <div class="text-center" style="margin-bottom: var(--spacing-xxl);">
+        <!-- Eyebrow — {typography.caption-strong} -->
+        <span class="text-[#0066cc] dark:text-[#2997ff] block" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; text-transform: uppercase; word-spacing: 0.05em; margin-bottom: var(--spacing-xs);">Unmatched Performance</span>
+        <!-- h2 — {typography.display-lg}: 40px / 600 -->
+        <h2 class="font-display text-ink" style="font-size: 40px; font-weight: 600; line-height: 1.10; letter-spacing: 0; margin: 0 0 var(--spacing-sm) 0;">
           Why Music Finder AI Outperforms Competitors
         </h2>
-        <p class="text-lg text-muted-adaptive mt-3">
+        <!-- Lead — {typography.body}: 17px / 400 -->
+        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
           Designed for pro creators, listeners, and musicians who expect studio precision without ad noise.
         </p>
       </div>
 
-      <!-- Comparison Matrix Table (explicit column widths prevent feature col overstretching) -->
-      <div class="overflow-x-auto rounded-[20px] border border-adaptive shadow-sm">
-        <table class="w-full text-left border-collapse bg-canvas text-sm">
+      <!-- Comparison table — {component.store-utility-card}: rounded-[18px] ({rounded.lg}), 1px hairline border -->
+      <div class="overflow-x-auto border border-adaptive" style="border-radius: var(--rounded-lg);">
+        <table class="w-full text-left border-collapse bg-canvas" style="font-size: 17px;">
           <colgroup>
             <col style="width: 30%" />
             <col style="width: 35%" />
@@ -100,101 +129,95 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
           </colgroup>
           <thead>
             <tr class="bg-surface-card border-b border-adaptive">
-              <th class="p-4 md:p-6 font-semibold text-ink">Feature / Capability</th>
-              <th class="p-4 md:p-6 font-semibold text-[#0066cc] dark:text-[#2997ff] bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Music Finder AI</th>
-              <th class="p-4 md:p-6 font-semibold text-muted-adaptive">Legacy Recognition Tools</th>
+              <th class="p-4 md:p-6 text-ink" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px;">Feature / Capability</th>
+              <th class="p-4 md:p-6 text-[#0066cc] dark:text-[#2997ff]" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px; background-color: rgba(0,102,204,0.04); border-left: 2px solid rgba(0,102,204,0.3);">Music Finder AI</th>
+              <th class="p-4 md:p-6 text-muted-adaptive" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px;">Legacy Recognition Tools</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-adaptive">
-            <tr>
-              <td class="p-4 md:p-6 font-medium text-ink">Ad Experience & Interface</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">100% Ad-Free Clean UI</td>
-              <td class="p-4 md:p-6 text-muted-adaptive">Cluttered Banner Ads & Popups</td>
-            </tr>
-            <tr>
-              <td class="p-4 md:p-6 font-medium text-ink">Input Modes</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Audio, Video Extraction, URL Stream & Live Mic</td>
-              <td class="p-4 md:p-6 text-muted-adaptive">Audio upload only</td>
-            </tr>
-            <tr>
-              <td class="p-4 md:p-6 font-medium text-ink">Match Speed & Precision</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Sub-second 200ms Acoustic Matching</td>
-              <td class="p-4 md:p-6 text-muted-adaptive">Slow multi-second processing queue</td>
-            </tr>
-            <tr>
-              <td class="p-4 md:p-6 font-medium text-ink">Pre-Recognition Audio Cleanup</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Volume Normalize, Vocal Isolation, Waveform Crop</td>
-              <td class="p-4 md:p-6 text-muted-adaptive">Manual basic trimming only</td>
-            </tr>
-            <tr>
-              <td class="p-4 md:p-6 font-medium text-ink">Recognition History</td>
-              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]/30">Persistent Local Storage Drawer</td>
-              <td class="p-4 md:p-6 text-muted-adaptive">Lost on page refresh</td>
-            </tr>
+          <tbody>
+            {[
+              ["Ad Experience & Interface", "100% Ad-Free Clean UI", "Cluttered Banner Ads & Popups"],
+              ["Input Modes", "Audio, Video Extraction, URL Stream & Live Mic", "Audio upload only"],
+              ["Match Speed & Precision", "Sub-second 200ms Acoustic Matching", "Slow multi-second processing queue"],
+              ["Pre-Recognition Audio Cleanup", "Volume Normalize, Vocal Isolation, Waveform Crop", "Manual basic trimming only"],
+              ["Recognition History", "Persistent Local Storage Drawer", "Lost on page refresh"],
+            ].map(([feature, pro, con]) => (
+              <tr style="border-bottom: 1px solid var(--color-hairline);">
+                <td class="p-4 md:p-6 text-ink" style="font-weight: 500; font-size: 17px; letter-spacing: -0.374px;">{feature}</td>
+                <td class="p-4 md:p-6" style="font-weight: 600; font-size: 17px; color: #15803d; background-color: rgba(0,102,204,0.04); border-left: 2px solid rgba(0,102,204,0.3);">
+                  <span class="dark:text-emerald-400">{pro}</span>
+                </td>
+                <td class="p-4 md:p-6 text-muted-adaptive" style="font-size: 17px; letter-spacing: -0.374px;">{con}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      <div class="mt-8 text-center">
-        <a href="/comparison" class="inline-flex items-center gap-2 text-sm text-[#0066cc] dark:text-[#2997ff] hover:underline font-medium">
-          View Complete Comparison Matrix, Differentiators & Platform Showdowns &rarr;
+      <div style="margin-top: var(--spacing-lg); text-align: center;">
+        <!-- Text link — {component.text-link} on light surface -->
+        <a href="/comparison" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
+          style="font-size: 17px; font-weight: 400; color: #0066cc; letter-spacing: -0.374px;">
+          View Complete Comparison Matrix &rarr;
         </a>
       </div>
-
     </div>
   </section>
 
-  <!-- SECTION 3: PARCHMENT TILE - FAQ ACCORDION -->
-  <section id="faq" class="py-20 px-4 md:px-8 bg-parchment border-t border-adaptive">
-    <div class="max-w-[840px] mx-auto space-y-12">
+  <!-- ============================================================
+    SECTION 3: PARCHMENT TILE — FAQ Accordion
+    {component.product-tile-parchment}: bg {colors.canvas-parchment} #f5f5f7,
+    padding {spacing.section} 80px.
+    NO border-t divider — the parchment bg change from white IS the divider.
+  ============================================================ -->
+  <section id="faq" class="px-4 md:px-8 bg-parchment" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <div class="max-w-[840px] mx-auto" style="display: flex; flex-direction: column; gap: var(--spacing-xxl);">
       
       <div class="text-center">
-        <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink">
+        <!-- h2 — {typography.display-md}: 34px / 600 / 1.47 / -0.374px -->
+        <h2 class="font-display text-ink" style="font-size: 34px; font-weight: 600; line-height: 1.47; letter-spacing: -0.374px; margin: 0 0 var(--spacing-xs) 0;">
           Frequently Asked Questions
         </h2>
-        <p class="text-muted-adaptive mt-2">Everything you need to know about song recognition & acoustic fingerprinting.</p>
+        <!-- Body — {typography.body}: 17px / 400 -->
+        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
+          Everything you need to know about song recognition & acoustic fingerprinting.
+        </p>
       </div>
 
-      <div class="space-y-4">
-        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
-            <span>What audio and video formats are supported?</span>
-            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
-            We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track.
-          </p>
-        </details>
-
-        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
-            <span>How does song recognition work on noisy recordings?</span>
-            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
-            Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Crop Slider) right inside the recognition hub before running fingerprint analysis.
-          </p>
-        </details>
-
-        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
-            <span>Is my uploaded audio file stored on your servers?</span>
-            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
-            No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Audio processing runs locally whenever possible.
-          </p>
-        </details>
-
-        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
-            <span>Is Music Finder AI free to use?</span>
-            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
-            Yes! Music Finder AI is 100% free with unlimited song identifications, video extractions, and live microphone capture with no sign-ups or software installation required.
-          </p>
-        </details>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+        {[
+          {
+            q: "What audio and video formats are supported?",
+            a: "We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track."
+          },
+          {
+            q: "How does song recognition work on noisy recordings?",
+            a: "Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Crop Slider) right inside the recognition hub before running fingerprint analysis."
+          },
+          {
+            q: "Is my uploaded audio file stored on your servers?",
+            a: "No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Audio processing runs locally whenever possible."
+          },
+          {
+            q: "Is Music Finder AI free to use?",
+            a: "Yes! Music Finder AI is 100% free with unlimited song identifications, video extractions, and live microphone capture with no sign-ups or software installation required."
+          }
+        ].map(({ q, a }) => (
+          <details
+            class="group bg-canvas [&_summary::-webkit-details-marker]:hidden cursor-pointer border border-adaptive"
+            style="border-radius: var(--rounded-lg); padding: var(--spacing-lg);"
+          >
+            <summary class="flex items-center justify-between text-ink list-none" style="font-weight: 600; font-size: 17px; line-height: 1.47; letter-spacing: -0.374px;">
+              <span>{q}</span>
+              <svg class="shrink-0 transition-transform duration-200 group-open:rotate-180 text-muted-adaptive" style="width: 18px; height: 18px; margin-left: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </summary>
+            <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: var(--spacing-md) 0 0 0;">
+              {a}
+            </p>
+          </details>
+        ))}
       </div>
 
     </div>

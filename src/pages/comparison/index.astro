@@ -7,64 +7,79 @@ import Layout from '../../layouts/Layout.astro';
   title="Music Finder AI vs Alternatives - Comparison & Benchmark"
   description="Compare Music Finder AI against Shazam, SoundHound, AHA Music, and legacy audio identification tools. Discover our 100% ad-free interface, video audio extraction, and studio preprocessing suite."
 >
-  <!-- HERO: COMPARISON OVERVIEW -->
-  <section class="py-20 md:py-28 px-4 md:px-8 bg-canvas border-b border-adaptive relative overflow-hidden">
-    <!-- Subtle Background Accent -->
-    <div class="absolute top-0 right-1/4 w-[600px] h-[350px] bg-[#0066cc]/5 dark:bg-[#2997ff]/5 rounded-full blur-3xl pointer-events-none"></div>
+  <!-- HERO: COMPARISON OVERVIEW
+    {component.product-tile-light}: bg {colors.canvas}, padding {spacing.section} 80px.
+    NO decorative blobs, NO gradient text, NO border-b divider — tile boundary = color change.
+    Single Action Blue {colors.primary} for all interactive accents.
+  -->
+  <section class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <div class="max-w-[1200px] mx-auto text-center" style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
 
-    <div class="max-w-[1200px] mx-auto text-center space-y-6 relative z-10">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0066cc]/10 dark:bg-[#2997ff]/10 border border-[#0066cc]/20 dark:border-[#2997ff]/30 text-[#0066cc] dark:text-[#2997ff] text-xs font-semibold uppercase tracking-wider">
+      <!-- Eyebrow — {typography.caption-strong}: 14px / 600 / 1.29 / -0.224px -->
+      <div
+        class="inline-flex items-center gap-2 mx-auto text-[#0066cc] dark:text-[#2997ff]"
+        style="padding: 6px 14px; border-radius: var(--rounded-pill); background: rgba(0,102,204,0.08); border: 1px solid rgba(0,102,204,0.2); font-size: 12px; font-weight: 600; letter-spacing: -0.12px; text-transform: uppercase;"
+      >
         Platform Benchmarks 2026
       </div>
 
-      <h1 class="font-display font-semibold text-4xl sm:text-5xl md:text-6xl tracking-[-0.03em] text-ink leading-[1.1]">
-        Why Creators & Listeners Choose <br class="hidden sm:inline" />
-        <span class="bg-gradient-to-r from-[#0066cc] via-indigo-600 to-purple-600 dark:from-[#2997ff] dark:via-indigo-400 dark:to-purple-300 bg-clip-text text-transparent">
-          Music Finder AI.
-        </span>
+      <!-- Hero h1 — {typography.hero-display}: 56px / 600 / 1.07 / -0.28px.
+        Solid {colors.ink} — NO gradient text. The single blue accent is in the eyebrow above.
+        Responsive: 56px desktop → 40px tablet → 34px mobile (per design.md §Responsive)
+      -->
+      <h1 class="font-display text-ink" style="font-size: clamp(34px, 5vw, 56px); font-weight: 600; line-height: 1.07; letter-spacing: -0.28px; margin: 0;">
+        Why Creators &amp; Listeners Choose Music Finder AI.
       </h1>
 
-      <p class="text-lg sm:text-xl md:text-2xl text-muted-adaptive max-w-3xl mx-auto font-light leading-relaxed">
+      <!-- Lead — {typography.lead-airy}: 24px / 300 / 1.5 / 0 -->
+      <p class="text-muted-adaptive max-w-3xl mx-auto" style="font-size: 24px; font-weight: 300; line-height: 1.5; letter-spacing: 0; margin: 0;">
         Legacy recognition tools are bloated with intrusive ads, restricted to live microphone input, and lack video extraction. We built the fast, ad-free studio tool you deserve.
       </p>
 
-      <!-- Key Differentiator Badges -->
-      <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
-        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          100% Ad-Free
-        </span>
-        <span class="px-3.5 py-1.5 rounded-full bg-[#0066cc]/10 dark:bg-[#2997ff]/10 text-[#0066cc] dark:text-[#2997ff] border border-[#0066cc]/20 dark:border-[#2997ff]/30 text-xs font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          Video & URL Extraction
-        </span>
-        <span class="px-3.5 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          Studio Vocal & Gain Filters
-        </span>
-        <span class="px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 text-xs font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          Zero File Logging / Ephemeral
-        </span>
+      <!-- Key Differentiator Badges
+        All use {colors.primary} (#0066cc) tint — single accent color per design.md.
+        Badges are info-chips, NOT actions, so they use {rounded.md} (11px), NOT pill.
+        Differentiation is by label text, not by color hue.
+      -->
+      <div class="flex flex-wrap items-center justify-center" style="gap: var(--spacing-xs); padding-top: var(--spacing-xs);">
+        {[
+          "100% Ad-Free",
+          "Video & URL Extraction",
+          "Studio Vocal & Gain Filters",
+          "Zero File Logging",
+        ].map(label => (
+          <span
+            class="flex items-center gap-1.5 text-[#0066cc] dark:text-[#2997ff]"
+            style="padding: 6px 12px; border-radius: var(--rounded-md); background: rgba(0,102,204,0.08); border: 1px solid rgba(0,102,204,0.2); font-size: 12px; font-weight: 500; letter-spacing: -0.12px;"
+          >
+            <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            {label}
+          </span>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- SECTION: THE FULL COMPARISON MATRIX -->
-  <section class="py-20 px-4 md:px-8 bg-parchment">
+  <!-- SECTION: THE FULL COMPARISON MATRIX
+    {component.product-tile-parchment}: bg {colors.canvas-parchment}, padding {spacing.section} 80px.
+  -->
+  <section class="px-4 md:px-8 bg-parchment" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
     <div class="max-w-[1200px] mx-auto">
-      <div class="text-center mb-12">
-        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Comprehensive Breakdown</span>
-        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-ink">
+      <div class="text-center" style="margin-bottom: var(--spacing-xxl);">
+        <!-- Eyebrow — {typography.caption-strong}: 14px / 600 / 1.29 / -0.224px -->
+        <span class="text-[#0066cc] dark:text-[#2997ff] block" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; text-transform: uppercase; margin-bottom: var(--spacing-xs);">Comprehensive Breakdown</span>
+        <!-- h2 — {typography.display-lg}: 40px / 600 / 1.10 / 0 -->
+        <h2 class="font-display text-ink" style="font-size: 40px; font-weight: 600; line-height: 1.10; letter-spacing: 0; margin: 0 0 var(--spacing-sm) 0;">
           Feature-by-Feature Comparison Matrix
         </h2>
-        <p class="text-muted-adaptive text-base md:text-lg mt-2">
+        <!-- Body — {typography.body}: 17px / 400 / 1.47 / -0.374px -->
+        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
           See how Music Finder AI compares side-by-side with mainstream recognition platforms.
         </p>
       </div>
 
-      <!-- The Table Matrix -->
-      <div class="overflow-x-auto rounded-2xl border border-adaptive shadow-sm bg-canvas">
+      <!-- Table container — {rounded.lg} = 18px, 1px hairline border, NO shadow -->
+      <div class="overflow-x-auto border border-adaptive bg-canvas" style="border-radius: var(--rounded-lg);">
         <table class="w-full text-left border-collapse text-sm">
           <thead>
             <tr class="bg-surface-card border-b border-adaptive">
