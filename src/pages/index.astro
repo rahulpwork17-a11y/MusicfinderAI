@@ -2,9 +2,40 @@
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 import SongRecognitionHub from '../components/SongRecognitionHub.astro';
+
+const faqItems = [
+  {
+    question: "What audio and video formats are supported?",
+    answer: "We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track."
+  },
+  {
+    question: "How does song recognition work on noisy recordings?",
+    answer: "Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Crop Slider) right inside the recognition hub before running fingerprint analysis."
+  },
+  {
+    question: "Is my uploaded audio file stored on your servers?",
+    answer: "No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Audio processing runs locally whenever possible."
+  },
+  {
+    question: "Is Music Finder AI free to use?",
+    answer: "Yes! Music Finder AI is 100% free with unlimited song identifications, video extractions, and live microphone capture with no sign-ups or software installation required."
+  },
+  {
+    question: "Can I use this song finder to identify songs by humming?",
+    answer: "Yes. Music Finder AI supports song finder by humming — simply use the Live Mic feature, hum or whistle the melody, and our acoustic fingerprinting engine will match the tune against millions of tracks in real time."
+  },
+  {
+    question: "How does the song finder by link feature work?",
+    answer: "Paste any media URL — from YouTube, SoundCloud, TikTok, Instagram Reels, or any direct audio/video link — into the URL input field. Our song finder by link tool extracts the audio stream and runs acoustic fingerprinting to identify the track instantly."
+  }
+];
 ---
 
-<Layout title="Music Finder AI - Identify Songs by Audio or Video">
+<Layout
+  title="Song Finder — Identify Any Song by Lyrics, Video, Humming & Sound | Music Finder AI"
+  description="Free AI-powered song finder tool. Identify any song by lyrics, video, humming, sound, or link. Upload audio, paste URLs, or record live — get instant results with Music Finder AI."
+  faqItems={faqItems}
+>
   
   <!-- HERO SONG RECOGNITION HUB — light tile, {colors.canvas} -->
   <SongRecognitionHub />
@@ -180,41 +211,24 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
         </h2>
         <!-- Body — {typography.body}: 17px / 400 -->
         <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
-          Everything you need to know about song recognition & acoustic fingerprinting.
+          Everything you need to know about our song finder & acoustic fingerprinting engine.
         </p>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
-        {[
-          {
-            q: "What audio and video formats are supported?",
-            a: "We support all major audio formats including MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, ALAC, and AIFF. We also support video formats such as MP4, WebM, MKV, AVI, and MOV by automatically extracting the audio track."
-          },
-          {
-            q: "How does song recognition work on noisy recordings?",
-            a: "Our engine builds an acoustic fingerprint map of spectral frequency peaks. For noisy audio, you can use our built-in pre-processing suite (Vocal Isolation, Volume Normalization, or Crop Slider) right inside the recognition hub before running fingerprint analysis."
-          },
-          {
-            q: "Is my uploaded audio file stored on your servers?",
-            a: "No. Your privacy is paramount. Uploaded audio files are analyzed securely and immediately purged after fingerprinting. Audio processing runs locally whenever possible."
-          },
-          {
-            q: "Is Music Finder AI free to use?",
-            a: "Yes! Music Finder AI is 100% free with unlimited song identifications, video extractions, and live microphone capture with no sign-ups or software installation required."
-          }
-        ].map(({ q, a }) => (
+        {faqItems.map(({ question, answer }) => (
           <details
             class="group bg-canvas [&_summary::-webkit-details-marker]:hidden cursor-pointer border border-adaptive"
             style="border-radius: var(--rounded-lg); padding: var(--spacing-lg);"
           >
             <summary class="flex items-center justify-between text-ink list-none" style="font-weight: 600; font-size: 17px; line-height: 1.47; letter-spacing: -0.374px;">
-              <span>{q}</span>
+              <span>{question}</span>
               <svg class="shrink-0 transition-transform duration-200 group-open:rotate-180 text-muted-adaptive" style="width: 18px; height: 18px; margin-left: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"/>
               </svg>
             </summary>
             <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: var(--spacing-md) 0 0 0;">
-              {a}
+              {answer}
             </p>
           </details>
         ))}
@@ -223,4 +237,91 @@ import SongRecognitionHub from '../components/SongRecognitionHub.astro';
     </div>
   </section>
 
+  <!-- ============================================================
+    SECTION 4: CANVAS TILE — SEO Content Article (800–1200 words)
+    Keyword-rich long-form content targeting "song finder" cluster.
+    Proper semantic heading hierarchy: h2 > h3.
+  ============================================================ -->
+  <section id="about" class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <article class="max-w-[840px] mx-auto" style="display: flex; flex-direction: column; gap: var(--spacing-xl);">
+      
+      <!-- Main SEO heading — targets primary keyword -->
+      <div class="text-center" style="margin-bottom: var(--spacing-md);">
+        <h2 class="font-display text-ink" style="font-size: 34px; font-weight: 600; line-height: 1.25; letter-spacing: -0.374px; margin: 0 0 var(--spacing-sm) 0;">
+          The Ultimate Free Song Finder — Identify Any Song Instantly
+        </h2>
+        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
+          Powered by AI acoustic fingerprinting, Music Finder AI is the most advanced song finder tool on the web.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-lg); font-size: 17px; line-height: 1.65; letter-spacing: -0.374px; color: var(--color-ink-muted-80);">
+
+        <!-- Intro paragraph -->
+        <p style="margin: 0;">
+          Have you ever heard a song playing in a café, on a TV show, or in someone's Instagram story and desperately wanted to know what it was? You're not alone. Every day, millions of people search for a reliable <strong>song finder</strong> that can instantly identify music from virtually any source. That's exactly why we built Music Finder AI — a free, browser-based song identification tool that uses cutting-edge acoustic fingerprinting to recognize tracks in under 200 milliseconds. No app downloads, no account sign-ups, no ads. Just fast, accurate song recognition that works across audio files, video clips, live sound, URLs, and even hummed melodies.
+        </p>
+
+        <p style="margin: 0;">
+          Unlike traditional music recognition apps that only handle clean audio recordings, Music Finder AI is engineered to process real-world inputs. Whether you have a low-quality voice memo, a screen recording with background noise, or a TikTok link you want to decode, our <strong>song finder</strong> delivers results where other tools fail. It supports all major file formats — MP3, WAV, FLAC, M4A, AAC, OGG, MP4, WebM, MKV, AVI, and MOV — and includes built-in audio pre-processing features like volume normalization, vocal isolation, and waveform cropping to optimize recognition accuracy before analysis even begins.
+        </p>
+
+        <!-- Section: Song Finder by Lyrics -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Song Finder by Lyrics — Discover Songs from Words You Remember
+        </h3>
+        <p style="margin: 0;">
+          One of the most common ways people try to find a song is by searching for the lyrics they remember. A <strong>song finder by lyrics</strong> approach works well when you recall even a short phrase or chorus line from a track. With Music Finder AI, you can record yourself singing or speaking those lyrics using the Live Mic feature, and our engine will match your vocal pattern against millions of indexed tracks. This is especially helpful when you remember the words but can't recall the melody, artist, or song title. Instead of scrolling through endless search engine results guessing at lyric fragments, let our AI-powered <strong>song finder by lyrics</strong> do the heavy lifting — just speak the words you know, and get an instant match.
+        </p>
+
+        <!-- Section: Song Finder by Video -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Song Finder by Video — Extract and Identify Songs from Any Video File
+        </h3>
+        <p style="margin: 0;">
+          Music is everywhere in video content — from YouTube compilations and Instagram Reels to TikTok edits and movie trailers. Our <strong>song finder by video</strong> feature lets you upload any video file directly, and the tool automatically extracts the audio track for fingerprinting analysis. You don't need separate software to rip audio from video anymore. Simply drag and drop an MP4, WebM, MKV, AVI, or MOV file into the upload zone, and Music Finder AI handles the rest. The <strong>song finder by video</strong> capability is particularly useful for content creators who need to identify background music for licensing purposes, or viewers who discover a great track in a video and want to add it to their playlist.
+        </p>
+
+        <!-- Section: Song Finder by Humming -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Song Finder by Humming — Just Hum or Whistle the Melody
+        </h3>
+        <p style="margin: 0;">
+          Sometimes you don't know the lyrics or the artist — all you have is the tune stuck in your head. That's where <strong>song finder by humming</strong> becomes invaluable. Click the Live Mic tab, hum or whistle the melody for a few seconds, and our acoustic fingerprinting engine analyzes the pitch contour and rhythmic pattern to find matching songs. The <strong>song finder by humming</strong> technology works by converting your hummed input into a spectral frequency map and comparing it against our database of audio fingerprints. It's remarkably accurate even with imperfect pitch, so don't worry if you're not the best singer — just hum what you remember, and let the AI do the matching.
+        </p>
+
+        <!-- Section: Song Finder by Sound -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Song Finder by Sound — Identify Songs Playing Around You in Real Time
+        </h3>
+        <p style="margin: 0;">
+          Hearing a great track at a party, in a store, or on the radio? Use the <strong>song finder by sound</strong> feature to capture live audio through your device's microphone and identify the song in real time. Unlike apps that require you to hold your phone steady in silence, Music Finder AI's <strong>song finder by sound</strong> engine is built to handle ambient noise, crowd chatter, and acoustic distortion. Our advanced pre-processing pipeline isolates the musical signal from environmental noise before running the fingerprint analysis, delivering highly accurate results even in challenging acoustic environments. Just tap the Live Mic button, point your device toward the sound source, and get your answer in seconds.
+        </p>
+
+        <!-- Section: Song Finder by Link -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Song Finder by Link — Paste Any URL and Discover the Track
+        </h3>
+        <p style="margin: 0;">
+          Found a video or audio clip online and want to know the song? The <strong>song finder by link</strong> feature makes it effortless. Simply paste any media URL — from YouTube, SoundCloud, TikTok, Instagram, Twitter, or any direct audio/video link — into the URL input field. Music Finder AI extracts the audio stream from the URL, processes it through the acoustic fingerprinting engine, and identifies the track instantly. The <strong>song finder by link</strong> tool eliminates the need to download files, convert formats, or use third-party browser extensions. It's the fastest way to identify songs you encounter while browsing the web.
+        </p>
+
+        <!-- Closing Section -->
+        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+          Why Music Finder AI Is the Best Free Song Finder Available
+        </h3>
+        <p style="margin: 0;">
+          What sets Music Finder AI apart from every other song finder on the market is our commitment to being 100% free, ad-free, and requiring zero sign-ups. Most competing tools bombard you with pop-ups, require app installations, or limit the number of identifications you can perform. Music Finder AI has none of those limitations. Our studio-grade acoustic fingerprinting engine processes audio in under 200 milliseconds with a signal-to-noise ratio of +42dB, ensuring reliable matches even from low-quality sources. Your uploaded files are never stored — they're analyzed securely and immediately purged after fingerprinting.
+        </p>
+
+        <p style="margin: 0;">
+          Whether you need a <strong>song finder by lyrics</strong> to decode words stuck in your head, a <strong>song finder by video</strong> to identify background music in content, a <strong>song finder by humming</strong> when all you have is the melody, a <strong>song finder by sound</strong> to capture live music around you, or a <strong>song finder by link</strong> to identify tracks from online media — Music Finder AI handles it all in one powerful, free tool. <a href="/#recognizer" style="color: #0066cc; text-decoration: none; font-weight: 500;">Try our song finder now</a> and identify your first song in seconds.
+        </p>
+
+      </div>
+
+    </article>
+  </section>
+
 </Layout>
+

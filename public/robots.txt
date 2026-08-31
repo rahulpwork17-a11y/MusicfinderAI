@@ -1,0 +1,6 @@
+# robots.txt for musicfinderai.com
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://musicfinderai.com/sitemap-index.xml

@@ -5,15 +5,75 @@ import Footer from '../components/Footer.astro';
 import RecognitionHistoryDrawer from '../components/RecognitionHistoryDrawer.astro';
 import '../styles/global.css';
 
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  faqItems?: FAQItem[];
 }
 
+const siteUrl = 'https://musicfinderai.com';
+
 const {
-  title = "Music Finder AI - Identify Any Song from Audio & Video",
-  description = "Identify songs from audio clips, video files, URLs, or live microphone recordings with real-time acoustic fingerprinting.",
+  title = "Song Finder — Identify Any Song by Lyrics, Video, Humming & Sound | Music Finder AI",
+  description = "Free AI-powered song finder tool. Identify any song by lyrics, video, humming, sound, or link. Upload audio, paste URLs, or record live — get instant results with Music Finder AI.",
+  canonical = Astro.url.pathname,
+  ogImage = '/og-image.png',
+  ogImageAlt = 'Music Finder AI — Free Song Finder Tool to Identify Any Song',
+  faqItems = [],
 } = Astro.props;
+
+const canonicalUrl = new URL(canonical, siteUrl).href;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+
+// WebApplication structured data (always present)
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Music Finder AI",
+  "url": siteUrl,
+  "description": "Free AI-powered song finder tool. Identify any song by lyrics, video, humming, sound, or link using acoustic fingerprinting technology.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript. Works in all modern browsers.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Song finder by lyrics",
+    "Song finder by video",
+    "Song finder by humming",
+    "Song finder by sound",
+    "Song finder by link",
+    "Real-time acoustic fingerprinting",
+    "Audio and video file upload",
+    "Live microphone recording",
+    "URL-based song identification"
+  ]
+};
+
+// FAQPage structured data (only on pages that pass faqItems)
+const faqSchema = faqItems.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+} : null;
 ---
 
 <!DOCTYPE html>
@@ -22,23 +82,36 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="Music Finder AI" />
+    <meta name="theme-color" content="#0066cc" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Music Finder AI" />
-    <meta property="og:url" content="https://musicfinderai.com" />
-    <meta property="og:image" content="https://musicfinderai.com/og-image.png" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://musicfinderai.com/og-image.png" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <!-- Structured Data: WebApplication -->
+    <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+    {faqSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    )}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
