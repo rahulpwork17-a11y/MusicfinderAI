@@ -14,7 +14,7 @@
       </h1>
       <!-- font-light (300) per {typography.lead-airy}: 24px / 300 / 1.5 line-height -->
       <p class="text-[20px] md:text-[24px] font-light text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
-        Upload audio, video clips, paste media links, or record live sound. Instant identification with built-in audio cleanup tools.
+        Upload audio, video clips, paste media links, or record live sound. Instant identification with real-time pre-processing filters.
       </p>
     </div>
 
@@ -213,7 +213,7 @@
         </div>
         <h3 class="font-display font-semibold text-xl text-ink">No Match Found</h3>
         <p id="error-state-msg" class="text-sm text-muted-adaptive max-w-sm mx-auto">
-          We couldn't identify this track. Try using Noise Remover or Vocal Isolation first, then run recognition again.
+          We couldn't identify this track. Try adjusting the crop range or using Vocal Isolation, then run recognition again.
         </p>
         <button id="error-retry-btn" class="btn-action-primary !py-2.5 !px-7 text-sm">
           Try Again
@@ -285,19 +285,6 @@
               <span class="text-xs text-neutral-300 font-medium">30s Audio Preview</span>
               <audio id="match-audio-preview" class="hidden"></audio>
             </div>
-          </div>
-
-          <!-- Audio Tool Direct Actions -->
-          <div class="flex items-center gap-2 flex-wrap justify-center">
-            <a href="/tools/stem-splitter" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
-              ✂️ Split Stems
-            </a>
-            <a href="/tools/audio-to-midi" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
-              🎹 Convert to MIDI
-            </a>
-            <a href="/tools/audio-transcriber" class="bg-white/10 hover:bg-white/20 text-white text-xs px-3.5 py-2 rounded-full transition-colors no-underline">
-              🎤 Get Lyrics & SRT
-            </a>
           </div>
         </div>
 

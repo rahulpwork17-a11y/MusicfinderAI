@@ -1,7 +1,6 @@
 ---
 // src/layouts/Layout.astro
 import GlobalNav from '../components/GlobalNav.astro';
-import SubNavFrosted from '../components/SubNavFrosted.astro';
 import Footer from '../components/Footer.astro';
 import RecognitionHistoryDrawer from '../components/RecognitionHistoryDrawer.astro';
 import '../styles/global.css';
@@ -9,15 +8,11 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
-  subnavTitle?: string;
-  activeTool?: string;
 }
 
 const {
-  title = "Music Finder AI - Identify Any Song from Audio & Video + 13 Audio Tools",
-  description = "Identify songs from audio clips, video files, URLs, or live microphone recordings. Includes 13 free browser-based audio tools: stem splitter, equalizer, transcriber, audio-to-midi, BPM counter, key detector, and more.",
-  subnavTitle = "Studio Hub",
-  activeTool = ""
+  title = "Music Finder AI - Identify Any Song from Audio & Video",
+  description = "Identify songs from audio clips, video files, URLs, or live microphone recordings with real-time acoustic fingerprinting.",
 } = Astro.props;
 ---
 
@@ -66,9 +61,6 @@ const {
   <body class="bg-canvas text-ink antialiased selection:bg-[#0066cc] selection:text-white flex flex-col min-h-screen transition-colors duration-250">
     <!-- Top Black Bar Navigation -->
     <GlobalNav />
-
-    <!-- Frosted Glass Sub Navigation -->
-    <SubNavFrosted title={subnavTitle} activeTool={activeTool} />
 
     <!-- Main Content -->
     <main class="flex-grow">
