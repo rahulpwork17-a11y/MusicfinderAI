@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
 
 const controls = [
-  { id: 'noise-type', label: 'Target Noise Type', type: 'select' as const, default: 'General Background Hum', options: ['General Background Hum', 'Microphone Hiss & Static', 'Wind & Fan Noise', 'Crowd & Room Chatter'] },
+  { id: 'noise-type', label: 'Target Noise Profile', type: 'select' as const, default: 'General Background Hum', options: ['General Background Hum', 'Microphone Hiss & Static', 'Wind & Fan Noise', 'Electrical 50Hz/60Hz Mains Hum'] },
   { id: 'suppression-level', label: 'Noise Reduction Amount', type: 'slider' as const, min: 0, max: 100, step: 5, default: 70, unit: '%' },
   { id: 'voice-preserve', label: 'Voice Intelligibility Preservation', type: 'slider' as const, min: 50, max: 100, step: 5, default: 90, unit: '%' },
 ];
@@ -17,6 +17,75 @@ const controls = [
     icon="🔇"
     badge="AI Denoiser"
     controls={controls}
-    exportFormats={["WAV Clean", "MP3 (320kbps)", "FLAC"]}
-  />
+    exportFormats={["WAV Clean (Lossless)", "MP3 Master (WAV)", "FLAC"]}
+  >
+    <!-- Noise Reduction Info Card -->
+    <div class="mt-6 bg-surface-card p-6 md:p-8 rounded-2xl border border-adaptive space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="font-semibold text-sm text-ink">Active DSP Filter Chain</h4>
+        <span class="text-xs text-[#0066cc] dark:text-[#2997ff] font-medium font-mono" id="noise-status-text">Ready to filter</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="p-3 rounded-xl bg-canvas border border-adaptive space-y-1">
+          <span class="text-muted-adaptive">Sub-bass Cut:</span>
+          <div class="font-semibold text-ink">80 Hz Butterworth Highpass</div>
+        </div>
+        <div class="p-3 rounded-xl bg-canvas border border-adaptive space-y-1">
+          <span class="text-muted-adaptive">Mains Hum Filter:</span>
+          <div class="font-semibold text-ink">Narrow Q Notch (50/60Hz)</div>
+        </div>
+        <div class="p-3 rounded-xl bg-canvas border border-adaptive space-y-1">
+          <span class="text-muted-adaptive">Voice Formant:</span>
+          <div class="font-semibold text-ink">2.5 kHz Clarity Boost</div>
+        </div>
+      </div>
+    </div>
+  </InteractiveAudioTool>
+
+  <script>
+    import { renderNoiseSuppression, audioBufferToWav, downloadBlob } from '../../utils/audioEngine';
+
+    function setupNoiseRemover() {
+      const noiseTypeSelect = document.getElementById('noise-type') as HTMLSelectElement;
+      const suppressionSlider = document.getElementById('suppression-level') as HTMLInputElement;
+      const voiceSlider = document.getElementById('voice-preserve') as HTMLInputElement;
+      const statusText = document.getElementById('noise-status-text');
+
+      let currentAudioBuffer: AudioBuffer | null = null;
+      let currentFileName = 'audio';
+
+      window.addEventListener('audio-loaded', ((e: CustomEvent) => {
+        currentAudioBuffer = e.detail.buffer;
+        currentFileName = e.detail.filename || 'audio';
+        if (statusText) statusText.textContent = 'Audio loaded • Filters active';
+      }) as EventListener);
+
+      window.addEventListener('audio-custom-download', (async (e: CustomEvent) => {
+        if (!currentAudioBuffer) return;
+        e.preventDefault();
+
+        const btnText = document.getElementById('download-btn-text');
+        if (btnText) btnText.textContent = 'Applying DSP Noise Suppression...';
+
+        try {
+          const reduction = parseFloat(suppressionSlider?.value || '70');
+          const voicePreserve = parseFloat(voiceSlider?.value || '90');
+          const noiseType = noiseTypeSelect?.value || 'General Background Hum';
+
+          const cleanedBuffer = await renderNoiseSuppression(currentAudioBuffer, reduction, voicePreserve, noiseType);
+          const wavBlob = audioBufferToWav(cleanedBuffer, 16);
+          const outName = currentFileName.replace(/\.[^/.]+$/, "") + `_denoised.wav`;
+          downloadBlob(wavBlob, outName);
+        } catch (err) {
+          console.error('Noise suppression error:', err);
+        } finally {
+          if (btnText) btnText.textContent = 'Process & Download Audio';
+        }
+      }) as EventListener);
+    }
+
+    setupNoiseRemover();
+    document.addEventListener('astro:page-load', setupNoiseRemover);
+  </script>
 </Layout>

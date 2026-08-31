@@ -5,7 +5,7 @@ import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
 
 const controls = [
   { id: 'stems-count', label: 'Stem Separation Mode', type: 'select' as const, default: '4 Stems (Vocals, Drums, Bass, Other)', options: ['2 Stems (Vocals + Instrumental)', '4 Stems (Vocals, Drums, Bass, Other)', '5 Stems (+ Piano)'] },
-  { id: 'quality', label: 'Separation Quality', type: 'select' as const, default: 'High Fidelity AI', options: ['High Fidelity AI', 'Ultra Detail (Slower)'] },
+  { id: 'quality', label: 'Separation Quality', type: 'select' as const, default: 'High Fidelity AI', options: ['High Fidelity AI', 'Ultra Detail (Client DSP)'] },
 ];
 ---
 
@@ -16,32 +16,38 @@ const controls = [
     icon="🎼"
     badge="AI Stem Separator"
     controls={controls}
-    exportFormats={["ZIP All Stems", "Vocals WAV", "Instrumental WAV", "Drums WAV"]}
+    exportFormats={["Vocals WAV", "Instrumental WAV", "Drums WAV", "Bass WAV"]}
   >
-    <!-- 4 Stem Mixer Sliders — using adaptive tokens, dark mode compatible -->
-    <div class="mt-6 bg-canvas p-6 rounded-2xl border border-adaptive space-y-4">
-      <h4 class="font-semibold text-sm text-ink">Live Stem Mixer & Solo / Mute Toggles</h4>
+    <!-- 4 Stem Mixer Sliders -->
+    <div class="mt-6 bg-surface-card p-6 md:p-8 rounded-2xl border border-adaptive space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h4 class="font-semibold text-base text-ink">Live Stem Mixer & Solo / Mute Toggles</h4>
+          <p class="text-xs text-muted-adaptive">Adjust independent volume faders or isolate individual stems</p>
+        </div>
+        <span class="text-xs font-mono text-[#0066cc] dark:text-[#2997ff] font-semibold" id="stem-status-badge">Ready</span>
+      </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { name: "🎤 Vocals", color: "from-blue-500 to-indigo-500" },
-          { name: "🥁 Drums", color: "from-purple-500 to-pink-500" },
-          { name: "🎸 Bass", color: "from-amber-500 to-orange-500" },
-          { name: "🎹 Other / Synth", color: "from-emerald-500 to-teal-500" }
+          { id: "vocals", name: "🎤 Vocals", color: "text-blue-500" },
+          { id: "drums", name: "🥁 Drums", color: "text-purple-500" },
+          { id: "bass", name: "🎸 Bass", color: "text-amber-500" },
+          { id: "other", name: "🎹 Other / Synth", color: "text-emerald-500" }
         ].map((stem) => (
-          <div class="p-4 rounded-xl bg-surface-card border border-adaptive space-y-3">
+          <div class="stem-card p-4 rounded-xl bg-canvas border border-adaptive space-y-3" data-stem={stem.id}>
             <div class="flex items-center justify-between">
               <span class="font-semibold text-sm text-ink">{stem.name}</span>
-              <span class="text-xs text-[#0066cc] dark:text-[#2997ff] font-mono font-bold">100%</span>
+              <span class="stem-vol-val text-xs text-[#0066cc] dark:text-[#2997ff] font-mono font-bold">100%</span>
             </div>
             
-            <input type="range" min="0" max="100" value="100" class="w-full accent-[#0066cc]" />
+            <input type="range" min="0" max="100" value="100" class="stem-slider w-full accent-[#0066cc] cursor-pointer" data-stem={stem.id} />
             
             <div class="flex gap-2 text-xs">
-              <button class="flex-1 py-1 rounded bg-canvas hover:bg-parchment border border-adaptive font-medium text-ink transition-colors">
+              <button class="stem-solo-btn flex-1 py-1.5 rounded bg-surface-card hover:bg-parchment border border-adaptive font-medium text-ink transition-colors cursor-pointer" data-stem={stem.id}>
                 Solo
               </button>
-              <button class="flex-1 py-1 rounded bg-canvas hover:bg-parchment border border-adaptive font-medium text-ink transition-colors">
+              <button class="stem-mute-btn flex-1 py-1.5 rounded bg-surface-card hover:bg-parchment border border-adaptive font-medium text-ink transition-colors cursor-pointer" data-stem={stem.id}>
                 Mute
               </button>
             </div>
@@ -49,7 +55,148 @@ const controls = [
         ))}
       </div>
     </div>
-
   </InteractiveAudioTool>
-</Layout>
 
+  <script>
+    import { separateStemsDSP, audioBufferToWav, downloadBlob, type StemSeparationResult } from '../../utils/audioEngine';
+
+    function setupStemSplitter() {
+      const stemCards = document.querySelectorAll('.stem-card');
+      const stemSliders = document.querySelectorAll<HTMLInputElement>('.stem-slider');
+      const soloBtns = document.querySelectorAll<HTMLButtonElement>('.stem-solo-btn');
+      const muteBtns = document.querySelectorAll<HTMLButtonElement>('.stem-mute-btn');
+      const statusBadge = document.getElementById('stem-status-badge');
+
+      let currentAudioBuffer: AudioBuffer | null = null;
+      let separatedStems: StemSeparationResult | null = null;
+      let currentFileName = 'song';
+
+      // Stem volume sliders
+      stemSliders.forEach(slider => {
+        slider.addEventListener('input', (e: any) => {
+          const card = slider.closest('.stem-card');
+          const valLabel = card?.querySelector('.stem-vol-val');
+          if (valLabel) valLabel.textContent = `${e.target.value}%`;
+        });
+      });
+
+      // Solo buttons
+      soloBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetStem = btn.dataset.stem;
+          const isCurrentlySolo = btn.classList.contains('bg-[#0066cc]');
+
+          if (isCurrentlySolo) {
+            // Un-solo all
+            soloBtns.forEach(b => {
+              b.classList.remove('bg-[#0066cc]', 'text-white');
+              b.classList.add('bg-surface-card', 'text-ink');
+            });
+            stemSliders.forEach(s => {
+              s.value = '100';
+              const card = s.closest('.stem-card');
+              const valLabel = card?.querySelector('.stem-vol-val');
+              if (valLabel) valLabel.textContent = '100%';
+            });
+          } else {
+            // Solo target stem
+            soloBtns.forEach(b => {
+              const match = b.dataset.stem === targetStem;
+              b.classList.toggle('bg-[#0066cc]', match);
+              b.classList.toggle('text-white', match);
+              b.classList.toggle('bg-surface-card', !match);
+              b.classList.toggle('text-ink', !match);
+            });
+            stemSliders.forEach(s => {
+              const match = s.dataset.stem === targetStem;
+              s.value = match ? '100' : '0';
+              const card = s.closest('.stem-card');
+              const valLabel = card?.querySelector('.stem-vol-val');
+              if (valLabel) valLabel.textContent = match ? '100%' : '0%';
+            });
+          }
+        });
+      });
+
+      // Mute buttons
+      muteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetStem = btn.dataset.stem;
+          const isMuted = btn.classList.contains('bg-red-500');
+          btn.classList.toggle('bg-red-500', !isMuted);
+          btn.classList.toggle('text-white', !isMuted);
+          btn.classList.toggle('bg-surface-card', isMuted);
+          btn.classList.toggle('text-ink', isMuted);
+
+          const slider = document.querySelector<HTMLInputElement>(`.stem-slider[data-stem="${targetStem}"]`);
+          if (slider) {
+            slider.value = isMuted ? '100' : '0';
+            const card = slider.closest('.stem-card');
+            const valLabel = card?.querySelector('.stem-vol-val');
+            if (valLabel) valLabel.textContent = isMuted ? '100%' : '0%';
+          }
+        });
+      });
+
+      // Handle Audio Upload
+      window.addEventListener('audio-loaded', (async (e: CustomEvent) => {
+        currentAudioBuffer = e.detail.buffer;
+        currentFileName = e.detail.filename || 'song';
+
+        if (statusBadge) statusBadge.textContent = 'Splitting Stems DSP...';
+
+        try {
+          if (currentAudioBuffer) {
+            separatedStems = await separateStemsDSP(currentAudioBuffer);
+            if (statusBadge) statusBadge.textContent = '4 Stems Separated';
+          }
+        } catch (err) {
+          console.error('Stem split error:', err);
+          if (statusBadge) statusBadge.textContent = 'Separation Error';
+        }
+      }) as EventListener);
+
+      // Handle Download
+      window.addEventListener('audio-custom-download', (async (e: CustomEvent) => {
+        if (!currentAudioBuffer) return;
+        e.preventDefault();
+
+        const btnText = document.getElementById('download-btn-text');
+        if (btnText) btnText.textContent = 'Exporting Stem Track...';
+
+        try {
+          if (!separatedStems) {
+            separatedStems = await separateStemsDSP(currentAudioBuffer);
+          }
+
+          const { format } = e.detail;
+          const baseName = currentFileName.replace(/\.[^/.]+$/, "");
+
+          let targetBuffer: AudioBuffer = separatedStems.vocals;
+          let stemSuffix = 'vocals';
+
+          if (format.includes('Drums')) {
+            targetBuffer = separatedStems.drums;
+            stemSuffix = 'drums';
+          } else if (format.includes('Bass')) {
+            targetBuffer = separatedStems.bass;
+            stemSuffix = 'bass';
+          } else if (format.includes('Instrumental') || format.includes('Other')) {
+            targetBuffer = separatedStems.other;
+            stemSuffix = 'instrumental';
+          }
+
+          const wavBlob = audioBufferToWav(targetBuffer, 16);
+          downloadBlob(wavBlob, `${baseName}_${stemSuffix}.wav`);
+        } catch (err) {
+          console.error('Stem download error:', err);
+        } finally {
+          if (btnText) btnText.textContent = 'Process & Download Audio';
+        }
+      }) as EventListener);
+    }
+
+    setupStemSplitter();
+    document.addEventListener('astro:page-load', setupStemSplitter);
+  </script>
+</Layout>

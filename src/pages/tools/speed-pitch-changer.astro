@@ -5,18 +5,125 @@ import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
 
 const controls = [
   { id: 'speed', label: 'Playback Speed / Tempo', type: 'slider' as const, min: 0.5, max: 2.0, step: 0.05, default: 1.0, unit: 'x' },
-  { id: 'pitch', label: 'Pitch Transposition (Semiktones)', type: 'slider' as const, min: -12, max: 12, step: 1, default: 0, unit: ' semitones' },
-  { id: 'preset', label: 'Quick Audio Style Preset', type: 'select' as const, default: 'Custom Neutral', options: ['Custom Neutral', 'Nightcore (Speed +25%, Pitch +3)', 'Slowed & Reverb (Speed -15%, Pitch -2)', 'Vaporwave (Speed -25%)'] },
+  { id: 'pitch', label: 'Pitch Transposition', type: 'slider' as const, min: -12, max: 12, step: 1, default: 0, unit: ' semitones' },
+  { id: 'preset', label: 'Quick Audio Style Preset', type: 'select' as const, default: 'Custom Neutral', options: ['Custom Neutral', 'Nightcore (Speed +25%, Pitch +3)', 'Slowed & Reverb (Speed -15%, Pitch -2)', 'Vaporwave (Speed -25%, Pitch -4)', 'Chipmunk High (Speed +50%, Pitch +8)'] },
 ];
 ---
 
 <Layout title="Speed & Pitch Changer - Music Finder AI" subnavTitle="Speed & Pitch" activeTool="Speed/Pitch">
   <InteractiveAudioTool
     toolName="Speed & Pitch Shifter Transposer"
-    toolDescription="Transpose pitch and adjust playback speed independently or together in real-time. Create Nightcore or Slowed & Reverb edits."
+    toolDescription="Transpose pitch and adjust playback speed independently or together in real-time. Create Nightcore, Vaporwave, or Slowed & Reverb edits."
     icon="⏩"
     badge="Real-Time Pitch Shift"
     controls={controls}
-    exportFormats={["MP3 (320kbps)", "WAV", "FLAC"]}
-  />
+    exportFormats={["WAV (Master)", "MP3 Ready", "FLAC Lossless"]}
+  >
+    <!-- Preset Shortcuts Visual Grid -->
+    <div class="mt-6 bg-surface-card p-6 md:p-8 rounded-2xl border border-adaptive space-y-4">
+      <h4 class="font-semibold text-sm text-ink">Popular Style Quick-Select</h4>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button data-speed="1.25" data-pitch="3" class="style-preset-btn p-3 rounded-xl bg-canvas hover:bg-parchment border border-adaptive text-left transition-all">
+          <div class="text-base">⚡ Nightcore</div>
+          <div class="text-[11px] text-muted-adaptive mt-0.5">1.25x Speed • +3 St</div>
+        </button>
+        <button data-speed="0.85" data-pitch="-2" class="style-preset-btn p-3 rounded-xl bg-canvas hover:bg-parchment border border-adaptive text-left transition-all">
+          <div class="text-base">🌊 Slowed</div>
+          <div class="text-[11px] text-muted-adaptive mt-0.5">0.85x Speed • -2 St</div>
+        </button>
+        <button data-speed="0.75" data-pitch="-4" class="style-preset-btn p-3 rounded-xl bg-canvas hover:bg-parchment border border-adaptive text-left transition-all">
+          <div class="text-base">📼 Vaporwave</div>
+          <div class="text-[11px] text-muted-adaptive mt-0.5">0.75x Speed • -4 St</div>
+        </button>
+        <button data-speed="1.0" data-pitch="0" class="style-preset-btn p-3 rounded-xl bg-canvas hover:bg-parchment border border-adaptive text-left transition-all">
+          <div class="text-base">🔄 Reset</div>
+          <div class="text-[11px] text-muted-adaptive mt-0.5">1.00x Speed • 0 St</div>
+        </button>
+      </div>
+    </div>
+  </InteractiveAudioTool>
+
+  <script>
+    import { renderSpeedAndPitchBuffer, audioBufferToWav, downloadBlob } from '../../utils/audioEngine';
+
+    function setupSpeedPitch() {
+      const speedInput = document.getElementById('speed') as HTMLInputElement;
+      const pitchInput = document.getElementById('pitch') as HTMLInputElement;
+      const presetSelect = document.getElementById('preset') as HTMLSelectElement;
+      const presetBtns = document.querySelectorAll('.style-preset-btn');
+
+      const valSpeed = document.getElementById('val-speed');
+      const valPitch = document.getElementById('val-pitch');
+
+      let currentAudioBuffer: AudioBuffer | null = null;
+      let currentFileName = 'track';
+
+      function syncValues() {
+        if (valSpeed && speedInput) valSpeed.textContent = `${parseFloat(speedInput.value).toFixed(2)}x`;
+        if (valPitch && pitchInput) valPitch.textContent = `${pitchInput.value > '0' ? '+' : ''}${pitchInput.value} semitones`;
+      }
+
+      speedInput?.addEventListener('input', syncValues);
+      pitchInput?.addEventListener('input', syncValues);
+
+      presetSelect?.addEventListener('change', (e: any) => {
+        const val = e.target.value;
+        if (val.includes('Nightcore')) {
+          setValues(1.25, 3);
+        } else if (val.includes('Slowed')) {
+          setValues(0.85, -2);
+        } else if (val.includes('Vaporwave')) {
+          setValues(0.75, -4);
+        } else if (val.includes('Chipmunk')) {
+          setValues(1.5, 8);
+        } else {
+          setValues(1.0, 0);
+        }
+      });
+
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const spd = parseFloat((btn as HTMLElement).dataset.speed || '1');
+          const ptch = parseInt((btn as HTMLElement).dataset.pitch || '0', 10);
+          setValues(spd, ptch);
+        });
+      });
+
+      function setValues(spd: number, ptch: number) {
+        if (speedInput) speedInput.value = String(spd);
+        if (pitchInput) pitchInput.value = String(ptch);
+        syncValues();
+      }
+
+      window.addEventListener('audio-loaded', ((e: CustomEvent) => {
+        currentAudioBuffer = e.detail.buffer;
+        currentFileName = e.detail.filename || 'track';
+      }) as EventListener);
+
+      window.addEventListener('audio-custom-download', (async (e: CustomEvent) => {
+        if (!currentAudioBuffer) return;
+        e.preventDefault();
+
+        const btnText = document.getElementById('download-btn-text');
+        if (btnText) btnText.textContent = 'Rendering Speed & Pitch Transposition...';
+
+        try {
+          const spd = parseFloat(speedInput?.value || '1.0');
+          const ptch = parseInt(pitchInput?.value || '0', 10);
+
+          const renderedBuffer = await renderSpeedAndPitchBuffer(currentAudioBuffer, spd, ptch);
+          const wavBlob = audioBufferToWav(renderedBuffer, 16);
+          const outName = currentFileName.replace(/\.[^/.]+$/, "") + `_transposed_${spd}x_${ptch}st.wav`;
+          downloadBlob(wavBlob, outName);
+        } catch (err) {
+          console.error('Speed/Pitch render error:', err);
+        } finally {
+          if (btnText) btnText.textContent = 'Process & Download Audio';
+        }
+      }) as EventListener);
+    }
+
+    setupSpeedPitch();
+    document.addEventListener('astro:page-load', setupSpeedPitch);
+  </script>
 </Layout>

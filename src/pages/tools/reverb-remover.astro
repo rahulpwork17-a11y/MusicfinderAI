@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import InteractiveAudioTool from '../../components/InteractiveAudioTool.astro';
 
 const controls = [
-  { id: 'room-size', label: 'Original Room Environment', type: 'select' as const, default: 'Untreated Room Echo', options: ['Untreated Room Echo', 'Large Hall / Cathedral', 'Tiled Bathroom / Kitchen'] },
+  { id: 'room-size', label: 'Original Room Environment', type: 'select' as const, default: 'Untreated Room Echo', options: ['Untreated Room Echo', 'Large Hall / Cathedral', 'Tiled Bathroom / Kitchen', 'Small Bedroom Flutter'] },
   { id: 'dereverb-amount', label: 'Dereverberation Intensity', type: 'slider' as const, min: 0, max: 100, step: 5, default: 80, unit: '%' },
 ];
 ---
@@ -16,6 +16,69 @@ const controls = [
     icon="🏛️"
     badge="AI Dereverberation"
     controls={controls}
-    exportFormats={["WAV Dry", "MP3", "FLAC"]}
-  />
+    exportFormats={["WAV Dry (Lossless)", "MP3 Master (WAV)", "FLAC"]}
+  >
+    <!-- Dereverberation Specs Card -->
+    <div class="mt-6 bg-surface-card p-6 md:p-8 rounded-2xl border border-adaptive space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="font-semibold text-sm text-ink">Transient Recovery Engine</h4>
+        <span class="text-xs text-[#0066cc] dark:text-[#2997ff] font-medium font-mono" id="reverb-status-text">Ready to dereverb</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="p-3 rounded-xl bg-canvas border border-adaptive space-y-1">
+          <span class="text-muted-adaptive">Transient Shaper:</span>
+          <div class="font-semibold text-ink">Fast Attack & Release Envelope Gate</div>
+        </div>
+        <div class="p-3 rounded-xl bg-canvas border border-adaptive space-y-1">
+          <span class="text-muted-adaptive">Room Resonance Cut:</span>
+          <div class="font-semibold text-ink">Parametric Decay Damping</div>
+        </div>
+      </div>
+    </div>
+  </InteractiveAudioTool>
+
+  <script>
+    import { renderDereverb, audioBufferToWav, downloadBlob } from '../../utils/audioEngine';
+
+    function setupReverbRemover() {
+      const roomSizeSelect = document.getElementById('room-size') as HTMLSelectElement;
+      const intensitySlider = document.getElementById('dereverb-amount') as HTMLInputElement;
+      const statusText = document.getElementById('reverb-status-text');
+
+      let currentAudioBuffer: AudioBuffer | null = null;
+      let currentFileName = 'audio';
+
+      window.addEventListener('audio-loaded', ((e: CustomEvent) => {
+        currentAudioBuffer = e.detail.buffer;
+        currentFileName = e.detail.filename || 'audio';
+        if (statusText) statusText.textContent = 'Audio loaded • Dereverb ready';
+      }) as EventListener);
+
+      window.addEventListener('audio-custom-download', (async (e: CustomEvent) => {
+        if (!currentAudioBuffer) return;
+        e.preventDefault();
+
+        const btnText = document.getElementById('download-btn-text');
+        if (btnText) btnText.textContent = 'Rendering Dereverberation DSP...';
+
+        try {
+          const intensity = parseFloat(intensitySlider?.value || '80');
+          const roomType = roomSizeSelect?.value || 'Untreated Room Echo';
+
+          const dryBuffer = await renderDereverb(currentAudioBuffer, intensity, roomType);
+          const wavBlob = audioBufferToWav(dryBuffer, 16);
+          const outName = currentFileName.replace(/\.[^/.]+$/, "") + `_dry.wav`;
+          downloadBlob(wavBlob, outName);
+        } catch (err) {
+          console.error('Dereverb error:', err);
+        } finally {
+          if (btnText) btnText.textContent = 'Process & Download Audio';
+        }
+      }) as EventListener);
+    }
+
+    setupReverbRemover();
+    document.addEventListener('astro:page-load', setupReverbRemover);
+  </script>
 </Layout>
