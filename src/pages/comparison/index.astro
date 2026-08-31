@@ -1,0 +1,386 @@
+---
+// src/pages/comparison/index.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Music Finder AI vs Alternatives - Comparison & Benchmark"
+  description="Compare Music Finder AI against Shazam, SoundHound, AHA Music, and legacy audio identification tools. Discover our 100% ad-free interface, video audio extraction, and studio preprocessing suite."
+>
+  <!-- HERO: COMPARISON OVERVIEW -->
+  <section class="py-20 md:py-28 px-4 md:px-8 bg-canvas border-b border-adaptive relative overflow-hidden">
+    <!-- Subtle Background Accent -->
+    <div class="absolute top-0 right-1/4 w-[600px] h-[350px] bg-[#0066cc]/5 dark:bg-[#2997ff]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-[1200px] mx-auto text-center space-y-6 relative z-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0066cc]/10 dark:bg-[#2997ff]/10 border border-[#0066cc]/20 dark:border-[#2997ff]/30 text-[#0066cc] dark:text-[#2997ff] text-xs font-semibold uppercase tracking-wider">
+        Platform Benchmarks 2026
+      </div>
+
+      <h1 class="font-display font-semibold text-4xl sm:text-5xl md:text-6xl tracking-[-0.03em] text-ink leading-[1.1]">
+        Why Creators & Listeners Choose <br class="hidden sm:inline" />
+        <span class="bg-gradient-to-r from-[#0066cc] via-indigo-600 to-purple-600 dark:from-[#2997ff] dark:via-indigo-400 dark:to-purple-300 bg-clip-text text-transparent">
+          Music Finder AI.
+        </span>
+      </h1>
+
+      <p class="text-lg sm:text-xl md:text-2xl text-muted-adaptive max-w-3xl mx-auto font-light leading-relaxed">
+        Legacy recognition tools are bloated with intrusive ads, restricted to live microphone input, and lack video extraction. We built the fast, ad-free studio tool you deserve.
+      </p>
+
+      <!-- Key Differentiator Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          100% Ad-Free
+        </span>
+        <span class="px-3.5 py-1.5 rounded-full bg-[#0066cc]/10 dark:bg-[#2997ff]/10 text-[#0066cc] dark:text-[#2997ff] border border-[#0066cc]/20 dark:border-[#2997ff]/30 text-xs font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Video & URL Extraction
+        </span>
+        <span class="px-3.5 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Studio Vocal & Gain Filters
+        </span>
+        <span class="px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 text-xs font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Zero File Logging / Ephemeral
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: THE FULL COMPARISON MATRIX -->
+  <section class="py-20 px-4 md:px-8 bg-parchment">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Comprehensive Breakdown</span>
+        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-ink">
+          Feature-by-Feature Comparison Matrix
+        </h2>
+        <p class="text-muted-adaptive text-base md:text-lg mt-2">
+          See how Music Finder AI compares side-by-side with mainstream recognition platforms.
+        </p>
+      </div>
+
+      <!-- The Table Matrix -->
+      <div class="overflow-x-auto rounded-2xl border border-adaptive shadow-sm bg-canvas">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-surface-card border-b border-adaptive">
+              <th class="p-4 md:p-6 font-bold text-ink w-[30%]">Capability / Feature</th>
+              <th class="p-4 md:p-6 font-bold text-[#0066cc] dark:text-[#2997ff] bg-[#0066cc]/5 border-l-2 border-[#0066cc] w-[35%]">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#0066cc] dark:bg-[#2997ff]"></span>
+                  Music Finder AI
+                </div>
+              </th>
+              <th class="p-4 md:p-6 font-bold text-muted-adaptive w-[35%]">
+                Legacy Recognition Tools (Shazam / SoundHound / Web Uploaders)
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-adaptive">
+            <!-- Row: Ad Experience -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Ad Experience & Clutter
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Distraction-free usage without banners</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  100% Ad-Free, No Popups or Banners
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Heavily monetized with banner ads, interstitial popups, and click redirections
+              </td>
+            </tr>
+
+            <!-- Row: Video Track Extraction -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Video Audio Extraction
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">MP4, WebM, MOV, MKV support</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Direct Video Demuxing in Browser
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Requires manual conversion to MP3 via 3rd party converter first
+              </td>
+            </tr>
+
+            <!-- Row: Input Flexibility -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Input Methods
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">How you can feed audio into the engine</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Audio File, Video File, URL Stream & Live Mic
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Usually restricted to Live Mic only (App) or single audio format (Web)
+              </td>
+            </tr>
+
+            <!-- Row: Pre-Processing Studio Tools -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Audio Pre-Processing Suite
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Vocal isolation, gain boost, trim slider</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Integrated Browser Audio Tools
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                None. Raw audio is processed as-is with high error rate on noisy clips
+              </td>
+            </tr>
+
+            <!-- Row: Match Speed -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Match Speed & Latency
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Time to return identified track & metadata</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Sub-second (Average 200ms)
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                4 to 12 seconds with server upload queue delay
+              </td>
+            </tr>
+
+            <!-- Row: History & Offline Drawer -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Recognition History
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Persistence across sessions</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Local Storage History Drawer (No Account Needed)
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Lost on page refresh, or requires mandatory user account creation
+              </td>
+            </tr>
+
+            <!-- Row: Privacy & Security -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Data Privacy & Retention
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Handling of uploaded audio and voice data</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Instant In-Memory Purge, No Tracking
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Audio stored for advertising telemetry and user interest profiling
+              </td>
+            </tr>
+
+            <!-- Row: Streaming Outlinks -->
+            <tr class="hover:bg-surface-card/50 transition-colors">
+              <td class="p-4 md:p-6 font-semibold text-ink">
+                Streaming Platform Links
+                <span class="block text-xs font-normal text-muted-adaptive mt-0.5">Listen directly on your preferred service</span>
+              </td>
+              <td class="p-4 md:p-6 font-semibold text-emerald-600 dark:text-emerald-400 bg-[#0066cc]/5 border-l-2 border-[#0066cc]">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Spotify, Apple Music & YouTube Music Links
+                </div>
+              </td>
+              <td class="p-4 md:p-6 text-muted-adaptive">
+                Locked to single proprietary ecosystem (e.g. Apple Music only)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: HEAD-TO-HEAD BREAKDOWNS -->
+  <section class="py-20 px-4 md:px-8 bg-canvas">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Direct Showdown</span>
+        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-ink">
+          Head-to-Head Comparisons
+        </h2>
+        <p class="text-lg text-muted-adaptive mt-3">
+          Detailed technical differences between Music Finder AI and individual alternatives.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1: Shazam -->
+        <div class="p-8 rounded-3xl bg-surface-card border border-adaptive flex flex-col justify-between hover:shadow-lg transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xl mb-6">
+              VS
+            </div>
+            <h3 class="text-2xl font-bold font-display text-ink mb-2">Music Finder AI vs Shazam</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed mb-6">
+              Shazam is great for ambient mic listening on phones, but falls short on desktops and creator workflows. It lacks native video file extraction, audio trimming, and vocal isolation tools.
+            </p>
+            <ul class="space-y-2.5 text-xs text-muted-adaptive">
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Works in browser without downloading apps
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Direct MP4/MKV video audio demuxing
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Unrestricted multi-platform streaming links
+              </li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-adaptive text-xs font-semibold text-[#0066cc] dark:text-[#2997ff]">
+            Ideal for: Video Editors & Content Creators
+          </div>
+        </div>
+
+        <!-- Card 2: SoundHound -->
+        <div class="p-8 rounded-3xl bg-surface-card border border-adaptive flex flex-col justify-between hover:shadow-lg transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-xl mb-6">
+              VS
+            </div>
+            <h3 class="text-2xl font-bold font-display text-ink mb-2">Music Finder AI vs SoundHound</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed mb-6">
+              SoundHound specializes in melody humming, but its web presence is dated and saturated with third-party tracking. Music Finder AI provides modern, sub-second spectral matching with 100% privacy.
+            </p>
+            <ul class="space-y-2.5 text-xs text-muted-adaptive">
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> 200ms sub-second constellation matching
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Clean modern UI with Light & Dark modes
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Zero invasive tracker scripts or cookies
+              </li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-adaptive text-xs font-semibold text-[#0066cc] dark:text-[#2997ff]">
+            Ideal for: Audiophiles & Privacy-Conscious Users
+          </div>
+        </div>
+
+        <!-- Card 3: Generic Ad-Heavy Web Uploaders -->
+        <div class="p-8 rounded-3xl bg-surface-card border border-adaptive flex flex-col justify-between hover:shadow-lg transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold text-xl mb-6">
+              VS
+            </div>
+            <h3 class="text-2xl font-bold font-display text-ink mb-2">Music Finder AI vs Ad Uploaders</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed mb-6">
+              Many online "song identifier" websites are ad traps that redirect to suspicious extensions or bombard users with popups. Music Finder AI is an ad-free, verified acoustic tool.
+            </p>
+            <ul class="space-y-2.5 text-xs text-muted-adaptive">
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> 100% Ad-Free, No Fake Download Buttons
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> Client-side WebAudio processing
+              </li>
+              <li class="flex items-center gap-2 text-ink font-medium">
+                <span class="text-emerald-500 font-bold">&check;</span> 30s Audio previews & rich track metadata
+              </li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-adaptive text-xs font-semibold text-[#0066cc] dark:text-[#2997ff]">
+            Ideal for: Fast, Safe Daily Music Discovery
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: COMPARISON FAQ -->
+  <section class="py-20 px-4 md:px-8 bg-parchment border-t border-adaptive">
+    <div class="max-w-[840px] mx-auto space-y-12">
+      <div class="text-center">
+        <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink">
+          Comparison Questions & Answers
+        </h2>
+        <p class="text-muted-adaptive mt-2">Common questions regarding alternatives and capabilities.</p>
+      </div>
+
+      <div class="space-y-4">
+        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
+            <span>Can I identify songs from YouTube, TikTok, or Instagram video clips?</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
+            Yes! Unlike mobile-only apps, you can drag and drop any MP4, WebM, MKV, or MOV video file directly into Music Finder AI. We extract the audio track in milliseconds and identify the background track even through dialogue.
+          </p>
+        </details>
+
+        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
+            <span>Why is Music Finder AI ad-free and free to use?</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
+            We believe audio recognition should be fast, clean, and accessible without visual clutter. Our acoustic fingerprinting engine runs ultra-efficient vectorized lookups with low overhead, allowing us to offer high-speed song identification without relying on disruptive display ads.
+          </p>
+        </details>
+
+        <details class="group bg-canvas p-6 rounded-2xl border border-adaptive [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-lg text-ink">
+            <span>How does the Pre-Processing Suite improve match accuracy?</span>
+            <svg class="w-5 h-5 text-muted-adaptive transition-transform duration-200 group-open:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="text-sm text-muted-adaptive mt-3 leading-relaxed">
+            On noisy recordings, our Vocal Isolation and Volume Normalization filters remove unwanted background frequencies and level out clipped or quiet audio before the fingerprint is calculated. This yields significantly higher match rates compared to tools that process raw, distorted signals.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-20 px-4 md:px-8 bg-canvas border-t border-adaptive text-center">
+    <div class="max-w-[700px] mx-auto space-y-6">
+      <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink">
+        Ready for Better Song Recognition?
+      </h2>
+      <p class="text-muted-adaptive text-lg">
+        Try Music Finder AI now — 100% ad-free, instant, and completely free.
+      </p>
+      <div class="pt-2 flex items-center justify-center gap-4">
+        <a href="/#recognizer" class="btn-action-primary !py-3 !px-8 !text-base">
+          Start Identifying Now
+        </a>
+        <a href="/technology" class="btn-action-secondary !py-3 !px-8 !text-base">
+          Explore the Technology
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

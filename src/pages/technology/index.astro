@@ -1,0 +1,384 @@
+---
+// src/pages/technology/index.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Acoustic AI Technology & Fingerprinting Engine - Music Finder AI"
+  description="Explore the studio-grade acoustic fingerprinting technology behind Music Finder AI: 200ms sub-second matching, real-time spectrogram FFT, noise suppression, and private client-side audio analysis."
+>
+  <!-- HERO: DEEP DIVE ENGINE OVERVIEW -->
+  <section class="py-20 md:py-28 px-4 md:px-8 bg-[#161617] text-white relative overflow-hidden border-b border-neutral-800">
+    <!-- Ambient Glow Background -->
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-[#0066cc]/20 via-[#2997ff]/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-[1200px] mx-auto text-center space-y-6 relative z-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0066cc]/20 border border-[#2997ff]/30 text-[#2997ff] text-xs font-semibold uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
+        Acoustic Fingerprinting v2.4
+      </div>
+
+      <h1 class="font-display font-semibold text-4xl sm:text-5xl md:text-6xl tracking-[-0.03em] text-white leading-[1.1]">
+        Next-Generation Audio AI. <br class="hidden sm:inline" />
+        <span class="bg-gradient-to-r from-[#2997ff] via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+          Engineered for Pure Accuracy.
+        </span>
+      </h1>
+
+      <p class="text-lg sm:text-xl md:text-2xl font-light text-neutral-300 max-w-3xl mx-auto leading-relaxed">
+        Music Finder AI transforms raw acoustic soundwaves into multidimensional spectral constellation maps, matching audio against millions of tracks in less than 200 milliseconds.
+      </p>
+
+      <!-- Key Performance Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8">
+        <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
+          <div class="text-3xl md:text-4xl font-bold font-display text-[#2997ff]">200ms</div>
+          <div class="text-xs sm:text-sm text-neutral-400 mt-1">Average Match Latency</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
+          <div class="text-3xl md:text-4xl font-bold font-display text-emerald-400">99.4%</div>
+          <div class="text-xs sm:text-sm text-neutral-400 mt-1">Identification Precision</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
+          <div class="text-3xl md:text-4xl font-bold font-display text-indigo-400">22.05 kHz</div>
+          <div class="text-xs sm:text-sm text-neutral-400 mt-1">Dual-Channel FFT</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
+          <div class="text-3xl md:text-4xl font-bold font-display text-purple-400">+42 dB</div>
+          <div class="text-xs sm:text-sm text-neutral-400 mt-1">Signal-to-Noise Ratio</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+        <a href="/#recognizer" class="btn-action-primary !text-[15px] !py-3 !px-6">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Test Recognizer Live
+        </a>
+        <a href="/comparison" class="btn-action-secondary !text-[15px] !py-3 !px-6 !text-neutral-200 !border-neutral-700 hover:!bg-neutral-800">
+          Compare Against Legacy Tools &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: INTERACTIVE SPECTROGRAM & FFT RENDER -->
+  <section class="py-16 px-4 md:px-8 bg-[#1d1d1f] text-white border-b border-neutral-800">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="bg-[#121214] rounded-3xl p-6 sm:p-8 md:p-10 border border-neutral-800 shadow-2xl overflow-hidden relative">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neutral-800">
+          <div>
+            <div class="text-xs uppercase tracking-widest text-[#2997ff] font-semibold">Live Spectrum Analyzer</div>
+            <h2 class="text-xl sm:text-2xl font-bold font-display text-white mt-1">Real-Time Frequency Constellation FFT</h2>
+          </div>
+          <div class="flex items-center gap-3 text-xs text-neutral-400 font-mono">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-800 border border-neutral-700">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              ACTIVE FFT PASS
+            </span>
+            <span>Hanning Window (N=2048)</span>
+          </div>
+        </div>
+
+        <!-- Frequency Spectrum Wave Animation -->
+        <style>
+          @keyframes tech-eq-wave {
+            0%, 100% { height: var(--eq-min); }
+            50% { height: var(--eq-max); }
+          }
+          .eq-spectrum-bar {
+            animation: tech-eq-wave var(--eq-speed) ease-in-out infinite;
+            animation-delay: var(--eq-delay);
+          }
+        </style>
+        <div class="h-52 sm:h-64 flex items-end justify-between gap-1 sm:gap-1.5 px-2 sm:px-6 my-8">
+          {Array.from({ length: 64 }).map((_, idx) => {
+            const base = Math.sin(idx * 0.25) * 45 + 50 + (idx % 4) * 8;
+            const minH = Math.max(12, base * 0.3);
+            const maxH = Math.min(98, base * 1.2);
+            const dur = (1.1 + (idx % 9) * 0.14).toFixed(2);
+            const delay = ((idx % 13) * 0.08).toFixed(2);
+            const opacity = (0.5 + (idx % 5) * 0.12).toFixed(2);
+            return (
+              <div 
+                class="eq-spectrum-bar flex-1 bg-gradient-to-t from-[#0066cc] via-[#2997ff] to-purple-400 rounded-t-sm"
+                style={`--eq-min: ${minH}%; --eq-max: ${maxH}%; --eq-speed: ${dur}s; --eq-delay: -${delay}s; opacity: ${opacity};`}
+              ></div>
+            );
+          })}
+        </div>
+
+        <!-- Spectrogram Technical Details Overlay -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-neutral-800 text-xs text-neutral-300">
+          <div>
+            <span class="text-neutral-500 block">Band Resolution</span>
+            <span class="font-mono font-medium text-white">512 Sub-bands (20Hz - 20kHz)</span>
+          </div>
+          <div>
+            <span class="text-neutral-500 block">Temporal Window</span>
+            <span class="font-mono font-medium text-white">46.4ms Frame Stride</span>
+          </div>
+          <div>
+            <span class="text-neutral-500 block">Peak Extraction Density</span>
+            <span class="font-mono font-medium text-white">32 Peaks / Sec / Track</span>
+          </div>
+          <div>
+            <span class="text-neutral-500 block">Hash Structure</span>
+            <span class="font-mono font-medium text-[#2997ff]">32-bit Pairwise Hash (0x8F4A...)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: 4-STAGE PIPELINE ARCHITECTURE -->
+  <section class="py-20 px-4 md:px-8 bg-canvas">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Architectural Blueprint</span>
+        <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.025em] text-ink">
+          How Acoustic Fingerprinting Works
+        </h2>
+        <p class="text-lg text-muted-adaptive mt-3">
+          From sound ingestion to sub-second track metadata synthesis, our pipeline processes complex audio signals through four high-performance layers.
+        </p>
+      </div>
+
+      <!-- Pipeline Steps Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Step 1 -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-adaptive relative flex flex-col justify-between hover:border-[#0066cc] dark:hover:border-[#2997ff] transition-all group">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#0066cc]/10 dark:bg-[#2997ff]/10 text-[#0066cc] dark:text-[#2997ff] flex items-center justify-center font-bold font-display text-lg mb-4 group-hover:scale-110 transition-transform">
+              01
+            </div>
+            <h3 class="text-lg font-bold text-ink mb-2">Ingest & Demux</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed">
+              Accepts MP3, WAV, FLAC, M4A, or MP4/WebM videos. Demuxes the audio channel locally in-browser at 44.1kHz / 48kHz, normalizes loudness (EBU R128), and downmixes to mono.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-adaptive text-xs font-mono text-[#0066cc] dark:text-[#2997ff]">
+            WebAudio API + WASM
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-adaptive relative flex flex-col justify-between hover:border-[#0066cc] dark:hover:border-[#2997ff] transition-all group">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 flex items-center justify-center font-bold font-display text-lg mb-4 group-hover:scale-110 transition-transform">
+              02
+            </div>
+            <h3 class="text-lg font-bold text-ink mb-2">Spectral FFT Constellation</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed">
+              Splits audio into overlapping frames via Short-Time Fourier Transform (STFT). Extracts local spectral energy peaks across log-spaced frequency bands to generate a constellation map.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-adaptive text-xs font-mono text-indigo-500 dark:text-indigo-400">
+            FFT Window Size: 2048
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-adaptive relative flex flex-col justify-between hover:border-[#0066cc] dark:hover:border-[#2997ff] transition-all group">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 dark:text-purple-400 flex items-center justify-center font-bold font-display text-lg mb-4 group-hover:scale-110 transition-transform">
+              03
+            </div>
+            <h3 class="text-lg font-bold text-ink mb-2">Pairwise Fingerprint Hash</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed">
+              Couples anchor frequency peaks with target zone peaks to create combinatorial anchor-point hashes. Each hash encodes (f1, f2, &Delta;t) ensuring robust tolerance against ambient cafe chatter.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-adaptive text-xs font-mono text-purple-500 dark:text-purple-400">
+            Robust to +42dB Noise
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-adaptive relative flex flex-col justify-between hover:border-[#0066cc] dark:hover:border-[#2997ff] transition-all group">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center font-bold font-display text-lg mb-4 group-hover:scale-110 transition-transform">
+              04
+            </div>
+            <h3 class="text-lg font-bold text-ink mb-2">Sub-Second Vector Search</h3>
+            <p class="text-sm text-muted-adaptive leading-relaxed">
+              Queries an inverted index with time-offset histogram clustering. Matches confidence scores in 200ms and retrieves track metadata, artwork, album year, and direct Spotify/Apple links.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-adaptive text-xs font-mono text-emerald-500 dark:text-emerald-400">
+            Latency &le; 200ms
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: PRE-PROCESSING SUITE DEEP DIVE -->
+  <section class="py-20 px-4 md:px-8 bg-parchment border-t border-adaptive">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Studio-Grade Pre-Processing</span>
+          <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink leading-tight mb-6">
+            Pre-Recognition Audio Sculpting. Clean Audio, Faster Matches.
+          </h2>
+          <p class="text-muted-adaptive leading-relaxed mb-6">
+            Real-world audio is messy — recorded over loud speakers, echoing in coffee shops, or masked by heavy dialogue in movies. Music Finder AI embeds a browser-based audio workstation to clean your clips before analysis.
+          </p>
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-canvas border border-adaptive">
+              <div class="w-9 h-9 rounded-lg bg-[#0066cc]/10 dark:bg-[#2997ff]/10 text-[#0066cc] dark:text-[#2997ff] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-ink text-sm">Vocal Isolation Filter</h4>
+                <p class="text-xs sm:text-sm text-muted-adaptive mt-0.5">
+                  Applies high-pass/notch acoustic frequency isolation to separate lead vocal frequencies from heavy background noise.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-canvas border border-adaptive">
+              <div class="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-ink text-sm">Dynamic Gain Normalization</h4>
+                <p class="text-xs sm:text-sm text-muted-adaptive mt-0.5">
+                  Boosts whisper-quiet phone recordings and prevents distortion clipping on loud club basslines using peak limiter curves.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-canvas border border-adaptive">
+              <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-ink text-sm">Precision Waveform Cropping</h4>
+                <p class="text-xs sm:text-sm text-muted-adaptive mt-0.5">
+                  Visual dual-handle trim slider to isolate the exact 5 to 15-second chorus or drop for zero interference matching.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Code / Specification Box -->
+        <div class="bg-[#161617] text-white rounded-3xl p-6 md:p-8 border border-neutral-800 font-mono text-xs shadow-2xl">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-neutral-800 text-neutral-400">
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+              <span class="ml-2 text-white font-sans text-xs font-semibold">engine-spec.json</span>
+            </span>
+            <span>AES-256 Memory Encrypted</span>
+          </div>
+
+          <pre class="overflow-x-auto text-neutral-300 leading-relaxed">
+<span class="text-[#2997ff]">&#123;</span>
+  <span class="text-indigo-400">"engine_version"</span>: <span class="text-emerald-400">"2.4.0-acoustic-pro"</span>,
+  <span class="text-indigo-400">"sampling_rate_hz"</span>: <span class="text-amber-300">22050</span>,
+  <span class="text-indigo-400">"fft_window_size"</span>: <span class="text-amber-300">2048</span>,
+  <span class="text-indigo-400">"hop_size_samples"</span>: <span class="text-amber-300">512</span>,
+  <span class="text-indigo-400">"frequency_range_hz"</span>: [<span class="text-amber-300">20</span>, <span class="text-amber-300">11025</span>],
+  <span class="text-indigo-400">"subband_divisions"</span>: <span class="text-amber-300">6</span>,
+  <span class="text-indigo-400">"min_anchor_delta_ms"</span>: <span class="text-amber-300">46.4</span>,
+  <span class="text-indigo-400">"max_anchor_delta_ms"</span>: <span class="text-amber-300">800.0</span>,
+  <span class="text-indigo-400">"noise_tolerance_snr"</span>: <span class="text-emerald-400">"-18 dB threshold"</span>,
+  <span class="text-indigo-400">"client_processing"</span>: <span class="text-purple-400">true</span>,
+  <span class="text-indigo-400">"privacy_policy"</span>: <span class="text-emerald-400">"zero_persistent_storage"</span>
+<span class="text-[#2997ff]">&#125;</span>
+          </pre>
+
+          <div class="mt-6 pt-4 border-t border-neutral-800 text-[11px] text-neutral-400 flex items-center justify-between">
+            <span>&check; Fully Client Pre-Processed</span>
+            <span class="text-[#2997ff]">W3C Web Audio Standard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: ENGINE TECHNICAL SPECS TABLE -->
+  <section class="py-20 px-4 md:px-8 bg-canvas">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-sm uppercase tracking-wider block mb-2">Full Specifications</span>
+        <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink">
+          Acoustic Engine Technical Matrix
+        </h2>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-adaptive shadow-sm bg-surface-card">
+        <table class="w-full text-left border-collapse text-sm">
+          <tbody class="divide-y divide-adaptive">
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink w-1/3">Audio Ingestion Channels</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">Dual Channel Stereo, 5.1 Downmix, Single Mono</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Supported Audio Codecs</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">MP3, WAV (PCM 16/24-bit), FLAC, AAC, M4A, OGG, OPUS, ALAC, AIFF</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Supported Video Containers</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">MP4, WebM, MKV, AVI, MOV, TS (Automatic Audio Demuxing)</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Acoustic Search Index</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">Inverted Hash Index + Milvus Acoustic Feature Vector Clustering</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Minimum Required Audio Length</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">2.5 Seconds of recognizable spectral constellation data</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Maximum Recommended Input</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">Up to 60 Minutes (with integrated waveform navigation & crop)</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Metadata Synchronization</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">Title, Artist, Album, Release Year, High-Res Cover Art, ISRC, BPM, Key, Streaming Links</td>
+            </tr>
+            <tr class="hover:bg-canvas transition-colors">
+              <td class="p-4 md:p-5 font-semibold text-ink">Privacy Protocol</td>
+              <td class="p-4 md:p-5 text-muted-adaptive">Zero storage on disk; ephemeral memory hashing purged instantly upon result delivery</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-20 px-4 md:px-8 bg-parchment border-t border-adaptive text-center">
+    <div class="max-w-[700px] mx-auto space-y-6">
+      <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink">
+        Experience Studio Recognition in Action
+      </h2>
+      <p class="text-muted-adaptive text-lg">
+        Try our 200ms acoustic engine now. Upload any audio, video clip, or record with your microphone.
+      </p>
+      <div class="pt-2 flex items-center justify-center gap-4">
+        <a href="/#recognizer" class="btn-action-primary !py-3 !px-8 !text-base">
+          Launch Recognizer
+        </a>
+        <a href="/comparison" class="btn-action-secondary !py-3 !px-8 !text-base">
+          View Platform Comparison
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
