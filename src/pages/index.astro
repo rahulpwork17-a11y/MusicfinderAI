@@ -86,19 +86,19 @@ const faqItems = [
     text {colors.on-dark}, padding {spacing.section} 80px, rounded-none.
     NO border separator — the color change IS the divider.
   ============================================================ -->
-  <section id="technology" class="px-4 md:px-8 bg-[#272729] text-white" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
-    <div class="max-w-[1200px] mx-auto text-center" style="display: flex; flex-direction: column; gap: var(--spacing-xxl);">
+  <section id="technology" class="px-4 sm:px-6 md:px-8 bg-[#272729] text-white py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="max-w-[1200px] mx-auto text-center flex flex-col gap-8 sm:gap-12">
       
       <!-- Eyebrow — {typography.caption-strong}: 14px / 600 / 1.29 / -0.224px -->
-      <span class="text-[#2997ff] block" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; text-transform: uppercase; word-spacing: 0.05em;">Studio Grade Engine</span>
+      <span class="text-[#2997ff] block text-xs sm:text-sm font-semibold uppercase tracking-wider">Studio Grade Engine</span>
       
       <!-- Section headline — {typography.display-lg}: 40px / 600 / 1.10 / 0 -->
-      <h2 class="font-display text-white" style="font-size: 40px; font-weight: 600; line-height: 1.10; letter-spacing: 0; margin: 0;">
+      <h2 class="font-display text-white text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold leading-[1.15] tracking-tight m-0">
         Acoustic Fingerprinting Re-Engineered.
       </h2>
 
       <!-- Lead paragraph — {typography.lead-airy}: 24px / 300 / 1.5 / 0 -->
-      <p class="text-neutral-300 max-w-3xl mx-auto" style="font-size: 24px; font-weight: 300; line-height: 1.5; letter-spacing: 0; margin: 0;">
+      <p class="text-neutral-300 max-w-3xl mx-auto text-base sm:text-lg md:text-xl lg:text-2xl font-light leading-relaxed m-0">
         Our deep audio engine analyzes spectral frequency peak maps in 200ms. It isolates melodies through noisy recordings, live cafes, and distorted video clips.
       </p>
 
@@ -110,15 +110,15 @@ const faqItems = [
       -->
       <div>
         <div
-          class="relative rounded-[18px] p-8 max-w-4xl mx-auto overflow-hidden shadow-product-render"
+          class="relative rounded-2xl sm:rounded-[18px] p-4 sm:p-8 max-w-4xl mx-auto overflow-hidden shadow-product-render"
           style="background-color: #1d1d1f; border: 1px solid rgba(255,255,255,0.06);"
         >
-          <div class="flex items-center justify-between pb-4 mb-4" style="border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: #6e6e73; letter-spacing: -0.12px;">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b border-white/10 text-xs text-neutral-400 text-left">
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
+              <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping shrink-0"></span>
               Real-time Spectrogram FFT Analysis
             </span>
-            <span>22,050 Hz Dual Channel</span>
+            <span class="font-mono text-neutral-500">22,050 Hz Dual Channel</span>
           </div>
 
           <!-- Frequency bars — SOLID single color, no CSS gradient on UI chrome -->
@@ -134,7 +134,7 @@ const faqItems = [
               background-color: #2997ff;
             }
           </style>
-          <div class="h-40 flex items-end justify-between gap-0.5 px-4">
+          <div class="h-32 sm:h-40 flex items-end justify-between gap-0.5 px-1 sm:px-4">
             {Array.from({ length: 60 }).map((_, i) => {
               const base = Math.sin(i * 0.3) * 40 + 50 + (i % 5) * 6;
               const low  = Math.max(10, base * 0.35);
@@ -144,24 +144,23 @@ const faqItems = [
               const op   = (0.35 + (i % 4) * 0.165).toFixed(2);
               return (
                 <div
-                  class="freq-bar flex-1 rounded-t-sm"
+                  class="freq-bar flex-1 rounded-t-xs"
                   style={`--bar-h-low: ${low}%; --bar-h-high: ${high}%; --bar-duration: ${dur}s; --bar-delay: -${del}s; opacity: ${op};`}
                 ></div>
               );
             })}
           </div>
 
-          <div class="flex items-center justify-between mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: #6e6e73; letter-spacing: -0.12px;">
-            <span>Signal-to-Noise Ratio: +42dB</span>
-            <span style="color: #2997ff; font-family: 'SF Mono', 'Fira Code', monospace;">Fingerprint Hash: 0x9F82A4C01</span>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-4 pt-4 border-t border-white/10 text-xs text-neutral-400 text-left">
+            <span>Signal-to-Noise Ratio: <strong class="text-white">+42dB</strong></span>
+            <span class="text-[#2997ff] font-mono">Fingerprint Hash: 0x9F82A4C01</span>
           </div>
         </div>
 
         <!-- Text link — {component.text-link-on-dark}: {colors.primary-on-dark} on dark tile -->
-        <div style="margin-top: var(--spacing-lg);">
-          <a href="/technology" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
-            style="font-size: 17px; font-weight: 400; color: #2997ff; letter-spacing: -0.374px;">
-            Explore Full Technology Architecture & FFT Specs &rarr;
+        <div class="mt-6 sm:mt-8">
+          <a href="/technology" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80 text-sm sm:text-base text-[#2997ff]">
+            Explore Full Technology Architecture &amp; FFT Specs &rarr;
           </a>
         </div>
       </div>
@@ -174,61 +173,60 @@ const faqItems = [
     padding {spacing.section} 80px.
     NO border separator between tiles — color change IS the divider.
   ============================================================ -->
-  <section id="comparison" class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+  <section id="comparison" class="px-4 sm:px-6 md:px-8 bg-canvas py-12 sm:py-16 md:py-20 lg:py-24">
     <div class="max-w-[1100px] mx-auto">
       
-      <div class="text-center" style="margin-bottom: var(--spacing-xxl);">
+      <div class="text-center mb-8 sm:mb-12">
         <!-- Eyebrow — {typography.caption-strong} -->
-        <span class="text-[#0066cc] dark:text-[#2997ff] block" style="font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; text-transform: uppercase; word-spacing: 0.05em; margin-bottom: var(--spacing-xs);">Unmatched Performance</span>
+        <span class="text-[#0066cc] dark:text-[#2997ff] block text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">Unmatched Performance</span>
         <!-- h2 — {typography.display-lg}: 40px / 600 -->
-        <h2 class="font-display text-ink" style="font-size: 40px; font-weight: 600; line-height: 1.10; letter-spacing: 0; margin: 0 0 var(--spacing-sm) 0;">
+        <h2 class="font-display text-ink text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold leading-[1.15] tracking-tight mb-2 sm:mb-3">
           Why Music Finder AI Outperforms Competitors
         </h2>
         <!-- Lead — {typography.body}: 17px / 400 -->
-        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
+        <p class="text-muted-adaptive text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
           Designed for pro creators, listeners, and musicians who expect studio precision without ad noise.
         </p>
       </div>
 
       <!-- Comparison table — {component.store-utility-card}: rounded-[18px] ({rounded.lg}), 1px hairline border -->
-      <div class="overflow-x-auto border border-adaptive" style="border-radius: var(--rounded-lg);">
-        <table class="w-full text-left border-collapse bg-canvas" style="font-size: 17px;">
+      <div class="overflow-x-auto border border-adaptive rounded-2xl sm:rounded-[18px] -mx-1 sm:mx-0">
+        <table class="w-full text-left border-collapse bg-canvas min-w-[540px] text-sm sm:text-base">
           <colgroup>
-            <col style="width: 30%" />
-            <col style="width: 35%" />
-            <col style="width: 35%" />
+            <col style="width: 32%" />
+            <col style="width: 34%" />
+            <col style="width: 34%" />
           </colgroup>
           <thead>
             <tr class="bg-surface-card border-b border-adaptive">
-              <th class="p-4 md:p-6 text-ink" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px;">Feature / Capability</th>
-              <th class="p-4 md:p-6 text-[#0066cc] dark:text-[#2997ff]" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px; background-color: rgba(0,102,204,0.04); border-left: 2px solid rgba(0,102,204,0.3);">Music Finder AI</th>
-              <th class="p-4 md:p-6 text-muted-adaptive" style="font-weight: 600; font-size: 14px; letter-spacing: -0.224px;">Legacy Recognition Tools</th>
+              <th class="p-3.5 sm:p-5 md:p-6 text-ink font-semibold text-xs sm:text-sm">Feature / Capability</th>
+              <th class="p-3.5 sm:p-5 md:p-6 text-[#0066cc] dark:text-[#2997ff] font-semibold text-xs sm:text-sm bg-blue-500/5 border-l-2 border-[#0066cc]">Music Finder AI</th>
+              <th class="p-3.5 sm:p-5 md:p-6 text-muted-adaptive font-semibold text-xs sm:text-sm">Legacy Tools</th>
             </tr>
           </thead>
           <tbody>
             {[
               ["Ad Experience & Interface", "100% Ad-Free Clean UI", "Cluttered Banner Ads & Popups"],
-              ["Input Modes", "Audio, Video Extraction, URL Stream & Live Mic", "Audio upload only"],
-              ["Match Speed & Precision", "Sub-second 200ms Acoustic Matching", "Slow multi-second processing queue"],
-              ["Pre-Recognition Audio Cleanup", "Volume Normalize, Vocal Isolation, Waveform Crop", "Manual basic trimming only"],
+              ["Input Modes", "Audio, Video, URL & Live Mic", "Audio upload only"],
+              ["Match Speed & Precision", "Sub-second 200ms Matching", "Slow multi-second queue"],
+              ["Pre-Recognition Cleanup", "Volume, Vocal & Crop Tools", "Manual basic trimming only"],
               ["Recognition History", "Persistent Local Storage Drawer", "Lost on page refresh"],
             ].map(([feature, pro, con]) => (
-              <tr style="border-bottom: 1px solid var(--color-hairline);">
-                <td class="p-4 md:p-6 text-ink" style="font-weight: 500; font-size: 17px; letter-spacing: -0.374px;">{feature}</td>
-                <td class="p-4 md:p-6" style="font-weight: 600; font-size: 17px; color: #15803d; background-color: rgba(0,102,204,0.04); border-left: 2px solid rgba(0,102,204,0.3);">
-                  <span class="dark:text-emerald-400">{pro}</span>
+              <tr class="border-b border-adaptive last:border-b-0 hover:bg-surface-card/40 transition-colors">
+                <td class="p-3.5 sm:p-5 md:p-6 text-ink font-medium text-xs sm:text-sm">{feature}</td>
+                <td class="p-3.5 sm:p-5 md:p-6 font-semibold text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 bg-blue-500/5 border-l-2 border-[#0066cc]">
+                  <span>{pro}</span>
                 </td>
-                <td class="p-4 md:p-6 text-muted-adaptive" style="font-size: 17px; letter-spacing: -0.374px;">{con}</td>
+                <td class="p-3.5 sm:p-5 md:p-6 text-muted-adaptive text-xs sm:text-sm">{con}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div style="margin-top: var(--spacing-lg); text-align: center;">
+      <div class="mt-6 sm:mt-8 text-center">
         <!-- Text link — {component.text-link} on light surface -->
-        <a href="/comparison" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
-          style="font-size: 17px; font-weight: 400; color: #0066cc; letter-spacing: -0.374px;">
+        <a href="/comparison" class="inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80 text-sm sm:text-base font-medium text-[#0066cc] dark:text-[#2997ff]">
           View Complete Comparison Matrix &rarr;
         </a>
       </div>
@@ -241,33 +239,32 @@ const faqItems = [
     padding {spacing.section} 80px.
     NO border-t divider — the parchment bg change from white IS the divider.
   ============================================================ -->
-  <section id="faq" class="px-4 md:px-8 bg-parchment" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
-    <div class="max-w-[840px] mx-auto" style="display: flex; flex-direction: column; gap: var(--spacing-xxl);">
+  <section id="faq" class="px-4 sm:px-6 md:px-8 bg-parchment py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="max-w-[840px] mx-auto flex flex-col gap-8 sm:gap-12">
       
       <div class="text-center">
         <!-- h2 — {typography.display-md}: 34px / 600 / 1.47 / -0.374px -->
-        <h2 class="font-display text-ink" style="font-size: 34px; font-weight: 600; line-height: 1.47; letter-spacing: -0.374px; margin: 0 0 var(--spacing-xs) 0;">
+        <h2 class="font-display text-ink text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2">
           Frequently Asked Questions
         </h2>
         <!-- Body — {typography.body}: 17px / 400 -->
-        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
-          Everything you need to know about our song finder & acoustic fingerprinting engine.
+        <p class="text-muted-adaptive text-sm sm:text-base md:text-lg max-w-xl mx-auto">
+          Everything you need to know about our song finder &amp; acoustic fingerprinting engine.
         </p>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+      <div class="flex flex-col gap-3 sm:gap-4">
         {faqItems.map(({ question, answer }) => (
           <details
-            class="group bg-canvas [&_summary::-webkit-details-marker]:hidden cursor-pointer border border-adaptive"
-            style="border-radius: var(--rounded-lg); padding: var(--spacing-lg);"
+            class="group bg-canvas [&_summary::-webkit-details-marker]:hidden cursor-pointer border border-adaptive rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-colors hover:border-[#0066cc]/40"
           >
-            <summary class="flex items-center justify-between text-ink list-none" style="font-weight: 600; font-size: 17px; line-height: 1.47; letter-spacing: -0.374px;">
-              <span>{question}</span>
-              <svg class="shrink-0 transition-transform duration-200 group-open:rotate-180 text-muted-adaptive" style="width: 18px; height: 18px; margin-left: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <summary class="flex items-center justify-between text-ink list-none font-semibold text-base sm:text-lg leading-snug">
+              <span class="pr-3">{question}</span>
+              <svg class="shrink-0 transition-transform duration-200 group-open:rotate-180 text-muted-adaptive w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"/>
               </svg>
             </summary>
-            <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: var(--spacing-md) 0 0 0;">
+            <p class="text-muted-adaptive text-sm sm:text-base leading-relaxed mt-3 sm:mt-4 pt-3 border-t border-adaptive">
               {answer}
             </p>
           </details>
@@ -282,80 +279,80 @@ const faqItems = [
     Keyword-rich long-form content targeting "song finder" cluster.
     Proper semantic heading hierarchy: h2 > h3.
   ============================================================ -->
-  <section id="about" class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
-    <article class="max-w-[840px] mx-auto" style="display: flex; flex-direction: column; gap: var(--spacing-xl);">
+  <section id="about" class="px-4 sm:px-6 md:px-8 bg-canvas py-12 sm:py-16 md:py-20 lg:py-24">
+    <article class="max-w-[840px] mx-auto flex flex-col gap-6 sm:gap-8">
       
       <!-- Main SEO heading — targets primary keyword -->
-      <div class="text-center" style="margin-bottom: var(--spacing-md);">
-        <h2 class="font-display text-ink" style="font-size: 34px; font-weight: 600; line-height: 1.25; letter-spacing: -0.374px; margin: 0 0 var(--spacing-sm) 0;">
+      <div class="text-center mb-4 sm:mb-6">
+        <h2 class="font-display text-ink text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
           The Ultimate Free Song Finder — Identify Any Song Instantly
         </h2>
-        <p class="text-muted-adaptive" style="font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; margin: 0;">
+        <p class="text-muted-adaptive text-sm sm:text-base md:text-lg">
           Powered by AI acoustic fingerprinting, Music Finder AI is the most advanced song finder tool on the web.
         </p>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: var(--spacing-lg); font-size: 17px; line-height: 1.65; letter-spacing: -0.374px; color: var(--color-ink-muted-80);">
+      <div class="flex flex-col gap-5 sm:gap-6 text-sm sm:text-base md:text-[17px] leading-relaxed text-muted-adaptive">
 
         <!-- Intro paragraph -->
-        <p style="margin: 0;">
+        <p class="m-0">
           Have you ever heard a song playing in a café, on a TV show, or in someone's Instagram story and desperately wanted to know what it was? You're not alone. Every day, millions of people search for a reliable <strong>song finder</strong> that can instantly identify music from virtually any source. That's exactly why we built Music Finder AI — a free, browser-based song identification tool that uses cutting-edge acoustic fingerprinting to recognize tracks in under 200 milliseconds. No app downloads, no account sign-ups, no ads. Just fast, accurate song recognition that works across audio files, video clips, live sound, URLs, and even hummed melodies.
         </p>
 
-        <p style="margin: 0;">
+        <p class="m-0">
           Unlike traditional music recognition apps that only handle clean audio recordings, Music Finder AI is engineered to process real-world inputs. Whether you have a low-quality voice memo, a screen recording with background noise, or a TikTok link you want to decode, our <strong>song finder</strong> delivers results where other tools fail. It supports all major file formats — MP3, WAV, FLAC, M4A, AAC, OGG, MP4, WebM, MKV, AVI, and MOV — and includes built-in audio pre-processing features like volume normalization, vocal isolation, and waveform cropping to optimize recognition accuracy before analysis even begins.
         </p>
 
         <!-- Section: Song Finder by Lyrics -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Song Finder by Lyrics — Discover Songs from Words You Remember
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           One of the most common ways people try to find a song is by searching for the lyrics they remember. A <strong>song finder by lyrics</strong> approach works well when you recall even a short phrase or chorus line from a track. With Music Finder AI, you can record yourself singing or speaking those lyrics using the Live Mic feature, and our engine will match your vocal pattern against millions of indexed tracks. This is especially helpful when you remember the words but can't recall the melody, artist, or song title. Instead of scrolling through endless search engine results guessing at lyric fragments, let our AI-powered <strong>song finder by lyrics</strong> do the heavy lifting — just speak the words you know, and get an instant match.
         </p>
 
         <!-- Section: Song Finder by Video -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Song Finder by Video — Extract and Identify Songs from Any Video File
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           Music is everywhere in video content — from YouTube compilations and Instagram Reels to TikTok edits and movie trailers. Our <strong>song finder by video</strong> feature lets you upload any video file directly, and the tool automatically extracts the audio track for fingerprinting analysis. You don't need separate software to rip audio from video anymore. Simply drag and drop an MP4, WebM, MKV, AVI, or MOV file into the upload zone, and Music Finder AI handles the rest. The <strong>song finder by video</strong> capability is particularly useful for content creators who need to identify background music for licensing purposes, or viewers who discover a great track in a video and want to add it to their playlist.
         </p>
 
         <!-- Section: Song Finder by Humming -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Song Finder by Humming — Just Hum or Whistle the Melody
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           Sometimes you don't know the lyrics or the artist — all you have is the tune stuck in your head. That's where <strong>song finder by humming</strong> becomes invaluable. Click the Live Mic tab, hum or whistle the melody for a few seconds, and our acoustic fingerprinting engine analyzes the pitch contour and rhythmic pattern to find matching songs. The <strong>song finder by humming</strong> technology works by converting your hummed input into a spectral frequency map and comparing it against our database of audio fingerprints. It's remarkably accurate even with imperfect pitch, so don't worry if you're not the best singer — just hum what you remember, and let the AI do the matching.
         </p>
 
         <!-- Section: Song Finder by Sound -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Song Finder by Sound — Identify Songs Playing Around You in Real Time
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           Hearing a great track at a party, in a store, or on the radio? Use the <strong>song finder by sound</strong> feature to capture live audio through your device's microphone and identify the song in real time. Unlike apps that require you to hold your phone steady in silence, Music Finder AI's <strong>song finder by sound</strong> engine is built to handle ambient noise, crowd chatter, and acoustic distortion. Our advanced pre-processing pipeline isolates the musical signal from environmental noise before running the fingerprint analysis, delivering highly accurate results even in challenging acoustic environments. Just tap the Live Mic button, point your device toward the sound source, and get your answer in seconds.
         </p>
 
         <!-- Section: Song Finder by Link -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Song Finder by Link — Paste Any URL and Discover the Track
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           Found a video or audio clip online and want to know the song? The <strong>song finder by link</strong> feature makes it effortless. Simply paste any media URL — from YouTube, SoundCloud, TikTok, Instagram, Twitter, or any direct audio/video link — into the URL input field. Music Finder AI extracts the audio stream from the URL, processes it through the acoustic fingerprinting engine, and identifies the track instantly. The <strong>song finder by link</strong> tool eliminates the need to download files, convert formats, or use third-party browser extensions. It's the fastest way to identify songs you encounter while browsing the web.
         </p>
 
         <!-- Closing Section -->
-        <h3 class="text-ink" style="font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.374px; margin: var(--spacing-sm) 0 0 0;">
+        <h3 class="text-ink text-lg sm:text-xl md:text-2xl font-semibold leading-snug mt-2">
           Why Music Finder AI Is the Best Free Song Finder Available
         </h3>
-        <p style="margin: 0;">
+        <p class="m-0">
           What sets Music Finder AI apart from every other song finder on the market is our commitment to being 100% free, ad-free, and requiring zero sign-ups. Most competing tools bombard you with pop-ups, require app installations, or limit the number of identifications you can perform. Music Finder AI has none of those limitations. Our studio-grade acoustic fingerprinting engine processes audio in under 200 milliseconds with a signal-to-noise ratio of +42dB, ensuring reliable matches even from low-quality sources. Your uploaded files are never stored — they're analyzed securely and immediately purged after fingerprinting.
         </p>
 
-        <p style="margin: 0;">
-          Whether you need a <strong>song finder by lyrics</strong> to decode words stuck in your head, a <strong>song finder by video</strong> to identify background music in content, a <strong>song finder by humming</strong> when all you have is the melody, a <strong>song finder by sound</strong> to capture live music around you, or a <strong>song finder by link</strong> to identify tracks from online media — Music Finder AI handles it all in one powerful, free tool. <a href="/#recognizer" style="color: #0066cc; text-decoration: none; font-weight: 500;">Try our song finder now</a> and identify your first song in seconds.
+        <p class="m-0">
+          Whether you need a <strong>song finder by lyrics</strong> to decode words stuck in your head, a <strong>song finder by video</strong> to identify background music in content, a <strong>song finder by humming</strong> when all you have is the melody, a <strong>song finder by sound</strong> to capture live music around you, or a <strong>song finder by link</strong> to identify tracks from online media — Music Finder AI handles it all in one powerful, free tool. <a href="/#recognizer" class="text-[#0066cc] dark:text-[#2997ff] no-underline font-medium hover:underline">Try our song finder now</a> and identify your first song in seconds.
         </p>
 
       </div>

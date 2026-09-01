@@ -3,34 +3,34 @@
 ---
 
 <!-- {component.product-tile-light}: bg {colors.canvas}, padding {spacing.section} 80px, no border divider -->
-<section id="recognizer" class="px-4 md:px-8 bg-canvas" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+<section id="recognizer" class="px-4 sm:px-6 md:px-8 bg-canvas py-12 sm:py-16 md:py-20 lg:py-24">
   <div class="max-w-[1020px] mx-auto">
     
     <!-- Hero Title Header (Apple Tight Display) -->
-    <div class="text-center mb-10">
+    <div class="text-center mb-8 sm:mb-10">
       <!-- 12px eyebrow per {typography.nav-link} in DESIGN.md -->
-      <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-[12px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
-      <h1 class="font-display font-semibold text-[40px] md:text-[56px] leading-[1.07] tracking-[-0.028em] text-ink mb-4">
+      <span class="text-[#0066cc] dark:text-[#2997ff] font-semibold text-xs sm:text-[12px] uppercase tracking-wider mb-2 block">AI Acoustic Fingerprinting</span>
+      <h1 class="font-display font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-[56px] leading-[1.07] tracking-[-0.028em] text-ink mb-3 sm:mb-4">
         Identify Any Song. In Seconds.
       </h1>
       <!-- font-light (300) per {typography.lead-airy}: 24px / 300 / 1.5 line-height -->
-      <p class="text-[20px] md:text-[24px] font-light text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
+      <p class="text-base sm:text-lg md:text-xl lg:text-[24px] font-light text-muted-adaptive max-w-2xl mx-auto leading-relaxed">
         Upload audio, video clips, paste media links, or record live sound. Instant identification with real-time pre-processing filters.
       </p>
     </div>
 
     <!-- Main Card Engine Container -->
     <!-- Hub card: {component.store-utility-card} rounded {rounded.lg}=18px, 1px hairline border, no shadow (shadow reserved for product imagery only) -->
-    <div class="bg-surface-card border border-adaptive p-6 md:p-10 transition-all" id="hub-container" style="border-radius: var(--rounded-lg);">
+    <div class="bg-surface-card border border-adaptive p-4 sm:p-6 md:p-10 transition-all" id="hub-container" style="border-radius: var(--rounded-lg);">
       
       <!-- Input Mode Tabs — ARIA role=tablist for screen reader navigation -->
-      <div role="tablist" aria-label="Audio input method" class="flex items-center justify-center gap-2 mb-8 bg-canvas p-1.5 rounded-full border border-adaptive max-w-md mx-auto shadow-xs">
+      <div role="tablist" aria-label="Audio input method" class="flex items-center justify-center gap-1 sm:gap-2 mb-6 sm:mb-8 bg-canvas p-1 sm:p-1.5 rounded-full border border-adaptive max-w-md mx-auto shadow-xs w-full">
         <button
           id="tab-upload-btn"
           role="tab"
           aria-selected="true"
           aria-controls="panel-upload"
-          class="tab-btn active font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer bg-[#0066cc] text-white"
+          class="tab-btn active flex-1 font-medium text-xs sm:text-sm px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all cursor-pointer bg-[#0066cc] text-white text-center whitespace-nowrap"
         >
           📁 Upload File
         </button>
@@ -39,7 +39,7 @@
           role="tab"
           aria-selected="false"
           aria-controls="panel-url"
-          class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment"
+          class="tab-btn flex-1 font-medium text-xs sm:text-sm px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment text-center whitespace-nowrap"
         >
           🔗 Paste URL
         </button>
@@ -48,7 +48,7 @@
           role="tab"
           aria-selected="false"
           aria-controls="panel-record"
-          class="tab-btn font-medium text-sm px-6 py-2 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment"
+          class="tab-btn flex-1 font-medium text-xs sm:text-sm px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all cursor-pointer text-ink hover:bg-parchment text-center whitespace-nowrap"
         >
           🎙️ Live Mic
         </button>
@@ -236,19 +236,19 @@
       <!-- MATCH RESULT MODAL / DISPLAY CARD (Hidden until recognition done — no placeholder data shown) -->
       <!-- Flat bg-[#272729] per DESIGN.md: no decorative gradients, atmosphere from surface color only -->
       <!-- Match result — {component.product-tile-dark}: bg {colors.surface-tile-1} #272729, rounded-none for full tile, but as card use {rounded.lg} 18px -->
-      <div id="match-result-card" class="hidden mt-8 text-white p-8 border border-neutral-800 space-y-8" style="background-color: var(--color-surface-tile-1); border-radius: var(--rounded-lg);">
+      <div id="match-result-card" class="hidden mt-8 text-white p-5 sm:p-8 border border-neutral-800 space-y-6 sm:space-y-8" style="background-color: var(--color-surface-tile-1); border-radius: var(--rounded-lg);">
         
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
           <!-- Album Art -->
           <div class="relative group shrink-0">
-            <img id="res-artwork" src="" alt="Album Cover" class="w-48 h-48 rounded-2xl object-cover shadow-2xl border border-white/10 bg-neutral-800" />
+            <img id="res-artwork" src="" alt="Album Cover" class="w-36 h-36 sm:w-48 sm:h-48 rounded-2xl object-cover shadow-2xl border border-white/10 bg-neutral-800" />
             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
               <span id="res-match-pct" class="text-xs bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white"></span>
             </div>
           </div>
 
           <!-- Song Meta -->
-          <div class="flex-1 text-center md:text-left space-y-3">
+          <div class="flex-1 text-center md:text-left space-y-2.5 sm:space-y-3">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0066cc]/20 border border-[#0066cc]/40 text-[#2997ff] text-xs font-semibold">
               <span>✨ Exact Match Found</span>
               <span>•</span>
@@ -256,19 +256,19 @@
             </div>
 
             <!-- Titles populated entirely by JS — no placeholder text -->
-            <h2 id="res-title" class="font-display font-semibold text-3xl md:text-4xl text-white tracking-tight"></h2>
-            <p id="res-artist" class="text-xl text-neutral-300 font-medium"></p>
-            <p id="res-album" class="text-sm text-neutral-400"></p>
+            <h2 id="res-title" class="font-display font-semibold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight break-words"></h2>
+            <p id="res-artist" class="text-lg sm:text-xl text-neutral-300 font-medium break-words"></p>
+            <p id="res-album" class="text-xs sm:text-sm text-neutral-400 break-words"></p>
 
             <!-- Musical Characteristics Pills -->
             <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
-              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+              <span class="bg-white/10 px-2.5 py-1 rounded-lg text-xs font-medium text-neutral-200">
                 🥁 BPM: <strong id="res-bpm" class="text-white"></strong>
               </span>
-              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+              <span class="bg-white/10 px-2.5 py-1 rounded-lg text-xs font-medium text-neutral-200">
                 🔑 Key: <strong id="res-key" class="text-white"></strong>
               </span>
-              <span class="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium text-neutral-200">
+              <span class="bg-white/10 px-2.5 py-1 rounded-lg text-xs font-medium text-neutral-200">
                 ⏱️ Energy: <strong id="res-energy" class="text-white"></strong>
               </span>
             </div>
@@ -276,23 +276,23 @@
         </div>
 
         <!-- External Streaming Links & Audio Preview -->
-        <div class="pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start">
-            <a id="res-spotify" href="#" target="_blank" class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+        <div class="pt-5 sm:pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap justify-center md:justify-start w-full md:w-auto">
+            <a id="res-spotify" href="#" target="_blank" class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-1.5 no-underline flex-1 sm:flex-initial">
               <span>🟢</span> Spotify
             </a>
-            <a id="res-youtube" href="#" target="_blank" class="bg-[#FF0000] hover:bg-red-600 text-white font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+            <a id="res-youtube" href="#" target="_blank" class="bg-[#FF0000] hover:bg-red-600 text-white font-semibold text-xs px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-1.5 no-underline flex-1 sm:flex-initial">
               <!-- SVG play icon instead of ▶ Unicode -->
               <svg class="w-3 h-3 fill-white" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> YouTube
             </a>
-            <a id="res-apple" href="#" target="_blank" class="bg-white text-black hover:bg-neutral-200 font-semibold text-xs px-4 py-2 rounded-full transition-all flex items-center gap-1.5 no-underline">
+            <a id="res-apple" href="#" target="_blank" class="bg-white text-black hover:bg-neutral-200 font-semibold text-xs px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-1.5 no-underline flex-1 sm:flex-initial">
               <span>🍎</span> Apple Music
             </a>
           </div>
 
           <!-- Audio Preview Player — uses flex directly (no hidden+items-center conflict) -->
-          <div id="preview-player-container" class="hidden">
-            <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/10">
+          <div id="preview-player-container" class="hidden w-full md:w-auto">
+            <div class="flex items-center justify-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/10">
               <button id="preview-play-btn" class="w-8 h-8 rounded-full bg-[#2997ff] text-white flex items-center justify-center font-bold text-xs hover:scale-105 transition-transform cursor-pointer">
                 <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
               </button>
@@ -456,13 +456,19 @@
       canvas.height = 96;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#2997ff';
-      const bars = 80;
+      const bars = Math.min(80, Math.max(30, Math.floor(canvas.width / 6)));
       const bw = canvas.width / bars;
       for (let i = 0; i < bars; i++) {
         const h = Math.random() * (canvas.height - 20) + 10;
         ctx.fillRect(i * bw + 1, (canvas.height - h) / 2, bw - 2, h);
       }
     }
+
+    window.addEventListener('resize', () => {
+      if (workbench && !workbench.classList.contains('hidden')) {
+        drawWaveformPlaceholder();
+      }
+    });
 
     removeAudioBtn?.addEventListener('click', () => {
       workbench?.classList.add('hidden');

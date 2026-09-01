@@ -103,7 +103,7 @@ function isActive(href: string) {
       <!-- Hamburger — visible at ≤833px; desktop links hidden below that -->
       <button
         id="hamburger-btn"
-        class="hamburger-btn btn-dark-utility sm:hidden"
+        class="hamburger-btn btn-dark-utility"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -118,15 +118,53 @@ function isActive(href: string) {
   <!-- Mobile Menu — slides down below nav bar, full-width, dark surface -->
   <div
     id="mobile-menu"
-    class="hidden absolute top-[44px] left-0 right-0 bg-[#000000] border-b border-[#2a2a2c] z-40"
+    class="hidden absolute top-[44px] left-0 right-0 bg-[#000000]/95 backdrop-blur-md border-b border-[#2a2a2c] z-40 shadow-2xl transition-all"
   >
-    <nav class="max-w-[1440px] mx-auto px-5 py-4 flex flex-col gap-1 text-[14px] text-neutral-300 tracking-[-0.224px]">
-      <a href="/" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${currentPath === '/' ? 'text-white font-semibold' : 'hover:text-white'}`}>Recognizer</a>
-      <a href="/technology" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${isActive('/technology') ? 'text-[#2997ff]' : 'hover:text-white'}`}>Technology</a>
-      <a href="/comparison" class={`py-2.5 border-b border-[#1a1a1a] no-underline transition-colors ${isActive('/comparison') ? 'text-[#2997ff]' : 'hover:text-white'}`}>Comparison</a>
-      <a href="/#faq" class="py-2.5 no-underline hover:text-white transition-colors">FAQ</a>
+    <nav class="max-w-[1440px] mx-auto px-5 py-4 flex flex-col gap-1 text-[15px] text-neutral-300 tracking-[-0.224px]">
+      <a href="/" class={`py-3 border-b border-[#1a1a1a] no-underline transition-colors flex items-center justify-between ${currentPath === '/' ? 'text-white font-semibold' : 'hover:text-white'}`}>
+        <span>Recognizer</span>
+        <span class="text-xs text-neutral-500">Instant AI</span>
+      </a>
+      <a href="/technology" class={`py-3 border-b border-[#1a1a1a] no-underline transition-colors flex items-center justify-between ${isActive('/technology') ? 'text-[#2997ff]' : 'hover:text-white'}`}>
+        <span>Technology</span>
+        <span class="text-xs text-neutral-500">FFT &amp; Specs</span>
+      </a>
+      <a href="/comparison" class={`py-3 border-b border-[#1a1a1a] no-underline transition-colors flex items-center justify-between ${isActive('/comparison') ? 'text-[#2997ff]' : 'hover:text-white'}`}>
+        <span>Comparison</span>
+        <span class="text-xs text-neutral-500">vs Legacy</span>
+      </a>
+      <a href="/#faq" class="py-3 border-b border-[#1a1a1a] no-underline hover:text-white transition-colors flex items-center justify-between">
+        <span>FAQ</span>
+        <span class="text-xs text-neutral-500">Answers</span>
+      </a>
+
+      <!-- Mobile Utility Controls: Theme & History -->
+      <div class="grid grid-cols-2 gap-2 py-3 border-b border-[#1a1a1a]">
+        <button
+          id="mobile-theme-toggle-btn"
+          class="btn-dark-utility w-full justify-center text-xs py-2.5"
+          type="button"
+        >
+          <span id="mobile-theme-icon">🌙</span>
+          <span id="mobile-theme-text">Dark Mode</span>
+        </button>
+
+        <button
+          id="mobile-history-btn"
+          class="btn-dark-utility w-full justify-center text-xs py-2.5"
+          type="button"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>History</span>
+        </button>
+      </div>
+
       <div class="pt-3">
-        <a href="/#recognizer" class="btn-action-primary w-full justify-center" style="font-size: 14px;">Identify Song</a>
+        <a href="/#recognizer" class="btn-action-primary w-full justify-center" style="font-size: 15px; padding: 12px 20px;">
+          Identify Song Now
+        </a>
       </div>
     </nav>
   </div>
@@ -164,9 +202,12 @@ function isActive(href: string) {
   function setupNav() {
     // --- Theme toggle ---
     const btn = document.getElementById('theme-toggle-btn');
+    const mobileBtn = document.getElementById('mobile-theme-toggle-btn');
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
     const btnText = document.getElementById('theme-btn-text');
+    const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+    const mobileThemeText = document.getElementById('mobile-theme-text');
 
     function updateThemeIcons() {
       const isDark = document.documentElement.classList.contains('dark');
@@ -175,16 +216,21 @@ function isActive(href: string) {
         moonIcon.classList.toggle('hidden', isDark);
       }
       if (btnText) btnText.textContent = isDark ? 'Light' : 'Dark';
+      if (mobileThemeIcon) mobileThemeIcon.textContent = isDark ? '☀️' : '🌙';
+      if (mobileThemeText) mobileThemeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
     }
 
     updateThemeIcons();
 
-    btn?.addEventListener('click', () => {
+    function toggleTheme() {
       const isDark = document.documentElement.classList.contains('dark');
       document.documentElement.classList.toggle('dark', !isDark);
       localStorage.setItem('musicfinder_theme', isDark ? 'light' : 'dark');
       updateThemeIcons();
-    });
+    }
+
+    btn?.addEventListener('click', toggleTheme);
+    mobileBtn?.addEventListener('click', toggleTheme);
 
     // --- Hamburger menu ---
     const hamburger = document.getElementById('hamburger-btn');
@@ -194,6 +240,15 @@ function isActive(href: string) {
       const isOpen = mobileMenu?.classList.contains('hidden') === false;
       mobileMenu?.classList.toggle('hidden', isOpen);
       hamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+
+    // Mobile history trigger
+    const mobileHistoryBtn = document.getElementById('mobile-history-btn');
+    const desktopHistoryBtn = document.getElementById('toggle-history-btn');
+    mobileHistoryBtn?.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+      hamburger?.setAttribute('aria-expanded', 'false');
+      desktopHistoryBtn?.click();
     });
 
     // Close mobile menu on nav link click
